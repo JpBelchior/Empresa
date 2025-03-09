@@ -13,6 +13,32 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->string('atribuicao', 50);
+            $table->boolean('ativo')->default(true);
+            $table->string('cpf_cnpj', 20);
+            $table->string('email');     
+            $table->string('senha')->nullable();
+            $table->string('whatsapp', 20);
+            $table->dateTime('data_cadastro')->default(now());
+
+            $table->unsignedBigInteger("empresa_id")->nullable();
+            $table->foreign("empresa_id")->references("id")->on("empresas");
+
+            $table->timestamps();
+        });        
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id', 100)->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
+        
+        /* Schema::create('users', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -34,7 +60,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
-        });
+        }); */
     }
 
     /**

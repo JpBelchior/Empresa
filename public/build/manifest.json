@@ -1,0 +1,51 @@
+{
+  "_app-CUCIXLEV.js": {
+    "file": "assets/app-CUCIXLEV.js",
+    "name": "app",
+    "imports": [
+      "_index-BtYWPiQe.js"
+    ]
+  },
+  "_index-BtYWPiQe.js": {
+    "file": "assets/index-BtYWPiQe.js",
+    "name": "index"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-CTjoE_VA.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/fonts/Poppins-Regular.ttf": {
+    "file": "assets/Poppins-Regular-CTKNfV9P.ttf",
+    "src": "resources/fonts/Poppins-Regular.ttf"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CXnMkFMY.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_index-BtYWPiQe.js"
+    ]
+  },
+  "resources/js/login/login.js": {
+    "file": "assets/login-CpA2_PMw.js",
+    "name": "login",
+    "src": "resources/js/login/login.js",
+    "isEntry": true,
+    "imports": [
+      "_index-BtYWPiQe.js",
+      "_app-CUCIXLEV.js"
+    ]
+  },
+  "resources/js/login/recuperar_senha.js": {
+    "file": "assets/recuperar_senha-D9kKLO5t.js",
+    "name": "recuperar_senha",
+    "src": "resources/js/login/recuperar_senha.js",
+    "isEntry": true,
+    "imports": [
+      "_app-CUCIXLEV.js",
+      "_index-BtYWPiQe.js"
+    ]
+  }
+}
