@@ -1,13 +1,13 @@
 {
-  "_app-D1U5qsTT.js": {
-    "file": "assets/app-D1U5qsTT.js",
+  "_app-Di2_7kAx.js": {
+    "file": "assets/app-Di2_7kAx.js",
     "name": "app",
     "imports": [
-      "_index-BtYWPiQe.js"
+      "_index-CDtnUDvk.js"
     ]
   },
-  "_index-BtYWPiQe.js": {
-    "file": "assets/index-BtYWPiQe.js",
+  "_index-CDtnUDvk.js": {
+    "file": "assets/index-CDtnUDvk.js",
     "name": "index"
   },
   "resources/css/app.css": {
@@ -20,32 +20,32 @@
     "src": "resources/fonts/Poppins-Regular.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app-B-pV04Ia.js",
+    "file": "assets/app-CR9ezOkb.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_index-BtYWPiQe.js"
+      "_index-CDtnUDvk.js"
     ]
   },
   "resources/js/login/login.js": {
-    "file": "assets/login-KWwu0zAv.js",
+    "file": "assets/login-BQTX3Ytz.js",
     "name": "login",
     "src": "resources/js/login/login.js",
     "isEntry": true,
     "imports": [
-      "_index-BtYWPiQe.js",
-      "_app-D1U5qsTT.js"
+      "_index-CDtnUDvk.js",
+      "_app-Di2_7kAx.js"
     ]
   },
   "resources/js/login/recuperar_senha.js": {
-    "file": "assets/recuperar_senha-DFKEkhvi.js",
+    "file": "assets/recuperar_senha-CinPeuYr.js",
     "name": "recuperar_senha",
     "src": "resources/js/login/recuperar_senha.js",
     "isEntry": true,
     "imports": [
-      "_app-D1U5qsTT.js",
-      "_index-BtYWPiQe.js"
+      "_app-Di2_7kAx.js",
+      "_index-CDtnUDvk.js"
     ]
   }
 }
