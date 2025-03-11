@@ -1,13 +1,13 @@
 {
-  "_app-CohA4kSm.js": {
-    "file": "assets/app-CohA4kSm.js",
+  "_app-h9EjUsw9.js": {
+    "file": "assets/app-h9EjUsw9.js",
     "name": "app",
     "imports": [
-      "_index-BtYWPiQe.js"
+      "_index-CGBj5rDe.js"
     ]
   },
-  "_index-BtYWPiQe.js": {
-    "file": "assets/index-BtYWPiQe.js",
+  "_index-CGBj5rDe.js": {
+    "file": "assets/index-CGBj5rDe.js",
     "name": "index"
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
@@ -52,42 +52,42 @@
     "src": "resources/fonts/Poppins-Regular.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app-BQYCH3Vh.js",
+    "file": "assets/app-B50FKHnF.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_index-BtYWPiQe.js"
+      "_index-CGBj5rDe.js"
     ]
   },
   "resources/js/estrutura/redefinir_senha.js": {
-    "file": "assets/redefinir_senha-1pAJChsm.js",
+    "file": "assets/redefinir_senha-DFKw0QAw.js",
     "name": "redefinir_senha",
     "src": "resources/js/estrutura/redefinir_senha.js",
     "isEntry": true,
     "imports": [
-      "_app-CohA4kSm.js",
-      "_index-BtYWPiQe.js"
+      "_app-h9EjUsw9.js",
+      "_index-CGBj5rDe.js"
     ]
   },
   "resources/js/login/login.js": {
-    "file": "assets/login-CAlbTD4H.js",
+    "file": "assets/login-eFEf02Jf.js",
     "name": "login",
     "src": "resources/js/login/login.js",
     "isEntry": true,
     "imports": [
-      "_index-BtYWPiQe.js",
-      "_app-CohA4kSm.js"
+      "_app-h9EjUsw9.js",
+      "_index-CGBj5rDe.js"
     ]
   },
   "resources/js/login/recuperar_senha.js": {
-    "file": "assets/recuperar_senha-Ch9IwurV.js",
+    "file": "assets/recuperar_senha-wenR9BtJ.js",
     "name": "recuperar_senha",
     "src": "resources/js/login/recuperar_senha.js",
     "isEntry": true,
     "imports": [
-      "_app-CohA4kSm.js",
-      "_index-BtYWPiQe.js"
+      "_app-h9EjUsw9.js",
+      "_index-CGBj5rDe.js"
     ]
   }
 }

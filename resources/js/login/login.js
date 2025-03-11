@@ -1,4 +1,3 @@
-import axios from "axios";
 import { abrir_modal, erro, habilitar_botao, sucesso } from "../app";
 
 $("#btn_modal_recuperar_senha").click(() => { abrir_modal('modal_recuperar_senha') });
