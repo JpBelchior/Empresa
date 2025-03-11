@@ -2,7 +2,7 @@
 @section('conteudo')
 <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <form class="space-y-4 md:space-y-6">
+        <div class="space-y-4 md:space-y-6">
             <div>
                 <img src="{{ asset('img/logo.png') }}" alt="">
             </div>
@@ -12,7 +12,7 @@
                 <x-botao id="entrar" label="Entrar" cor="verde"></x-botao>
                 <x-botao id="btn_modal_recuperar_senha" label="Recuperar Senha"></x-botao>
             </div>            
-        </form>
+        </div>
     </div>
 </div>
 <x-modal id="modal_recuperar_senha" label="Recuperar Senha">
