@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models;
+use App\Models\Auditoria;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RecuperacaoSenhaController extends Controller
 {
@@ -63,6 +65,22 @@ class RecuperacaoSenhaController extends Controller
         }
         $recuperacao = Models\RecuperacaoSenha::usar_recuperacao($request->token);                
         Models\User::alterar_senha_usuario($recuperacao->usuario_id, $request->senha);
+        return response()->json('Senha alterada com sucesso!', 200);
+    }
+
+    public function redefinir_senha(Request $request){
+        $validator = Validator::make($request->all(), [
+            'senha' => 'required|min:6',
+            'senha_confirmacao' => 'required|min:6',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+        if($request->senha != $request->senha_confirmacao){
+            return response()->json('Senhas não coincidem', 400);
+        }
+        Models\User::find(Auth::id())->update(['senha' => password_hash($request->senha, PASSWORD_DEFAULT)]);
+        Auditoria::registrar_atividade("Redefinição de Senha");
         return response()->json('Senha alterada com sucesso!', 200);
     }
 

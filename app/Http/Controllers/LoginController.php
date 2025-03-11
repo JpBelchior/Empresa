@@ -33,6 +33,11 @@ class LoginController extends Controller
             return response()->json('Senha incorreta!', 403);
         }
         Auth::login($usuario);
+        session([
+            'nome_usuario' => $usuario->nome, 
+            'email_usuario' => $usuario->email, 
+            'atribuicao_usuario' => ucfirst($usuario->atribuicao)
+        ]);
         Models\Auditoria::registrar_atividade("Login");
         $request->session()->regenerateToken();
         return response()->json('Seja bem vindo!', 200);

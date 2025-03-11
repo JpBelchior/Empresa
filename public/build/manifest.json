@@ -1,17 +1,49 @@
 {
-  "_app-Di2_7kAx.js": {
-    "file": "assets/app-Di2_7kAx.js",
+  "_app-CohA4kSm.js": {
+    "file": "assets/app-CohA4kSm.js",
     "name": "app",
     "imports": [
-      "_index-CDtnUDvk.js"
+      "_index-BtYWPiQe.js"
     ]
   },
-  "_index-CDtnUDvk.js": {
-    "file": "assets/index-CDtnUDvk.js",
+  "_index-BtYWPiQe.js": {
+    "file": "assets/index-BtYWPiQe.js",
     "name": "index"
   },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-D1LuMI3I.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-D_cYUPeE.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-DZaxPHgR.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-BjRzuEpd.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-D0aA9rwL.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-CTAAxXor.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf": {
+    "file": "assets/fa-v4compatibility-CCth-dXg.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-C9RhG_FT.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-BfQr6W0A.css",
+    "file": "assets/app-DyuFU4ZP.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -20,32 +52,42 @@
     "src": "resources/fonts/Poppins-Regular.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app-CR9ezOkb.js",
+    "file": "assets/app-BQYCH3Vh.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_index-CDtnUDvk.js"
+      "_index-BtYWPiQe.js"
+    ]
+  },
+  "resources/js/estrutura/redefinir_senha.js": {
+    "file": "assets/redefinir_senha-1pAJChsm.js",
+    "name": "redefinir_senha",
+    "src": "resources/js/estrutura/redefinir_senha.js",
+    "isEntry": true,
+    "imports": [
+      "_app-CohA4kSm.js",
+      "_index-BtYWPiQe.js"
     ]
   },
   "resources/js/login/login.js": {
-    "file": "assets/login-BQTX3Ytz.js",
+    "file": "assets/login-CZJNG4uE.js",
     "name": "login",
     "src": "resources/js/login/login.js",
     "isEntry": true,
     "imports": [
-      "_index-CDtnUDvk.js",
-      "_app-Di2_7kAx.js"
+      "_index-BtYWPiQe.js",
+      "_app-CohA4kSm.js"
     ]
   },
   "resources/js/login/recuperar_senha.js": {
-    "file": "assets/recuperar_senha-CinPeuYr.js",
+    "file": "assets/recuperar_senha-Ch9IwurV.js",
     "name": "recuperar_senha",
     "src": "resources/js/login/recuperar_senha.js",
     "isEntry": true,
     "imports": [
-      "_app-Di2_7kAx.js",
-      "_index-CDtnUDvk.js"
+      "_app-CohA4kSm.js",
+      "_index-BtYWPiQe.js"
     ]
   }
 }

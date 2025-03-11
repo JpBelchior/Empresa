@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 Route::get('/', function(){
     if(Auth::check()){        
-        echo 'oi';
+        return view('home');
     }else{        
         return view('login.login');
     }

@@ -2,6 +2,14 @@ import './bootstrap';
 
 import { Modal } from 'flowbite';
 
+//SAIR
+$("#logout").click(function(){    
+    Swal.fire("Saindo...");
+    axios.post('logout')
+    .then(response => { location.reload(); })
+    .catch(error => erro(error))
+});
+
 //DESABILITA TODOS OS INPUTS DE TEREM VALORES SUGERIDOS
 $("input").attr('autocomplete', 'off');
 
@@ -134,7 +142,7 @@ export function erro(error) {
     texto += '</ul>';
     new Swal({
         title: 'Erro!',
-        icon: 'error',
+        icon: 'error',        
         html: texto
     });
 }

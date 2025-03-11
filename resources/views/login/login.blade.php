@@ -3,6 +3,9 @@
 <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <form class="space-y-4 md:space-y-6">
+            <div>
+                <img src="{{ asset('img/logo.png') }}" alt="">
+            </div>
             <x-input id="email" label="Email"></x-input>
             <x-input id="senha" label="Senha" placeholder="••••••••" type="password"></x-input>
             <div class="flex justify-between">
