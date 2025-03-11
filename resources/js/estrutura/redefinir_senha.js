@@ -10,5 +10,5 @@ $("#btn_recuperar_senha").click(function(){
     axios.post('redefinir_senha', dados)
     .then(response => { sucesso(response); fechar_modal('modal_redefinir_senha'); })
     .catch(error => { erro(error) })
-    .finally(() => { habilitar_botao('btn_recuperar_senha', true); })     
+    .finally(() => { habilitar_botao('btn_recuperar_senha', true); });
 });
