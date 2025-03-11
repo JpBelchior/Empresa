@@ -2,11 +2,10 @@ import { abrir_modal, erro, habilitar_botao, sucesso } from "../app";
 
 $("#btn_modal_recuperar_senha").click(() => { abrir_modal('modal_recuperar_senha') });
 
-$("#entrar").click(function(event){
-    event.preventDefault();
+$("#entrar").click(function(){
     habilitar_botao("entrar", false);
     let dados = { email: $("#email").val(), senha: $("#senha").val() };
-    axios.post('/verificar_login/', dados)
+    axios.post('verificar_login', dados)
     .then(response => {        
         location.reload();
     })
