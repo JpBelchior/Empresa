@@ -82,9 +82,41 @@ function nome_mes($numero){
     return $meses[$numero];
 }
 
-function validar_cnpj() {}
+function validar_cnpj($cnpj) {
+    // Remove caracteres não numéricos
+    $cnpj = preg_replace('/[^0-9]/', '', $cnpj);
 
-function formatar_dinheiro() {}
+    // Verifica se tem 14 dígitos
+    if (strlen($cnpj) != 14) {
+        return false;
+    }
+
+    // Evita CNPJs com todos os números iguais (ex.: 00000000000000)
+    if (preg_match('/(\d)\1{13}/', $cnpj)) {
+        return false;
+    }
+
+    // Cálculo dos dígitos verificadores
+    $peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    $peso2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+    // Verifica o primeiro dígito verificador
+    for ($t = 0, $soma = 0; $t < 12; $t++) {
+        $soma += $cnpj[$t] * $peso1[$t];
+    }
+    $resto = $soma % 11;
+    $digito1 = ($resto < 2) ? 0 : 11 - $resto;
+
+    // Verifica o segundo dígito verificador
+    for ($t = 0, $soma = 0; $t < 13; $t++) {
+        $soma += $cnpj[$t] * $peso2[$t];
+    }
+    $resto = $soma % 11;
+    $digito2 = ($resto < 2) ? 0 : 11 - $resto;
+
+    // Confirma se os dígitos verificadores estão corretos
+    return $cnpj[12] == $digito1 && $cnpj[13] == $digito2;
+}
 
 function pegarIpUsuario() {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {

@@ -32,14 +32,31 @@ function definir_modal(id){
     modal = new Modal($targetEl, options, instanceOptions);
 }
 
-export function abrir_modal(id){
+export function abrir_modal(id, mostrar_informacoes = true){
     definir_modal(id);
+    $("#"+id+" .spinner").hide();
+    $("#"+id+" .informacoes").show();
+    if(mostrar_informacoes == false){
+        $("#"+id+" .spinner").show();
+        $("#"+id+" .informacoes").hide();
+    }    
     modal.show();
+}
+
+export function mostrar_informacoes_modal(id){
+    $("#"+id+" .spinner").hide();
+    $("#"+id+" .informacoes").show();
 }
 
 export function fechar_modal(id){
     definir_modal(id);
     modal.hide();
+}
+
+export function limpar_inputs_modal(id){
+    $("#"+id+" input").val('');
+    $("#"+id+" select").val('');
+    $("#"+id+" textarea").val('');
 }
 
 $(document).on('click', '.fechar_modal', function(){

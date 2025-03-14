@@ -1,7 +1,8 @@
 @props([
     'cor' => '',
     'id' => '',
-    'label' => ''
+    'label' => '',
+    'icon' => ''
 ])
 <button type="button" id="{{ $id }}"
     @switch($cor)
@@ -16,5 +17,8 @@
         @break
     @endswitch
     >    
-    <span>{{ $label }}</span>    
+    <span>
+        <i class="{{ $icon }}"></i>
+        {{ $label }}
+    </span>    
 </button>
