@@ -44,8 +44,7 @@ class EmpresaController extends Controller
         return response()->json('Empresa cadastrada com sucesso!', 200);
     }
 
-    public function editar($empresa_id, Request $request){
-        Log::info($request->all());
+    public function editar($empresa_id, Request $request){        
         $validator = Validator::make($request->all(), [
             'razao_social' => 'required',
             'cnpj' => 'required',

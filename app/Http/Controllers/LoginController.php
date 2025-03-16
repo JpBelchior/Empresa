@@ -26,6 +26,7 @@ class LoginController extends Controller
             return response()->json('Usuário não encontrado!', 422);
         }
         if(!$usuario->ativo){
+            Models\Auditoria::registrar_atividade('Tentativa de acesso de usuário inativo');
             return response()->json('Acesso negado!', 403);
         }
         $autenticou = password_verify($request->senha, $usuario->senha);           

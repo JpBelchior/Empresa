@@ -17,5 +17,65 @@ Route::middleware(['auth'])->group(function() {
             Route::put('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
         });
-    })->can('administrador', 'App\Models\User');
+    });
+
+    Route::controller(Controllers\TipoEmpreendimentoController::class)->group(function(){
+        Route::prefix('tipos_empreendimentos')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
+
+    Route::controller(Controllers\TopicoController::class)->group(function(){
+        Route::prefix('topicos')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
+
+    Route::controller(Controllers\AreaController::class)->group(function(){
+        Route::prefix('areas')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
+
+    Route::controller(Controllers\TematicaController::class)->group(function(){
+        Route::prefix('tematicas')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
+
+    Route::controller(Controllers\TematicaController::class)->group(function(){
+        Route::prefix('tematicas')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
+
+    Route::controller(Controllers\TagController::class)->group(function(){
+        Route::prefix('tags')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
 });
