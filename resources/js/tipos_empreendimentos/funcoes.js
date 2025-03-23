@@ -31,3 +31,15 @@ export function lista_tipos_empreendimentos() {
         })
         .finally(() => {})
 }
+
+export function pesquisar_tipos_empreendimentos(parametro, valor) {
+    return new Promise((resolve, reject) => {
+    axios.get('tipos_empreendimentos/pesquisar/'+parametro+"/"+valor)
+        .then(response => {
+            resolve(response.data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}

@@ -40,7 +40,13 @@ export default defineConfig({
                 'resources/js/tags/index.js',
                 'resources/js/tags/funcoes.js',
                 'resources/js/tags/adicionar.js',
-                'resources/js/tags/editar.js'
+                'resources/js/tags/editar.js',
+                //PERGUNTAS
+                'resources/js/perguntas/index.js',
+                'resources/js/perguntas/funcoes.js',
+                'resources/js/perguntas/adicionar.js',
+                'resources/js/perguntas/editar.js',
+                'resources/js/perguntas/ver.js'
             ],
             refresh: true,
         }),

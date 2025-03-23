@@ -45,6 +45,14 @@ class TagController extends Controller
         return response()->json('Tag editado com sucesso!', 200);
     }
 
+    public function pesquisar($parametro, $valor){
+        if($parametro == 'ativo'){
+            $ativo = $valor == 'true' ? true : false;
+            return Models\Tag::where('ativo', $ativo)->orderBy('nome', 'asc')->get();    
+        }
+        return Models\Tag::where($parametro, "like", "%$valor%")->orderBy('nome', 'asc')->get();
+    }
+
     public function detalhes($tag_id){
         return Models\Tag::find($tag_id);
     }

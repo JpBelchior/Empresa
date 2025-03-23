@@ -31,3 +31,15 @@ export function lista_tematicas() {
         })
         .finally(() => {})
 }
+
+export function pesquisar_tematica(parametro, valor) {
+    return new Promise((resolve, reject) => {
+    axios.get('tematicas/pesquisar/' + parametro + '/' + valor)
+        .then(response => {
+            resolve(response.data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}

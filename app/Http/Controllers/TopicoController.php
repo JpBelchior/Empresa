@@ -45,6 +45,14 @@ class TopicoController extends Controller
         return response()->json('Tópico editado com sucesso!', 200);
     }
 
+    public function pesquisar($parametro, $valor){
+        if($parametro == 'ativo'){
+            $ativo = $valor == 'true' ? true : false;
+            return Models\Topico::where('ativo', $ativo)->orderBy('nome', 'asc')->get();    
+        }
+        return Models\Topico::where($parametro, "like", "%$valor%")->orderBy('nome', 'asc')->get();
+    }
+
     public function detalhes($topico_id){
         return Models\Topico::find($topico_id);
     }

@@ -48,4 +48,12 @@ class TipoEmpreendimentoController extends Controller
     public function detalhes($tipo_empreendimento_id){
         return Models\TipoEmpreendimento::find($tipo_empreendimento_id);
     }
+
+    public function pesquisar($parametro, $valor){
+        if($parametro == 'ativo'){
+            $ativo = $valor == 'true' ? true : false;
+            return Models\TipoEmpreendimento::where('ativo', $ativo)->orderBy('nome', 'asc')->get();    
+        }
+        return Models\TipoEmpreendimento::where($parametro, "like", "%$valor%")->orderBy('nome', 'asc')->get();
+    }
 }

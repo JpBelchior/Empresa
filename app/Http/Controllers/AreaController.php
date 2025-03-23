@@ -45,6 +45,14 @@ class AreaController extends Controller
         return response()->json('Área editado com sucesso!', 200);
     }
 
+    public function pesquisar($parametro, $valor){
+        if($parametro == 'ativo'){
+            $ativo = $valor == 'true' ? true : false;
+            return Models\Area::where('ativo', $ativo)->orderBy('nome', 'asc')->get();    
+        }
+        return Models\Area::where($parametro, "like", "%$valor%")->orderBy('nome', 'asc')->get();
+    }
+
     public function detalhes($area_id){
         return Models\Area::find($area_id);
     }

@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar');
             Route::put('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
+            Route::get('pesquisar/{parametro}/{valor}', 'pesquisar');
         });
     });
 
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar');
             Route::put('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
+            Route::get('pesquisar/{parametro}/{valor}', 'pesquisar');
         });
     });
 
@@ -46,6 +48,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar');
             Route::put('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
+            Route::get('pesquisar/{parametro}/{valor}', 'pesquisar');
         });
     });
 
@@ -56,21 +59,23 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar');
             Route::put('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
+            Route::get('pesquisar/{parametro}/{valor}', 'pesquisar');
         });
-    });
-
-    Route::controller(Controllers\TematicaController::class)->group(function(){
-        Route::prefix('tematicas')->group(function(){
-            Route::get('/', 'index');
-            Route::get('lista', 'lista');
-            Route::post('adicionar', 'adicionar');
-            Route::put('editar/{id}', 'editar');
-            Route::get('detalhes/{id}', 'detalhes');
-        });
-    });
+    });    
 
     Route::controller(Controllers\TagController::class)->group(function(){
         Route::prefix('tags')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+            Route::get('pesquisar/{parametro}/{valor}', 'pesquisar');
+        });
+    });
+
+    Route::controller(Controllers\PerguntaController::class)->group(function(){
+        Route::prefix('perguntas')->group(function(){
             Route::get('/', 'index');
             Route::get('lista', 'lista');
             Route::post('adicionar', 'adicionar');

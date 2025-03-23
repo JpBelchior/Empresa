@@ -11,7 +11,7 @@ Route::get('/', function(){
     }else{        
         return view('login.login');
     }
-});
+})->name('login');
 
 Route::post('verificar_login', [Controllers\LoginController::class, 'verificar_login']);
 

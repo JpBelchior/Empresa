@@ -31,3 +31,15 @@ export function lista_areas() {
         })
         .finally(() => {})
 }
+
+export function pesquisar_areas(parametro, valor) {
+    return new Promise((resolve, reject) => {
+    axios.get('areas/pesquisar/' + parametro + '/' + valor)
+        .then(response => {
+            resolve(response.data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}

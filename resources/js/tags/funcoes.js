@@ -31,3 +31,15 @@ export function lista_tags() {
         })
         .finally(() => {})
 }
+
+export function pesquisar_tags(parametro, valor) {
+    return new Promise((resolve, reject) => {
+    axios.get('tags/pesquisar/' + parametro + '/' + valor)
+        .then(response => {
+            resolve(response.data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}

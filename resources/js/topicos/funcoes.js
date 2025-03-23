@@ -31,3 +31,15 @@ export function lista_topicos() {
         })
         .finally(() => {})
 }
+
+export function pesquisar_topicos(parametro, valor) {
+    return new Promise((resolve, reject) => {
+    axios.get('topicos/pesquisar/'+parametro+"/"+valor)
+        .then(response => {
+            resolve(response.data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}

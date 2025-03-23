@@ -163,3 +163,42 @@ export function erro(error) {
         html: texto
     });
 }
+
+//TOM SELECT
+export function iniciar_select(id){
+    return new TomSelect("#"+id, {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+}
+
+//FORMATAR DATA
+export function formatar_data(data) {    
+    const dataObj = new Date(data);
+    if (isNaN(dataObj)) {
+        return "Data inválida";
+    }
+    const dia = String(dataObj.getDate()).padStart(2, '0');
+    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+    const ano = dataObj.getFullYear();
+    const horas = String(dataObj.getHours()).padStart(2, '0');
+    const minutos = String(dataObj.getMinutes()).padStart(2, '0');
+    const segundos = String(dataObj.getSeconds()).padStart(2, '0');
+    return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+}
+
+//RETORNAR O BADGE
+export function badge(palavra, cor){
+    let badge;
+    switch(cor){
+        case 'preto': badge = `<span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">${palavra}</span>`; break;
+        case 'vermelho': badge = `<span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">${palavra}</span>`; break;
+        case 'verde': badge = `<span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">${palavra}</span>`; break;
+        case 'amarelo': badge = `<span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">${palavra}</span>`; break;        
+        default: badge = `<span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">${palavra}</span>`; break;
+    };
+    return badge;
+}
