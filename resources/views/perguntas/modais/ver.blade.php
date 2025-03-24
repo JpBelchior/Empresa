@@ -7,5 +7,6 @@
     <div id="ver_pergunta_topico"></div>
     <div id="ver_pergunta_area"></div>
     <div id="ver_pergunta_tag"></div>
+    <div id="ver_pergunta_fotos" class="flex flex-col items-center justify-center"></div>
 </x-modal>
 @vite('resources/js/perguntas/ver.js')

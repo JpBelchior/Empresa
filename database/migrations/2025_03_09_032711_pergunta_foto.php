@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign("pergunta_id")->references("id")->on("perguntas");
             $table->unsignedBigInteger("arquivo_id");
             $table->foreign("arquivo_id")->references("id")->on("arquivos");
+            $table->string('legenda')->nullable();
             $table->timestamps();
         });
     }

@@ -79,8 +79,16 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/', 'index');
             Route::get('lista', 'lista');
             Route::post('adicionar', 'adicionar');
-            Route::put('editar/{id}', 'editar');
+            Route::post('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
         });
+    });
+
+    Route::controller(Controllers\ArquivoController::class)->group(function(){
+        Route::prefix('arquivos')->group(function(){
+            Route::get('/download/{arquivo}', 'download');
+            Route::delete('/excluir/{arquivo}', 'excluir');
+            Route::get('exibir/{imagem?}', 'exibir');
+        });        
     });
 });

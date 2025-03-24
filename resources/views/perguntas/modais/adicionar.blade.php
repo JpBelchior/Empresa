@@ -5,6 +5,8 @@
     <x-select id="adicionar_pergunta_topico" multiple="sim" placeholder="Tópicos..." label="Tópicos" obrigatorio="sim"></x-select>
     <x-select id="adicionar_pergunta_area" multiple="sim" placeholder="Áreas" label="Áreas" obrigatorio="sim"></x-select>
     <x-select id="adicionar_pergunta_tag" multiple="sim" placeholder="Tags..." label="Tags" obrigatorio="sim"></x-select>
+    <x-botao id="btn_adicionar_foto" label="Adicionar foto" icon="fas fa-plus" cor="verde"></x-botao>
+    <div id="adicionar_pergunta_fotos"></div>
     <div class="flex justify-center">
         <x-botao id="btn_adicionar_pergunta" label="Confirmar"></x-botao>
     </div>

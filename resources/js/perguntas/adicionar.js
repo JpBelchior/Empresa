@@ -6,12 +6,14 @@ import { pesquisar_topicos } from "../topicos/funcoes";
 import { pesquisar_areas } from "../areas/funcoes";
 import { pesquisar_tags } from "../tags/funcoes";
 
+var numero_foto = 1;
+
 var select_tp = iniciar_select('adicionar_pergunta_tipo_empreendimento');
 var select_topico = iniciar_select('adicionar_pergunta_topico');
 var select_area = iniciar_select('adicionar_pergunta_area');
 var select_tag = iniciar_select('adicionar_pergunta_tag');
 
-$("#btn_modal_adicionar_pergunta").click(async function() { 
+$("#btn_modal_adicionar_pergunta").click(async function() {     
     abrir_modal('modal_adicionar_pergunta', false);    
     let tematicas = await pesquisar_tematica('ativo', 'true');
     $("#adicionar_pergunta_tematica").empty();        
@@ -40,20 +42,38 @@ $("#btn_modal_adicionar_pergunta").click(async function() {
 
 $("#btn_adicionar_pergunta").click(function(){
     habilitar_botao('btn_adicionar_pergunta', false);
-    let dados = {
-        titulo: $("#adicionar_pergunta_titulo").val(),
-        tematica_id: $("#adicionar_pergunta_tematica").val(),
-        tipos_empreendimentos: $("#adicionar_pergunta_tipo_empreendimento").val(),
-        areas: $("#adicionar_pergunta_area").val(),
-        topicos: $("#adicionar_pergunta_topico").val(),
-        tags: $("#adicionar_pergunta_tag").val()
-    };    
-    axios.post('perguntas/adicionar', dados)
+
+    let form = new FormData();
+
+    form.append('titulo', $("#adicionar_pergunta_titulo").val());
+    form.append('tematica_id', $("#adicionar_pergunta_tematica").val());
+
+    form.append('tipos_empreendimentos', $("#adicionar_pergunta_tipo_empreendimento").val());
+    form.append('areas', $("#adicionar_pergunta_area").val());
+    form.append('topicos', $("#adicionar_pergunta_topico").val());
+    form.append('tags', $("#adicionar_pergunta_tag").val());
+
+    let fotos = document.querySelectorAll(".foto");
+    let legendas = document.querySelectorAll(".legenda");
+    
+    for(let i = 0; i < legendas.length; i++){
+        form.append('legendas[]', legendas[i].value ? legendas[i].value : "");
+    }
+    for (let foto of fotos) {
+        if (foto.files && foto.files[0]) {
+            form.append('fotos[]', foto.files[0]);
+        }else{
+            form.append('fotos[]', null);
+        }
+    }    
+    axios.post('perguntas/adicionar', form)
     .then(response => {
         fechar_modal('modal_adicionar_pergunta');
         limpar_inputs_modal('modal_adicionar_pergunta');
         sucesso(response);
         lista_perguntas();
+        $("#adicionar_pergunta_fotos").empty();
+        numero_foto = 1;
     })
     .catch(error => {
         erro(error);
@@ -61,4 +81,19 @@ $("#btn_adicionar_pergunta").click(function(){
     .finally(() => {
         habilitar_botao('btn_adicionar_pergunta', true);
     })
+});
+
+$("#btn_adicionar_foto").click(function(){
+    let elemento = `<div id="foto${numero_foto}" class="my-2 border border-radius">                        
+                        <input class="foto mb-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept=".png, .jpg, .jpeg">
+                        <input type="text"  class="legenda block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Legenda...">
+                        <button foto="foto${numero_foto}" type="button" class="adicionar_pergunta_excluir_foto text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"><i class="fas fa-times"></i></button>
+                    </div>`;
+    $("#adicionar_pergunta_fotos").append(elemento);                    
+    numero_foto++;
+});
+
+$(document).on('click', '.adicionar_pergunta_excluir_foto', function(){
+    let elemento = $(this).attr('foto');
+    $("#"+elemento).remove();
 });

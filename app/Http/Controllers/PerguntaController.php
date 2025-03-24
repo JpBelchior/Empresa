@@ -21,14 +21,14 @@ class PerguntaController extends Controller
         return Models\Pergunta::with(['tematica'])->orderBy('titulo', 'asc')->get();
     }
 
-    public function adicionar(Request $request){
+    public function adicionar(Request $request){                        
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|max:1000',
             'tematica_id' => 'required',
-            'tipos_empreendimentos' => 'required|array',
-            'topicos' => 'required|array',
-            'areas' => 'required|array',
-            'tags' => 'required|array'
+            'tipos_empreendimentos' => 'required',
+            'topicos' => 'required',
+            'areas' => 'required',
+            'tags' => 'required'
         ]);
         if($validator->fails()){
             return response()->json($validator->errors(), 422);
@@ -42,10 +42,10 @@ class PerguntaController extends Controller
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|max:1000',            
             'tematica_id' => 'required',
-            'tipos_empreendimentos' => 'required|array',
-            'topicos' => 'required|array',
-            'areas' => 'required|array',
-            'tags' => 'required|array'            
+            'tipos_empreendimentos' => 'required',
+            'topicos' => 'required',
+            'areas' => 'required',
+            'tags' => 'required'            
         ]);
         if($validator->fails()){            
             return response()->json($validator->errors(), 422);
@@ -61,7 +61,8 @@ class PerguntaController extends Controller
             'tipos_empreendimentos.tipo_empreendimento',
             'topicos.topico',
             'areas.area',
-            'tags.tag'
+            'tags.tag',
+            'fotos'
         ])->find($tag_id);
     }
 }

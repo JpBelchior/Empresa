@@ -5,7 +5,7 @@ $(document).on('click', '.ver', function(){
     let pergunta = $(this).attr('pergunta');
     axios('perguntas/detalhes/'+pergunta)
     .then(response => { 
-        let dados = response.data;
+        let dados = response.data;                
         $("#ver_pergunta_data_cadastro").html("Data de cadastro: "+formatar_data(dados.data_cadastro));
         let ativo = dados.ativo == true ? "Ativo" : "Inativo";
         let badge_cor = dados.ativo == true ? "verde" : 'vermelho';
@@ -36,6 +36,19 @@ $(document).on('click', '.ver', function(){
             tags += badge(t, 'amarelo');
         }
         $("#ver_pergunta_tag").html(tags);
+        $("#ver_pergunta_fotos").empty();
+        let fotos = dados.fotos;
+        for(let i in fotos){
+            let foto = `<div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">                
+                            <img class="rounded-t-lg" src="${app_url}/arquivos/exibir/${fotos[i].arquivo_id}" alt="" />
+                            <div class="p-5">
+                                <a href="#">
+                                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${fotos[i].legenda}</h5>
+                                </a>                                
+                            </div>
+                        </div>`;
+            $("#ver_pergunta_fotos").append(foto);
+        }
      })
     .catch(error => erro(error))
     .finally(() => { 
