@@ -118,6 +118,13 @@ function validar_cnpj($cnpj) {
     return $cnpj[12] == $digito1 && $cnpj[13] == $digito2;
 }
 
+function validar_cpf_cnpj($termo){
+    if(validar_cpf($termo) || validar_cnpj($termo)){
+        return true;
+    }
+    return false;
+}
+
 function pegarIpUsuario() {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         // IP de clientes que utilizam proxy

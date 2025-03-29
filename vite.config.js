@@ -14,6 +14,11 @@ export default defineConfig({
                 'resources/js/login/login.js',
                 'resources/js/login/recuperar_senha.js',
                 'resources/js/estrutura/redefinir_senha.js',
+                //USUÁRIOS
+                'resources/js/usuarios/index.js',
+                'resources/js/usuarios/funcoes.js',
+                'resources/js/usuarios/adicionar.js',
+                'resources/js/usuarios/editar.js',
                 //EMPRESAS
                 'resources/js/empresas/index.js',
                 'resources/js/empresas/funcoes.js',

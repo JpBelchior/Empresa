@@ -91,4 +91,14 @@ Route::middleware(['auth'])->group(function() {
             Route::get('exibir/{imagem?}', 'exibir');
         });        
     });
+
+    Route::controller(Controllers\UsuarioController::class)->group(function(){
+        Route::prefix('usuarios')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
 });

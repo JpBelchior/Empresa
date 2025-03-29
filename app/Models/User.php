@@ -24,7 +24,34 @@ class User extends Authenticatable
         'empresa_id'
     ];
 
+    public function empresa(){
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
+
     public static function alterar_senha_usuario($usuario, $senha){        
         self::find($usuario)->update(['senha' => password_hash($senha, PASSWORD_DEFAULT)]);
     }    
+
+    public static function adicionar($dados){
+        return self::create([
+            'nome' => $dados->nome,
+            'email' => $dados->email,
+            'cpf_cnpj' => $dados->cpf_cnpj,
+            'atribuicao' => $dados->atribuicao,            
+            'whatsapp' => $dados->whatsapp,
+            'empresa_id' => $dados->empresa_id
+        ]);
+    }
+
+    public static function editar(string $usuario_id, $dados){
+        return self::find($usuario_id)->update([
+            'nome' => $dados->nome,
+            'email' => $dados->email,
+            'cpf_cnpj' => $dados->cpf_cnpj,
+            'atribuicao' => $dados->atribuicao,            
+            'whatsapp' => $dados->whatsapp,
+            'ativo' => $dados->ativo,
+            'empresa_id' => $dados->empresa_id
+        ]);
+    }
 }
