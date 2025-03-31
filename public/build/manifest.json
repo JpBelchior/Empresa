@@ -92,7 +92,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BimbJcTZ.css",
+    "file": "assets/app-2mBw_P73.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -467,7 +467,7 @@
     ]
   },
   "resources/js/usuarios/editar.js": {
-    "file": "assets/editar-ZSy4rSit.js",
+    "file": "assets/editar-D79_vbBT.js",
     "name": "editar",
     "src": "resources/js/usuarios/editar.js",
     "isEntry": true,
