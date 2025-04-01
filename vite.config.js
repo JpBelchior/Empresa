@@ -19,6 +19,11 @@ export default defineConfig({
                 'resources/js/usuarios/funcoes.js',
                 'resources/js/usuarios/adicionar.js',
                 'resources/js/usuarios/editar.js',
+                //FUNCIONÁRIOS
+                'resources/js/funcionarios/index.js',
+                'resources/js/funcionarios/funcoes.js',
+                'resources/js/funcionarios/adicionar.js',
+                'resources/js/funcionarios/editar.js',
                 //EMPRESAS
                 'resources/js/empresas/index.js',
                 'resources/js/empresas/funcoes.js',

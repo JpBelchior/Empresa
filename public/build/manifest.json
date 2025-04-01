@@ -13,6 +13,13 @@
       "resources/js/usuarios/funcoes.js"
     ]
   },
+  "_funcoes-CunQGQCK.js": {
+    "file": "assets/funcoes-CunQGQCK.js",
+    "name": "funcoes",
+    "imports": [
+      "resources/js/usuarios/funcoes.js"
+    ]
+  },
   "_funcoes-DKFGdY04.js": {
     "file": "assets/funcoes-DKFGdY04.js",
     "name": "funcoes",
@@ -132,7 +139,7 @@
     ]
   },
   "resources/js/areas/funcoes.js": {
-    "file": "assets/funcoes-B0mMsKYp.js",
+    "file": "assets/funcoes-C8SGef35.js",
     "name": "funcoes",
     "src": "resources/js/areas/funcoes.js",
     "isEntry": true,
@@ -175,7 +182,7 @@
     ]
   },
   "resources/js/empresas/funcoes.js": {
-    "file": "assets/funcoes-BA0FdrI_.js",
+    "file": "assets/funcoes-Bq3xSljW.js",
     "name": "funcoes",
     "src": "resources/js/empresas/funcoes.js",
     "isEntry": true,
@@ -201,6 +208,49 @@
     "src": "resources/js/estrutura/redefinir_senha.js",
     "isEntry": true,
     "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-Dfdn5vB8.js"
+    ]
+  },
+  "resources/js/funcionarios/adicionar.js": {
+    "file": "assets/adicionar-C8thrlEG.js",
+    "name": "adicionar",
+    "src": "resources/js/funcionarios/adicionar.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_funcoes-CunQGQCK.js",
+      "_index-Dfdn5vB8.js"
+    ]
+  },
+  "resources/js/funcionarios/editar.js": {
+    "file": "assets/editar-m_WvRcPi.js",
+    "name": "editar",
+    "src": "resources/js/funcionarios/editar.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_funcoes-CunQGQCK.js",
+      "_index-Dfdn5vB8.js"
+    ]
+  },
+  "resources/js/funcionarios/funcoes.js": {
+    "file": "assets/funcoes-BA0FdrI_.js",
+    "name": "funcoes",
+    "src": "resources/js/funcionarios/funcoes.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-Dfdn5vB8.js"
+    ]
+  },
+  "resources/js/funcionarios/index.js": {
+    "file": "assets/index-CoP-UP8p.js",
+    "name": "index",
+    "src": "resources/js/funcionarios/index.js",
+    "isEntry": true,
+    "imports": [
+      "_funcoes-CunQGQCK.js",
       "resources/js/usuarios/funcoes.js",
       "_index-Dfdn5vB8.js"
     ]
@@ -253,7 +303,7 @@
     ]
   },
   "resources/js/perguntas/funcoes.js": {
-    "file": "assets/funcoes-DCjw_5BS.js",
+    "file": "assets/funcoes-CIBi2ktu.js",
     "name": "funcoes",
     "src": "resources/js/perguntas/funcoes.js",
     "isEntry": true,
@@ -306,7 +356,7 @@
     ]
   },
   "resources/js/tags/funcoes.js": {
-    "file": "assets/funcoes-BQfkUzHY.js",
+    "file": "assets/funcoes-DCjw_5BS.js",
     "name": "funcoes",
     "src": "resources/js/tags/funcoes.js",
     "isEntry": true,
@@ -349,7 +399,7 @@
     ]
   },
   "resources/js/tematicas/funcoes.js": {
-    "file": "assets/funcoes-C8SGef35.js",
+    "file": "assets/funcoes-BQfkUzHY.js",
     "name": "funcoes",
     "src": "resources/js/tematicas/funcoes.js",
     "isEntry": true,
@@ -392,7 +442,7 @@
     ]
   },
   "resources/js/tipos_empreendimentos/funcoes.js": {
-    "file": "assets/funcoes-Bq3xSljW.js",
+    "file": "assets/funcoes-Ds7OGFpW.js",
     "name": "funcoes",
     "src": "resources/js/tipos_empreendimentos/funcoes.js",
     "isEntry": true,
@@ -435,7 +485,7 @@
     ]
   },
   "resources/js/topicos/funcoes.js": {
-    "file": "assets/funcoes-Ds7OGFpW.js",
+    "file": "assets/funcoes-B0mMsKYp.js",
     "name": "funcoes",
     "src": "resources/js/topicos/funcoes.js",
     "isEntry": true,
