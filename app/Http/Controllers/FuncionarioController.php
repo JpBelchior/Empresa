@@ -13,22 +13,16 @@ class FuncionarioController extends Controller
 {
     use AuthorizesRequests;
     
-    public function index(){                
-        $dados = [
-            'empresa' => Models\Empresa::select('razao_social', 'cnpj', 'qtd_usuarios_permitidos as limite')->find(Auth::user()->empresa_id)
-        ];
-        return view('funcionarios.index', $dados);
+    public function index(){                        
+        return view('funcionarios.index');
     }
 
     public function lista(){
-        return Models\User::where('atribuicao', '!=', 'administrador')->where('empresa_id', Auth::user()->empresa_id)->orderBy('nome', 'asc')->get();
+        return Models\User::where('atribuicao', '!=', 'administrador')->where('empresa_id', session('empresa_id'))->orderBy('nome', 'asc')->get();
     }
 
     public function adicionar(Request $request){                
-        $usuario_config = Auth::user();
-        if($usuario_config->atribuicao != 'rh'){
-            abort(403);
-        }
+        $usuario_config = Auth::user();        
         $empresa = Models\Empresa::find($usuario_config->empresa_id);
         $qtd_usuarios_empresa_atual = Models\User::where('empresa_id', $usuario_config->empresa_id)->count();
         if($empresa->qtd_usuarios_permitidos == $qtd_usuarios_empresa_atual){
@@ -56,7 +50,7 @@ class FuncionarioController extends Controller
             return response()->json("Usuário $usuario_com_mesmo_email->nome possui este email!", 422);
         }
         Models\Auditoria::registrar_atividade('Cadastro de Funcionário');
-        $request->merge(['empresa_id' => $usuario_config->empresa_id]);
+        $request->merge(['empresa_id' => session('empresa_id')]);
         Models\User::adicionar($request);
         return response()->json('Funcionário cadastrado com sucesso!', 200);
     }
@@ -105,7 +99,9 @@ class FuncionarioController extends Controller
     public function pesquisar($parametro, $valor){
         if($parametro == 'ativo'){
             $ativo = $valor == 'true' ? true : false;
-            return Models\User::where('ativo', $ativo)->orderBy('nome', 'asc')->get();    
+            return Models\User::where('ativo', $ativo)
+                ->where('empresa_id', Auth::user()->empresa_id)
+                ->orderBy('nome', 'asc')->get();
         }
         return Models\User::where($parametro, "like", "%$valor%")->orderBy('nome', 'asc')->get();
     }

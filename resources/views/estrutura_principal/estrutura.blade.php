@@ -13,9 +13,11 @@
     @include("estrutura_principal.sidebar")
     <div class="p-4 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <h1>{{ session('nome_empresa') }}</h1>
             @yield('conteudo')  
         </div>
     </div>        
     @include('estrutura_principal.modal_redefinir_senha')
+    @include('estrutura_principal.modal_empresas')
 </body>
 </html>

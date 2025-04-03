@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/js/login/login.js',
                 'resources/js/login/recuperar_senha.js',
                 'resources/js/estrutura/redefinir_senha.js',
+                'resources/js/estrutura/trocar_empresa.js',
                 //USUÁRIOS
                 'resources/js/usuarios/index.js',
                 'resources/js/usuarios/funcoes.js',
@@ -59,7 +60,12 @@ export default defineConfig({
                 'resources/js/perguntas/funcoes.js',
                 'resources/js/perguntas/adicionar.js',
                 'resources/js/perguntas/editar.js',
-                'resources/js/perguntas/ver.js'
+                'resources/js/perguntas/ver.js',
+                //PROJETOS
+                'resources/js/projetos/index.js',
+                'resources/js/projetos/funcoes.js',
+                'resources/js/projetos/adicionar.js',
+                'resources/js/projetos/editar.js'                
             ],
             refresh: true,
         }),

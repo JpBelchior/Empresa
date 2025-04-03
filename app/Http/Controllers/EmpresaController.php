@@ -74,4 +74,16 @@ class EmpresaController extends Controller
     public function detalhes($empresa_id){
         return Models\Empresa::find($empresa_id);
     }
+
+    public function trocar_empresa(Request $request){
+        $empresa = Models\Empresa::find($request->empresa_id);
+        if(!$empresa){
+            return response()->json("Empresa não encontrada!", 200);
+        }
+        session([
+            'nome_empresa' => $empresa->razao_social,
+            'empresa_id' => $empresa->id,
+            'limite_usuarios_empresa' => $empresa->qtd_usuarios_permitidos
+        ]);
+    }
 }

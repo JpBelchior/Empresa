@@ -7,12 +7,11 @@
     var atribuicao = "{{ $atribuicao }}";
 </script>
 <h1>Funcionários</h1>
-<h2>Empresa: {{ $empresa->razao_social."/CNPJ: ".$empresa->cnpj }}</h2>
-<h3>Limite de usuários: {{ $empresa->limite }}</h3>
+<h3>Limite de usuários: {{ session('limite_usuarios_empresa') }}</h3>
 <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
   <span class="font-medium">Para que o funcionário Rh seja adicionado, será necessário solicitar ao administrador do sistema!</span>
 </div>
-@can('habilitar_funcionario', [App\Models\User::class, ['rh']])
+@can('rh', App\Models\User::class)
 <div class="flex justify-center">
     <x-botao id="btn_modal_adicionar_usuario" label="Adicionar Funcionário" icon="fas fa-plus" cor="verde"></x-botao>
 </div>

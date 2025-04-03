@@ -36,6 +36,11 @@
                             <li>
                                 <a id="btn_modal_redefinir_senha" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Redefinir Senha</a>
                             </li>
+                            @can('administrador', App\Models\User::class)
+                            <li>
+                                <a id="btn_modal_trocar_empresa" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Trocar empresa</a>
+                            </li>
+                            @endcan
                             <li>
                                 <a id="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sair</a>
                             </li>                            

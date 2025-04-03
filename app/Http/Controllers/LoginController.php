@@ -34,10 +34,18 @@ class LoginController extends Controller
             return response()->json('Senha incorreta!', 403);
         }
         Auth::login($usuario);
+        $empresa_id = $usuario->empresa_id;
+        if($usuario->atribuicao == 'administrador'){
+            $empresa_id = Models\Empresa::first()->id;                  
+        }
+        $empresa = Models\Empresa::find($empresa_id);        
         session([
             'nome_usuario' => $usuario->nome, 
-            'email_usuario' => $usuario->email, 
-            'atribuicao_usuario' => ucfirst($usuario->atribuicao)
+            'email_usuario' => $usuario->email,
+            'atribuicao_usuario' => ucfirst($usuario->atribuicao),
+            'empresa_id' => $empresa_id,
+            'nome_empresa' => $empresa->razao_social,
+            'limite_usuarios_empresa' => $empresa->qtd_usuarios_permitidos
         ]);
         Models\Auditoria::registrar_atividade("Login");
         $request->session()->regenerateToken();
