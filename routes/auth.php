@@ -123,4 +123,18 @@ Route::middleware(['auth'])->group(function() {
             Route::get('detalhes/{id}', 'detalhes');
         });
     });
+
+    Route::controller(Controllers\FormularioController::class)->group(function(){
+        Route::prefix('formularios')->group(function(){            
+            Route::get('/', 'index');
+            Route::get('interagir/{id}', 'interagir');
+            Route::post('registrar', 'registrar');
+            Route::get('respostas/formulario/{id}', 'listar_respostas');
+            Route::delete('excluir/resposta/{id}', 'excluir_resposta');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
 });

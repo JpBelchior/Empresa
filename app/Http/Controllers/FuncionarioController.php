@@ -17,8 +17,10 @@ class FuncionarioController extends Controller
         return view('funcionarios.index');
     }
 
-    public function lista(){
-        return Models\User::where('atribuicao', '!=', 'administrador')->where('empresa_id', session('empresa_id'))->orderBy('nome', 'asc')->get();
+    public function lista(){        
+        return Models\User::where('atribuicao', '!=', 'administrador')
+        ->where('empresa_id', session('empresa_id'))
+        ->orderBy('nome', 'asc')->get();
     }
 
     public function adicionar(Request $request){                
@@ -98,12 +100,14 @@ class FuncionarioController extends Controller
 
     public function pesquisar($parametro, $valor){
         if($parametro == 'ativo'){
-            $ativo = $valor == 'true' ? true : false;
+            $ativo = $valor == 'true' ? true : false;            
             return Models\User::where('ativo', $ativo)
-                ->where('empresa_id', Auth::user()->empresa_id)
+                ->where('empresa_id', session('empresa_id'))
                 ->orderBy('nome', 'asc')->get();
         }
-        return Models\User::where($parametro, "like", "%$valor%")->orderBy('nome', 'asc')->get();
+        return Models\User::where($parametro, "like", "%$valor%")
+        ->where('empresa_id', session('empresa_id'))
+        ->orderBy('nome', 'asc')->get();
     }
 
     public function detalhes($usuario_id){

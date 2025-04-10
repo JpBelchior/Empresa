@@ -1,11 +1,10 @@
 <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
-            <x-opcao_sidebar link="/" label="Dashboard" icon="fas fa-chart-line"></x-opcao_sidebar>       
-            
+            <x-opcao_sidebar link="/" label="Dashboard" icon="fas fa-chart-line"></x-opcao_sidebar>                   
             <x-opcao_sidebar link="/funcionarios" label="Funcionários" icon="fas fa-users"></x-opcao_sidebar>
             <x-opcao_sidebar link="/projetos" label="Projetos" icon="fa fa-map-pin"></x-opcao_sidebar>
-            
+            <x-opcao_sidebar link="/formularios" label="Formulários" icon="fas fa-edit"></x-opcao_sidebar>
             @can('administrador', App\Models\User::class)            
             <x-opcao_sidebar link="/perguntas" label="Perguntas" icon="fas fa-question"></x-opcao_sidebar>
             <x-opcao_sidebar link="/usuarios" label="Usuários" icon="fas fa-user"></x-opcao_sidebar>

@@ -13,13 +13,6 @@
       "resources/js/usuarios/funcoes.js"
     ]
   },
-  "_funcoes-C5QnZM-_.js": {
-    "file": "assets/funcoes-C5QnZM-_.js",
-    "name": "funcoes",
-    "imports": [
-      "resources/js/usuarios/funcoes.js"
-    ]
-  },
   "_funcoes-C5ZbQEM9.js": {
     "file": "assets/funcoes-C5ZbQEM9.js",
     "name": "funcoes",
@@ -41,6 +34,13 @@
       "resources/js/usuarios/funcoes.js"
     ]
   },
+  "_funcoes-DDKwId1B.js": {
+    "file": "assets/funcoes-DDKwId1B.js",
+    "name": "funcoes",
+    "imports": [
+      "resources/js/usuarios/funcoes.js"
+    ]
+  },
   "_funcoes-DdfAnH8n.js": {
     "file": "assets/funcoes-DdfAnH8n.js",
     "name": "funcoes",
@@ -50,6 +50,13 @@
   },
   "_funcoes-DrqmD9Zz.js": {
     "file": "assets/funcoes-DrqmD9Zz.js",
+    "name": "funcoes",
+    "imports": [
+      "resources/js/usuarios/funcoes.js"
+    ]
+  },
+  "_funcoes-l5dQn4GU.js": {
+    "file": "assets/funcoes-l5dQn4GU.js",
     "name": "funcoes",
     "imports": [
       "resources/js/usuarios/funcoes.js"
@@ -106,7 +113,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CdN-U3us.css",
+    "file": "assets/app-Cwq-0GbF.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -225,6 +232,49 @@
     "src": "resources/js/estrutura/trocar_empresa.js",
     "isEntry": true,
     "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-DDsBbei1.js"
+    ]
+  },
+  "resources/js/formularios/adicionar.js": {
+    "file": "assets/adicionar-CRkMsLFR.js",
+    "name": "adicionar",
+    "src": "resources/js/formularios/adicionar.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_funcoes-CN9py80_.js",
+      "_funcoes-l5dQn4GU.js",
+      "_index-DDsBbei1.js"
+    ]
+  },
+  "resources/js/formularios/editar.js": {
+    "file": "assets/editar-DSjdrK1v.js",
+    "name": "editar",
+    "src": "resources/js/formularios/editar.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-DDsBbei1.js"
+    ]
+  },
+  "resources/js/formularios/funcoes.js": {
+    "file": "assets/funcoes-9K-HtKG0.js",
+    "name": "funcoes",
+    "src": "resources/js/formularios/funcoes.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-DDsBbei1.js"
+    ]
+  },
+  "resources/js/formularios/index.js": {
+    "file": "assets/index-CWIgyxLw.js",
+    "name": "index",
+    "src": "resources/js/formularios/index.js",
+    "isEntry": true,
+    "imports": [
+      "_funcoes-l5dQn4GU.js",
       "resources/js/usuarios/funcoes.js",
       "_index-DDsBbei1.js"
     ]
@@ -351,26 +401,26 @@
     ]
   },
   "resources/js/projetos/adicionar.js": {
-    "file": "assets/adicionar-EISm_dJ2.js",
+    "file": "assets/adicionar-CocrRFYl.js",
     "name": "adicionar",
     "src": "resources/js/projetos/adicionar.js",
     "isEntry": true,
     "imports": [
       "_index-DDsBbei1.js",
       "resources/js/usuarios/funcoes.js",
-      "_funcoes-C5QnZM-_.js",
+      "_funcoes-DDKwId1B.js",
       "_funcoes-CN9py80_.js",
       "_funcoes-COMjquYU.js"
     ]
   },
   "resources/js/projetos/editar.js": {
-    "file": "assets/editar-p3J5YPTX.js",
+    "file": "assets/editar-B8bS7322.js",
     "name": "editar",
     "src": "resources/js/projetos/editar.js",
     "isEntry": true,
     "imports": [
       "resources/js/usuarios/funcoes.js",
-      "_funcoes-C5QnZM-_.js",
+      "_funcoes-DDKwId1B.js",
       "_funcoes-CN9py80_.js",
       "_funcoes-COMjquYU.js",
       "_index-DDsBbei1.js"
@@ -387,12 +437,12 @@
     ]
   },
   "resources/js/projetos/index.js": {
-    "file": "assets/index-BtFY7YRq.js",
+    "file": "assets/index-C8PN5ppo.js",
     "name": "index",
     "src": "resources/js/projetos/index.js",
     "isEntry": true,
     "imports": [
-      "_funcoes-C5QnZM-_.js",
+      "_funcoes-DDKwId1B.js",
       "resources/js/usuarios/funcoes.js",
       "_index-DDsBbei1.js"
     ]

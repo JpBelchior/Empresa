@@ -65,7 +65,12 @@ export default defineConfig({
                 'resources/js/projetos/index.js',
                 'resources/js/projetos/funcoes.js',
                 'resources/js/projetos/adicionar.js',
-                'resources/js/projetos/editar.js'                
+                'resources/js/projetos/editar.js',
+                //FORMULÁRIOS
+                'resources/js/formularios/index.js',
+                'resources/js/formularios/funcoes.js',
+                'resources/js/formularios/adicionar.js',
+                'resources/js/formularios/editar.js'                
             ],
             refresh: true,
         }),
