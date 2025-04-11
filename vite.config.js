@@ -70,7 +70,8 @@ export default defineConfig({
                 'resources/js/formularios/index.js',
                 'resources/js/formularios/funcoes.js',
                 'resources/js/formularios/adicionar.js',
-                'resources/js/formularios/editar.js'                
+                'resources/js/formularios/editar.js',                
+                'resources/js/formularios/interagir.js',
             ],
             refresh: true,
         }),

@@ -41,6 +41,13 @@
       "resources/js/usuarios/funcoes.js"
     ]
   },
+  "_funcoes-DM5MqUOE.js": {
+    "file": "assets/funcoes-DM5MqUOE.js",
+    "name": "funcoes",
+    "imports": [
+      "resources/js/usuarios/funcoes.js"
+    ]
+  },
   "_funcoes-DdfAnH8n.js": {
     "file": "assets/funcoes-DdfAnH8n.js",
     "name": "funcoes",
@@ -50,13 +57,6 @@
   },
   "_funcoes-DrqmD9Zz.js": {
     "file": "assets/funcoes-DrqmD9Zz.js",
-    "name": "funcoes",
-    "imports": [
-      "resources/js/usuarios/funcoes.js"
-    ]
-  },
-  "_funcoes-l5dQn4GU.js": {
-    "file": "assets/funcoes-l5dQn4GU.js",
     "name": "funcoes",
     "imports": [
       "resources/js/usuarios/funcoes.js"
@@ -237,14 +237,14 @@
     ]
   },
   "resources/js/formularios/adicionar.js": {
-    "file": "assets/adicionar-CRkMsLFR.js",
+    "file": "assets/adicionar-DwXAQWwe.js",
     "name": "adicionar",
     "src": "resources/js/formularios/adicionar.js",
     "isEntry": true,
     "imports": [
       "resources/js/usuarios/funcoes.js",
       "_funcoes-CN9py80_.js",
-      "_funcoes-l5dQn4GU.js",
+      "_funcoes-DM5MqUOE.js",
       "_index-DDsBbei1.js"
     ]
   },
@@ -269,13 +269,24 @@
     ]
   },
   "resources/js/formularios/index.js": {
-    "file": "assets/index-CWIgyxLw.js",
+    "file": "assets/index-UWrH5S4Y.js",
     "name": "index",
     "src": "resources/js/formularios/index.js",
     "isEntry": true,
     "imports": [
-      "_funcoes-l5dQn4GU.js",
+      "_funcoes-DM5MqUOE.js",
       "resources/js/usuarios/funcoes.js",
+      "_index-DDsBbei1.js"
+    ]
+  },
+  "resources/js/formularios/interagir.js": {
+    "file": "assets/interagir-Co57HEl2.js",
+    "name": "interagir",
+    "src": "resources/js/formularios/interagir.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_funcoes-DM5MqUOE.js",
       "_index-DDsBbei1.js"
     ]
   },

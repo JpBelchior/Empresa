@@ -8,4 +8,4 @@
         <x-botao id="btn_editar_projeto" label="Confirmar"></x-botao>
     </div>
 </x-modal>
-@vite('resources/js/projetos/editar.js')
+@vite(['resources/js/projetos/editar.js'])
