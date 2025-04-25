@@ -128,6 +128,8 @@ Route::middleware(['auth'])->group(function() {
         Route::prefix('formularios')->group(function(){            
             Route::get('/', 'index');
             Route::get('interagir/{id}', 'interagir');
+            Route::post('registrar_perguntas_em_espera/{id}', 'registrar_perguntas_em_espera');
+            Route::get('relatorio/{id}/{formato}', 'relatorio');
             Route::post('registrar', 'registrar');
             Route::get('respostas/formulario/{id}', 'listar_respostas');
             Route::delete('excluir/resposta/{id}', 'excluir_resposta');

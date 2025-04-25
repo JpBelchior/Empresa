@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class FormularioController extends Controller
 {
@@ -19,8 +21,7 @@ class FormularioController extends Controller
     }
 
     public function lista(){
-        return Models\Formulario::with([
-            'tipo_empreendimento',
+        return Models\Formulario::with([            
             'criador',
             'projeto'
         ])
@@ -33,15 +34,66 @@ class FormularioController extends Controller
         if(!$formulario){
             abort('404');
         }
-        $perguntas = DB::table('perguntas')
-        ->join('pergunta_tipo_empreendimento', 'perguntas.id' , '=', 'pergunta_tipo_empreendimento.pergunta_id')        
-        ->where('pergunta_tipo_empreendimento.tipo_empreendimento_id', $formulario->tipo_empreendimento_id)
-        ->get();
+        $tipos_empreendimento_projeto = Models\ProjetoTipoEmpreendimento::where('projeto_id', $formulario->projeto_id)->pluck('tipo_empreendimento_id')->toArray();
+        $perguntas_ids = Models\PerguntaTipoEmpreendimento::whereIn('tipo_empreendimento_id', $tipos_empreendimento_projeto)->select('pergunta_id')->groupBy('pergunta_id')->pluck('pergunta_id')->toArray();
+        $perguntas = Models\Pergunta::whereIn('id', $perguntas_ids)->orderBy('data_cadastro', 'desc')->get();                
         $dados = [
             'formulario' => $formulario,
             'perguntas' => $perguntas
         ];
         return view('formularios.interagir', $dados);
+    }
+
+    public function relatorio($formulario_id, $formato){
+        $respostas = Models\Resposta::with([
+            'usuario',
+            'pergunta',
+            'formulario'
+        ])
+        ->where('formulario_id', $formulario_id)
+        ->orderBy('data_cadastro', 'desc')
+        ->get();
+        if(!$respostas){
+            abort('404');
+        }                
+        $formulario = Models\Formulario::find($formulario_id);
+        if($formato == 'pdf'){
+            return view('formularios.relatorio', ['respostas' => $respostas, 'formulario' => $formulario]);
+        }        
+        if($formato == 'excel'){
+            $spreadsheet = new Spreadsheet();
+            $activeWorksheet = $spreadsheet->getActiveSheet();            
+            $activeWorksheet->setTitle("Respostas");            
+            $activeWorksheet->getColumnDimension('A')->setAutoSize(true);
+            $activeWorksheet->getColumnDimension('B')->setAutoSize(true);
+            $activeWorksheet->getColumnDimension('C')->setAutoSize(true);
+            $activeWorksheet->getColumnDimension('D')->setAutoSize(true);                    
+            $activeWorksheet->getStyle('A')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('B')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('C')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('D')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);                    
+            $activeWorksheet->setCellValue('A1', 'PERGUNTA');
+            $activeWorksheet->setCellValue('B1', 'RESPOSTA');
+            $activeWorksheet->setCellValue('C1', 'FUNCIONÁRIO');
+            $activeWorksheet->setCellValue('D1', 'MOMENTO DA RESPOSTA');            
+            $quantidade = count($respostas);
+            if($quantidade > 0){
+                for($i = 0; $i < $quantidade; $i++){
+                    $celula = $i + 2;
+                    $activeWorksheet->setCellValue('A'.$celula, $respostas[$i]->pergunta->titulo);
+                    $activeWorksheet->setCellValue('B'.$celula, $respostas[$i]->resposta);
+                    $activeWorksheet->setCellValue('C'.$celula, $respostas[$i]->usuario->nome);
+                    $activeWorksheet->setCellValue('D'.$celula, formatar_data($respostas[$i]->data_cadastro));                    
+                }
+            }
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'respostas.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="'.$filename.'"');
+            header('Cache-Control: max-age=0');
+            $writer->save('php://output');
+            exit;
+        }
     }
 
     public function registrar(Request $request){
@@ -68,6 +120,24 @@ class FormularioController extends Controller
         return response()->json(['mensagem' => $msg, 'qtd' => $qtd_perguntas_respondidas], 200);
     }
 
+    public function registrar_perguntas_em_espera($formulario_id, Request $request){
+        $formulario = Models\Formulario::find($formulario_id);
+        if($formulario){
+            $dados = $request->dados;            
+            foreach($dados as $d){                
+                $pergunta = Models\Resposta::where('formulario_id', $d['formulario_id'])
+                ->where('pergunta_id', $d['pergunta_id'])
+                ->first();
+                $data = json_decode(json_encode($d));
+                if(!$pergunta){                    
+                    Models\Resposta::adicionar($data);                
+                }else{
+                    Models\Resposta::editar($pergunta, $request);
+                }
+            }            
+        }
+    }
+
     public function listar_respostas($formulario_id){
         $respostas = Models\Resposta::with([
             'usuario',
@@ -87,8 +157,7 @@ class FormularioController extends Controller
 
     public function adicionar(Request $request){              
         $validator = Validator::make($request->all(), [
-            'nome' => 'required|max:255',
-            'tipo_empreendimento_id' => 'required',
+            'nome' => 'required|max:255',            
             'projeto_id' => 'required'            
         ]);
         if($validator->fails()){    

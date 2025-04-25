@@ -137,3 +137,9 @@ function pegarIpUsuario() {
         return $_SERVER['REMOTE_ADDR'];
     }
 }
+
+function formatar_data($dataHora)
+{    
+    $data = new DateTime($dataHora);
+    return $data->format('d/m/Y H:i:s');
+}

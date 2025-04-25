@@ -13,13 +13,16 @@ export function lista_formularios() {
                             </td>
                             <td class="px-6 py-4">
                                 ${formularios[i].projeto.nome}
-                            </td>
-                            <td class="px-6 py-4">
-                                ${formularios[i].tipo_empreendimento.nome}
                             </td>                            
                             <td class="px-6 py-4">
                                 <a target="_blank" href="/formularios/interagir/${formularios[i].id}" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <i class="fas fa-eye"></i>                                    
+                                </a>
+                                <a target="_blank" href="/formularios/relatorio/${formularios[i].id}/pdf" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <i class="fas fa-file-pdf"></i>                                    
+                                </a>
+                                <a target="_blank" href="/formularios/relatorio/${formularios[i].id}/excel" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <i class="fas fa-file-excel"></i>                                    
                                 </a>
                             </td>                            
                         </tr>`;

@@ -26,8 +26,7 @@ $("#btn_modal_adicionar_formulario").click(async function(){
 $("#btn_adicionar_formulario").click(function(){
     habilitar_botao('btn_adicionar_formulario', false);
     let dados = {
-        nome: $("#adicionar_formulario_nome").val(),
-        tipo_empreendimento_id: $("#adicionar_formulario_tipo_empreendimento").val(),    
+        nome: $("#adicionar_formulario_nome").val(),         
         projeto_id: $("#adicionar_formulario_projeto").val()    
     };
     axios.post('formularios/adicionar', dados)

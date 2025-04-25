@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("nome");
             $table->dateTime('data_cadastro')->default(now());
-            
-            $table->unsignedBigInteger("tipo_empreendimento_id");
-            $table->foreign("tipo_empreendimento_id")->references("id")->on("tipos_empreendimentos");
+                        
             $table->unsignedBigInteger("empresa_id");
             $table->foreign("empresa_id")->references("id")->on("empresas");
             $table->unsignedBigInteger("projeto_id");

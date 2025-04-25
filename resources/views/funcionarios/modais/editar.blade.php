@@ -10,7 +10,7 @@
     <x-input id="editar_usuario_whatsapp" class="celular" label="Whatsapp" maxlength="255" obrigatorio="sim"></x-input>        
     <x-checkbox id="editar_usuario_ativo" type="checkbox" label="Ativo"></x-checkbox>
     <x-select id="editar_usuario_atribuicao" label="Atribuição" obrigatorio="sim">        
-        @if($atribuicao == 'rh')
+        @if($atribuicao == 'rh' || $atribuicao == 'administrador')
         <option value="gerente">Gerente</option>
         @endif
         <option value="agente">Agente</option>

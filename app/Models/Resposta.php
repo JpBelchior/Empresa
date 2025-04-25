@@ -25,12 +25,17 @@ class Resposta extends Model
         return $this->belongsTo(User::class, 'respondido_por_usuario_id');
     }
 
+    public function formulario(){
+        return $this->belongsTo(Formulario::class, 'formulario_id');
+    }
+
     public static function adicionar($dados){
         return self::create([
             'resposta' => $dados->resposta,
             'pergunta_id' => $dados->pergunta_id,
             'formulario_id' => $dados->formulario_id,
-            'respondido_por_usuario_id' => Auth::id()
+            'respondido_por_usuario_id' => Auth::id(),
+            'data_cadastro' => now()
         ]);
     }
 

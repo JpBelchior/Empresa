@@ -93,7 +93,7 @@ class FuncionarioController extends Controller
             Models\User::alterar_senha_usuario($usuario_id, $request->senha);
         }
         Models\Auditoria::registrar_atividade('Edição de Funcionário');
-        $request->merge(['empresa_id' => $usuario_config->empresa_id]);
+        $request->merge(['empresa_id' => session('empresa_id')]);
         Models\User::editar($usuario_id, $request);
         return response()->json('Funcionário editado com sucesso!', 200);
     }

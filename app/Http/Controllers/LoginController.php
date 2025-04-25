@@ -35,10 +35,11 @@ class LoginController extends Controller
         }
         Auth::login($usuario);
         $empresa_id = $usuario->empresa_id;
+        Log::info($usuario);
         if($usuario->atribuicao == 'administrador'){
-            $empresa_id = Models\Empresa::first()->id;                  
+            $empresa_id = Models\Empresa::first()->id;
         }
-        $empresa = Models\Empresa::find($empresa_id);        
+        $empresa = Models\Empresa::find($empresa_id);
         session([
             'nome_usuario' => $usuario->nome, 
             'email_usuario' => $usuario->email,
