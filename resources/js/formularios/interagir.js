@@ -15,7 +15,6 @@ $(".registrar").click(function () {
         resposta: $("#pergunta" + pergunta + " .resposta").val(),
         formulario_id: $("#formulario_id").val()
     };    
-    console.log(dados);
     habilitar_botao('btn_registrar_pergunta_id_' + pergunta, false);
     if (online == false) {
         let erro = '';
@@ -34,9 +33,9 @@ $(".registrar").click(function () {
         armazenar_dados_navegador(dados);        
         const Toast = Swal.mixin({
             toast: true,
-            position: "top-end",
+            position: "top-start",
             showConfirmButton: false,
-            timer: 3000,
+            timer: 1500,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
@@ -151,20 +150,14 @@ function salvar_perguntas_espera_banco() {
     }
     let dados = {
         dados: retornar_dados_armazenados()
-    };
+    };        
     if(dados.dados.length > 0){
         axios.post(app_url+"/formularios/registrar_perguntas_em_espera/"+$("#formulario_id").val(), dados)
         .then(response => {
             localStorage.setItem("dados", JSON.stringify([]));
+            lista_respostas();
             renderizar_perguntas();
-            /* let qtd = response.data.qtd;
-            if (qtd > 0) {
-                new Swal({
-                    title: 'Sucesso!',
-                    icon: 'success',
-                    text: response.data.mensagem
-                });
-            } */
+            sucesso("Respostas em espera foram cadastradas!");            
         })
     }    
 }

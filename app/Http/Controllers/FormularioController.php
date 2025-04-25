@@ -123,16 +123,16 @@ class FormularioController extends Controller
     public function registrar_perguntas_em_espera($formulario_id, Request $request){
         $formulario = Models\Formulario::find($formulario_id);
         if($formulario){
-            $dados = $request->dados;            
-            foreach($dados as $d){                
+            $dados = $request->dados;                        
+            foreach($dados as $d){
                 $pergunta = Models\Resposta::where('formulario_id', $d['formulario_id'])
                 ->where('pergunta_id', $d['pergunta_id'])
                 ->first();
-                $data = json_decode(json_encode($d));
-                if(!$pergunta){                    
+                $data = json_decode(json_encode($d));                
+                if(!$pergunta){                                        
                     Models\Resposta::adicionar($data);                
-                }else{
-                    Models\Resposta::editar($pergunta, $request);
+                }else{                    
+                    Models\Resposta::editar($pergunta, $data);
                 }
             }            
         }
