@@ -94,4 +94,19 @@ class UsuarioController extends Controller
     public function detalhes($usuario_id){
         return Models\User::find($usuario_id);
     }
+
+    public function estatisticas(){
+        $atribuicao = Auth::user()->atribuicao;
+        $qtd_formularios = Models\Formulario::where('empresa_id', session('empresa_id'))->count();
+        if($atribuicao == 'administrador' || $atribuicao == 'gerente' || $atribuicao == 'rh'){
+            $qtd_projetos = Models\Projeto::where('empresa_id', session('empresa_id'))->count();            
+        }else{
+            $qtd_projetos = Models\ProjetoUsuario::where('usuario_id', Auth::id())->count();                       
+        }        
+        $dados = [
+            'projetos' => $qtd_projetos,
+            'formularios' => $qtd_formularios
+        ];
+        return response()->json($dados,200);
+    }
 }

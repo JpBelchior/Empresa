@@ -20,6 +20,7 @@ export default defineConfig({
                 'resources/js/usuarios/funcoes.js',
                 'resources/js/usuarios/adicionar.js',
                 'resources/js/usuarios/editar.js',
+                'resources/js/usuarios/estatisticas.js',
                 //FUNCIONÁRIOS
                 'resources/js/funcionarios/index.js',
                 'resources/js/funcionarios/funcoes.js',
@@ -72,6 +73,8 @@ export default defineConfig({
                 'resources/js/formularios/adicionar.js',
                 'resources/js/formularios/editar.js',                
                 'resources/js/formularios/interagir.js',
+                //AUDITORIA
+                'resources/js/auditoria/index.js'
             ],
             refresh: true,
         }),

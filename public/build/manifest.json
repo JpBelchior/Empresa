@@ -113,7 +113,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-dDAcA_3d.css",
+    "file": "assets/app-CPR32gyn.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -169,6 +169,16 @@
     "isEntry": true,
     "imports": [
       "_funcoes-CmNOmgtX.js",
+      "resources/js/usuarios/funcoes.js",
+      "_index-D_cyGAQO.js"
+    ]
+  },
+  "resources/js/auditoria/index.js": {
+    "file": "assets/index-Cin0eMZy.js",
+    "name": "index",
+    "src": "resources/js/auditoria/index.js",
+    "isEntry": true,
+    "imports": [
       "resources/js/usuarios/funcoes.js",
       "_index-D_cyGAQO.js"
     ]
@@ -651,6 +661,12 @@
       "_funcoes-C9JoL7rf.js",
       "_index-D_cyGAQO.js"
     ]
+  },
+  "resources/js/usuarios/estatisticas.js": {
+    "file": "assets/estatisticas-C_Uemxtp.js",
+    "name": "estatisticas",
+    "src": "resources/js/usuarios/estatisticas.js",
+    "isEntry": true
   },
   "resources/js/usuarios/funcoes.js": {
     "file": "assets/funcoes-C9HBdHmr.js",

@@ -16,7 +16,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar')->can('administrador', App\Models\User::class);
             Route::put('editar/{id}', 'editar')->can('administrador', App\Models\User::class);
             Route::get('detalhes/{id}', 'detalhes')->can('administrador', App\Models\User::class);
-            Route::post('trocar_empresa', 'trocar_empresa')->can('administrador', App\Models\User::class);
+            Route::post('trocar_empresa', 'trocar_empresa')->can('administrador', App\Models\User::class);            
         });
     });
 
@@ -100,6 +100,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar')->can('administrador', App\Models\User::class);
             Route::put('editar/{id}', 'editar')->can('administrador', App\Models\User::class);
             Route::get('detalhes/{id}', 'detalhes')->can('administrador', App\Models\User::class);
+            Route::get('estatisticas', 'estatisticas');
         });
     });
 
@@ -137,6 +138,13 @@ Route::middleware(['auth'])->group(function() {
             Route::post('adicionar', 'adicionar');
             Route::put('editar/{id}', 'editar');
             Route::get('detalhes/{id}', 'detalhes');
+        });
+    });
+
+    Route::controller(Controllers\AuditoriaController::class)->group(function(){
+        Route::prefix('auditoria')->group(function(){            
+            Route::get('/', 'index');
+            Route::get('/relatorio/{formato}/{inicio}/{fim}', 'relatorio');
         });
     });
 });
