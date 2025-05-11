@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/login/login.js',
                 'resources/js/login/recuperar_senha.js',
+                'resources/js/estrutura/cabecalho.js',
                 'resources/js/estrutura/redefinir_senha.js',
                 'resources/js/estrutura/trocar_empresa.js',
                 //USUÁRIOS

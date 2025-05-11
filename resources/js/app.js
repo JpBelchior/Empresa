@@ -2,14 +2,6 @@ import './bootstrap';
 
 import { Modal } from 'flowbite';
 
-//SAIR
-$("#logout").click(function(){    
-    Swal.fire("Saindo...");
-    axios.post('logout')
-    .then(response => { location.reload(); })
-    .catch(error => erro(error))
-});
-
 //DESABILITA TODOS OS INPUTS DE TEREM VALORES SUGERIDOS
 $("input").attr('autocomplete', 'off');
 

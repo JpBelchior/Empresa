@@ -51,3 +51,4 @@
         </div>
     </div>
 </nav>
+@vite(['resources/js/estrutura/cabecalho.js'])
