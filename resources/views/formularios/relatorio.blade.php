@@ -64,7 +64,14 @@
                     <td class="px-6 py-4">
                         {{ formatar_data($resposta->data_cadastro) }}
                     </td>
-                </tr>               
+                </tr>
+                @if($resposta->arquivo_id != null)
+                <tr>
+                    <td>                        
+                        <img width="400" src="{{ getenv('APP_URL').'/arquivos/exibir/'.$resposta->arquivo_id }}" alt="">                        
+                    </td>                    
+                </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>

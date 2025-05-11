@@ -96,7 +96,7 @@ class FormularioController extends Controller
         }
     }
 
-    public function registrar(Request $request){
+    public function registrar(Request $request){        
         $validator = Validator::make($request->all(), [
             'resposta' => 'required|max:10000',
             'pergunta_id' => 'required',
@@ -151,7 +151,11 @@ class FormularioController extends Controller
         if(!$resposta){
             return response()->json('Resposta não encontrada!', 404);
         }
+        $arquivo = $resposta->arquivo_id;
         $resposta->delete();
+        if($arquivo != null){
+            Models\Arquivo::excluir($arquivo);
+        }
         return response()->json('Resposta deletada!', 200);
     }
 

@@ -15,13 +15,13 @@ export function lista_formularios() {
                                 ${formularios[i].projeto.nome}
                             </td>                            
                             <td class="px-6 py-4">
-                                <a target="_blank" href="/formularios/interagir/${formularios[i].id}" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <a href="/formularios/interagir/${formularios[i].id}" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <i class="fas fa-eye"></i>                                    
                                 </a>
-                                <a target="_blank" href="/formularios/relatorio/${formularios[i].id}/pdf" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <a href="/formularios/relatorio/${formularios[i].id}/pdf" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <i class="fas fa-file-pdf"></i>                                    
                                 </a>
-                                <a target="_blank" href="/formularios/relatorio/${formularios[i].id}/excel" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <a href="/formularios/relatorio/${formularios[i].id}/excel" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <i class="fas fa-file-excel"></i>                                    
                                 </a>
                             </td>                            
@@ -42,13 +42,15 @@ export function lista_respostas(){
     .then(response => {
         $("#qtd_perguntas_respondidas").html(`(${response.data.length})`);        
         let respostas = response.data;                
-        for(let i in respostas){
+        for(let i in respostas){    
+            let imagem = respostas[i].arquivo_id == null ? "<p>(SEM FOTO)</p>" : `<img src="${app_url+"/arquivos/exibir/"+respostas[i].arquivo_id}">`;
             let linha = `<tr class="bg-white dark:bg-gray-800">                        
                             <td class="px-6 py-4">
                                 <p>Pergunta: ${respostas[i].pergunta.titulo}</p>
                                 <p>Resposta: ${respostas[i].resposta}</p>
                                 <p>Responsável: ${respostas[i].usuario.nome}</p>
                                 <p>Momento do cadastro: ${formatar_data(respostas[i].data_cadastro, true)}</p>                                
+                                ${imagem}                                                                
                                 <button id="excluir_resposta${respostas[i].id}" resposta="${respostas[i].id}" class="excluir_resposta px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-blue-700 dark:focus:ring-red-800">
                                     <i class="fas fa-times"></i>
                                 </button>

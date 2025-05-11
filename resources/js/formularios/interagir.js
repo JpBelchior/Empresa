@@ -3,18 +3,42 @@ import { lista_respostas } from './funcoes';
 
 $(document).ready(function () {
     lista_respostas();
-    renderizar_perguntas();    
+    renderizar_perguntas();
+    let lista = "";
+    for(let i in todas_perguntas){
+        let pergunta = `<div id="pergunta${todas_perguntas[i].id}" class="my-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">    
+                            <div class="p-5">        
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${todas_perguntas[i].titulo}</h5>                                        
+                                <textarea placeholder="Resposta..." class="resposta p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>                                
+                                <div class="flex items-start gap-4">
+                                    <button id="btn_registrar_pergunta_id_${todas_perguntas[i].id}" propriedade="${todas_perguntas[i].id}" type="button" class="registrar flex justify-center mt-4 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>                                
+                                    <div>                                    
+                                        <label class="block text-gray-700 font-bold mb-2" for="fileUpload">+ FOTO</label>
+                                        <input
+                                            id="foto${todas_perguntas[i].id}"
+                                            type="file"                                            
+                                            accept=".jpg, .jpeg, .png"
+                                            class="foto block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-600 file:bg-blue-500 file:text-white file:py-2 file:px-4 file:rounded-lg file:border-none"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;        
+        lista += pergunta;
+    }
+    $("#todas_perguntas").append(lista);
+    $("#spinner").hide();
 });
 
-$(".registrar").click(function () {
+$(document).on('click', ".registrar", function () {
     let pergunta = $(this).attr('propriedade');    
     let titulo_pergunta = $("#pergunta" + pergunta + " h5").html();
-    let dados = {
-        titulo: titulo_pergunta,
-        pergunta_id: pergunta,
-        resposta: $("#pergunta" + pergunta + " .resposta").val(),
-        formulario_id: $("#formulario_id").val()
-    };    
+    let form = new FormData;
+    form.append("titulo", titulo_pergunta);
+    form.append("pergunta_id", pergunta);
+    form.append("resposta", $("#pergunta" + pergunta + " .resposta").val());
+    form.append("formulario_id", $("#formulario_id").val());    
+    form.append("foto", document.getElementById("foto"+pergunta).files[0]);
     habilitar_botao('btn_registrar_pergunta_id_' + pergunta, false);
     if (online == false) {
         let erro = '';
@@ -48,8 +72,8 @@ $(".registrar").click(function () {
         });
         habilitar_botao('btn_registrar_pergunta_id_' + pergunta, true);
         return;
-    }
-    axios.post('/formularios/registrar', dados)
+    }    
+    axios.post('/formularios/registrar', form)
         .then(response => {
             sucesso(response.data.mensagem);
             $("#qtd_perguntas_respondidas").html(`(${response.data.qtd})`);
@@ -161,3 +185,4 @@ function salvar_perguntas_espera_banco() {
         })
     }    
 }
+

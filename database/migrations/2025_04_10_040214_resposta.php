@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('respostas', function (Blueprint $table) {
             $table->id();
             $table->text("resposta");
+            $table->unsignedBigInteger("arquivo_id");
+            $table->foreign("arquivo_id")->references("id")->on("arquivos");
             $table->dateTime('data_cadastro')->default(now());
             $table->unsignedBigInteger("pergunta_id");
             $table->foreign("pergunta_id")->references("id")->on("perguntas");
