@@ -1,0 +1,1 @@
+import{e as a}from"./funcoes-Duew_XSt.js";import"./index-DEJP78qa.js";$(".gerar").click(function(){let t=$(this).attr("formato"),o=$("#inicio").val(),r=$("#fim").val(),i="";if(o==""&&(i+="Data de inicío é obrigatório!"),r==""&&(i+="Data de fim é obrigatório!"),i!=""){a(i);return}window.open(`/auditoria/relatorio/${t}/${o}/${r}`,"_blank")});
