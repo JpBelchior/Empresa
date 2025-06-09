@@ -12,8 +12,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class TipoEmpreendimentoController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(){
+        session(["primeira_sessao" => "Tipos de Empreendimentos"]);
+    }
     
     public function index(){                
+        session(["segunda_sessao" => "Visão Geral"]);
         return view('tipos_empreendimentos.index');
     }
 

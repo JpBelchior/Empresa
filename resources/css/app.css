@@ -14,18 +14,23 @@
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('../fonts/Poppins-Regular.ttf');         
+    font-family: 'Archivo';
+    src: url('../fonts/Archivo.ttf');         
     font-weight: normal;
     font-style: normal;
 }
 
 /* Usar a fonte no projeto */
-body {
-    font-family: 'Poppins';
+body, .breadcrumb-estrutura{
+    font-family: 'Archivo';
+    background-color: #F5F5F6 !important;
 }
 
 .swal2-container {
     position: fixed !important;
     z-index: 1050 !important; /* Ajuste o z-index se necessário */
+}
+
+nav, aside{
+    background-color: #FFFFFF !important;        
 }

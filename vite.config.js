@@ -9,7 +9,12 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/app.css', 
+                'resources/css/app.css',
+                'resources/css/login.css',
+
+
+
+
                 'resources/js/app.js',
                 'resources/js/login/login.js',
                 'resources/js/login/recuperar_senha.js',
@@ -74,6 +79,7 @@ export default defineConfig({
                 'resources/js/formularios/adicionar.js',
                 'resources/js/formularios/editar.js',                
                 'resources/js/formularios/interagir.js',
+                'resources/js/formularios/formulario.js',
                 //AUDITORIA
                 'resources/js/auditoria/index.js'
             ],

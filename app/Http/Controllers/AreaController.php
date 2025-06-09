@@ -12,8 +12,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class AreaController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(){
+        session(["nome_primeira_sessao" => "Áreas"]);
+    }
     
     public function index(){                
+        session(["segunda_sessao" => "Visão Geral"]);
         return view('areas.index');
     }
 

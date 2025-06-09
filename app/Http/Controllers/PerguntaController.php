@@ -12,8 +12,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class PerguntaController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(){
+        session(["primeira_sessao" => "Perguntas"]);
+    }
     
     public function index(){                
+        session(["segunda_sessao" => "Visão Geral"]);
         return view('perguntas.index');
     }
 

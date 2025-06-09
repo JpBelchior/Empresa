@@ -12,8 +12,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class TematicaController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(){
+        session(["primeira_sessao" => "Temática"]);
+    }
     
-    public function index(){                
+    public function index(){             
+        session(["segunda_sessao" => "Visão Geral"]);
         return view('tematicas.index');
     }
 

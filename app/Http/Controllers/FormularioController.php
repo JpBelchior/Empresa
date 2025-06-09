@@ -15,8 +15,13 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class FormularioController extends Controller
 {
     use AuthorizesRequests;    
+
+    public function __construct(){
+        session(["primeira_sessao" => "Formulário"]);
+    }
     
     public function index(){                        
+        session(["segunda_sessao" => "Visão Geral"]);
         return view('formularios.index');
     }
 
