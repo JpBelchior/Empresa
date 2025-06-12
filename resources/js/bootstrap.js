@@ -6,6 +6,8 @@ import TomSelect from 'tom-select';
 
 //VARIÁVEIS GLOBAIS DA APLICAÇÃO
 window.app_url = import.meta.env.VITE_API_URL;
+window.risco_altissimo = import.meta.env.VITE_RISCO_ALTISSIMO;
+window.vulnerabilidade = import.meta.env.VITE_VULNERABILIDADE;
 
 //JQUERY
 window.$ = $;

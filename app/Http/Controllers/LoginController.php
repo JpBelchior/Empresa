@@ -34,8 +34,7 @@ class LoginController extends Controller
             return response()->json('Senha incorreta!', 403);
         }
         Auth::login($usuario);
-        $empresa_id = $usuario->empresa_id;
-        Log::info($usuario);
+        $empresa_id = $usuario->empresa_id;        
         if($usuario->atribuicao == 'administrador'){
             $empresa_id = Models\Empresa::first()->id;
         }
@@ -50,6 +49,7 @@ class LoginController extends Controller
         ]);
         Models\Auditoria::registrar_atividade("Login");
         $request->session()->regenerateToken();
+        session(["primeira_sessao" => "Dashboard", "segunda_sessao" => "Estatísticas"]);
         return response()->json('Seja bem vindo!', 200);
     }
 

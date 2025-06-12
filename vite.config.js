@@ -11,6 +11,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/login.css',
+                'resources/css/formulario.css',
 
 
 
@@ -78,8 +79,8 @@ export default defineConfig({
                 'resources/js/formularios/funcoes.js',
                 'resources/js/formularios/adicionar.js',
                 'resources/js/formularios/editar.js',                
-                'resources/js/formularios/interagir.js',
-                'resources/js/formularios/formulario.js',
+                'resources/js/formularios/interagir.js',                
+                'resources/js/formularios/dados-formulario.js',                
                 //AUDITORIA
                 'resources/js/auditoria/index.js'
             ],

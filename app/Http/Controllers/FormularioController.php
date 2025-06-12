@@ -49,6 +49,52 @@ class FormularioController extends Controller
         return view('formularios.interagir', $dados);
     }
 
+    public function formulario($formulario_id){        
+        session(["segunda_sessao" => "Preenchimento"]);
+        $formulario = Models\Formulario::find($formulario_id);
+        if(!$formulario){
+            abort('404');
+        }        
+        $tipos_empreendimento_projeto = Models\ProjetoTipoEmpreendimento::where('projeto_id', $formulario->projeto_id)->pluck('tipo_empreendimento_id')->toArray();
+        $perguntas_ids = Models\PerguntaTipoEmpreendimento::whereIn('tipo_empreendimento_id', $tipos_empreendimento_projeto)->select('pergunta_id')->groupBy('pergunta_id')->pluck('pergunta_id')->toArray();
+        $perguntas = Models\Pergunta::whereIn('id', $perguntas_ids)->orderBy('data_cadastro', 'desc')->get();                
+        $dados = [
+            'formulario' => $formulario,
+            'perguntas' => $perguntas
+        ];
+        return view('formularios.formulario', $dados);
+    }
+
+    public function responder_pergunta(Request $request){        
+        $pergunta = Models\Pergunta::find($request->pergunta_id);
+        if(!$pergunta){
+            return response()->json("Pergunta não encontrada!", 404);
+        }
+        $multiplicacao_risco_altissimo = $request->probabilidade*$request->impacto;
+        $risco_altissimo = $multiplicacao_risco_altissimo >= getenv("VITE_RISCO_ALTISSIMO");
+        if($risco_altissimo && $request->resposta == ''){
+            return response()->json("Devido ao risco altíssimo [$multiplicacao_risco_altissimo], informe as recomendações.", 400);
+        }
+        //procurar se neste formulario a pergunta referida já foi respondida antes
+        $pergunta = Models\Resposta::where('formulario_id', $request->formulario_id)
+        ->where('pergunta_id', $request->pergunta_id)
+        ->first();
+        $request->merge([
+            'vulneravel' => $request->adequacao >= getenv("VITE_VULNERABILIDADE"),
+            'risco_altissimo' => $risco_altissimo
+        ]);
+        if(!$pergunta){
+            Models\Resposta::adicionar($request);
+            $msg = 'Resposta registrada!';            
+        }else{
+            Models\Resposta::editar($pergunta, $request);
+            $msg = 'Resposta editada!';
+        }        
+        $qtd_perguntas_respondidas = Models\Resposta::where('formulario_id', $request->formulario_id)->count();
+        return response()->json(['mensagem' => $msg, 'qtd' => $qtd_perguntas_respondidas], 200);
+        
+    }
+
     public function relatorio($formulario_id, $formato){
         $respostas = Models\Resposta::with([
             'usuario',

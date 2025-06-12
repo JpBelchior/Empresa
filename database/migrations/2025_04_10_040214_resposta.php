@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('respostas', function (Blueprint $table) {
             $table->id();
-            $table->text("resposta");
+            $table->text("resposta");            
+
+            $table->string('nivel_adequacao', '2');
+            $table->string('nivel_probabilidade', '2');
+            $table->string('nivel_impacto', '2');
+            $table->string('nivel_esforco', '2');
+            $table->string('nivel_valor', '2');
+            $table->boolean('esta_em_vulnerabilidade');
+            $table->string('vulnerabilidade_vigente', '2');
+            $table->boolean('esta_em_risco_altissimo');
+            $table->string('risco_altissimo_vigente', '2');
+
             $table->unsignedBigInteger("arquivo_id");
             $table->foreign("arquivo_id")->references("id")->on("arquivos");
             $table->dateTime('data_cadastro')->default(now());
