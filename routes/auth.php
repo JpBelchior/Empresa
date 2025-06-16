@@ -145,6 +145,12 @@ Route::middleware(['auth'])->group(function() {
         });
     });
 
+    Route::controller(Controllers\RespostaController::class)->group(function(){
+        Route::prefix('respostas')->group(function(){                        
+            Route::get('detalhes_resposta/{formulario}/{pergunta}', 'detalhes_resposta');
+        });
+    });
+
     Route::controller(Controllers\AuditoriaController::class)->group(function(){
         Route::prefix('auditoria')->group(function(){            
             Route::get('/', 'index');

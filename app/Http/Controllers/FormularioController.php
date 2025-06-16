@@ -54,10 +54,33 @@ class FormularioController extends Controller
         $formulario = Models\Formulario::find($formulario_id);
         if(!$formulario){
             abort('404');
-        }        
+        }
         $tipos_empreendimento_projeto = Models\ProjetoTipoEmpreendimento::where('projeto_id', $formulario->projeto_id)->pluck('tipo_empreendimento_id')->toArray();
         $perguntas_ids = Models\PerguntaTipoEmpreendimento::whereIn('tipo_empreendimento_id', $tipos_empreendimento_projeto)->select('pergunta_id')->groupBy('pergunta_id')->pluck('pergunta_id')->toArray();
-        $perguntas = Models\Pergunta::whereIn('id', $perguntas_ids)->orderBy('data_cadastro', 'desc')->get();                
+        $perguntas = Models\Pergunta::whereIn('id', $perguntas_ids)->orderBy('data_cadastro', 'desc')->get();
+        for($i = 0; $i < count($perguntas); $i++){            
+            $resposta = Models\Resposta::where('formulario_id', $formulario_id)
+            ->where('pergunta_id', $perguntas[$i]->id)
+            ->select("nivel_adequacao", "esta_em_risco_altissimo", "prazo", "arquivo_id")
+            ->first();
+            $nivel_adequacao = 0;
+            $risco_altissimo = 'nao';
+            $prazo = "Longo prazo";
+            $respondido = false;
+            $foto = false;
+            if($resposta){      
+                $respondido = true;          
+                $nivel_adequacao = $resposta->nivel_adequacao; 
+                $risco_altissimo = $resposta->esta_em_risco_altissimo ? 'sim' : 'nao';
+                $prazo = $resposta->prazo;
+                $foto = $resposta->arquivo_id;
+            }
+            $perguntas[$i]->foto = $foto;
+            $perguntas[$i]->respondido = $respondido;
+            $perguntas[$i]->nivel_adequacao = $nivel_adequacao;             
+            $perguntas[$i]->risco_altissimo = $risco_altissimo;
+            $perguntas[$i]->prazo = $prazo;             
+        }
         $dados = [
             'formulario' => $formulario,
             'perguntas' => $perguntas

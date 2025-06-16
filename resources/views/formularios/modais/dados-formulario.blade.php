@@ -1,5 +1,5 @@
 <x-modal id="modal_dados_formulario" label="" tamanho="grande">
-    <p class="titulo">PERGUNTA</p>
+    <p id="titulo_pergunta" class="titulo">PERGUNTA</p>
     <div class="dados-formulario-sessao">
         <p class="classe-opcao">Nível de adequação identificado na inspeção</p>
         <ol class="opcoes mt-4 flex items-center">
@@ -327,9 +327,15 @@
                 </li>
             </ol>
         </div>
-    </div>
+        <div class="flex justify-center">
+            <span id="curto_prazo" class="hidden bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">Curto prazo</span>            
+            <span id="medio_prazo" class="hidden bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">Médio prazo</span>
+            <span id="longo_prazo" class="hidden bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">Longo prazo</span>
+        </div>
+    </div>    
     <h2 class="text-center">Indique as recomendações necessárias para mitigar os riscos e vulnerabilidades identificados</h2>
     <x-textarea id="resposta"></x-textarea>
+    <x-input label="Foto" id="foto" type="file" accept="image/png, image/jpeg, image/jpg"></x-input>
     <x-botao id="btn_salvar_respostas" label="Salvar" class="w-full" cor="verde"></x-botao>
 </x-modal>
 @vite('resources/js/formularios/dados-formulario.js')

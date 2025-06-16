@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string("nome");
             $table->dateTime('data_cadastro')->default(now());
+
+            $table->integer('total_perguntas')->default(0);
+            $table->integer('total_perguntas_respondidas')->default(0);
+            $table->double('porcentagem_preenchimento')->default(0);
+            $table->integer('total_vulnerabilidades')->default(0);
+            $table->integer('total_riscos_altissimos')->default(0);
+            $table->integer('total_recomendacoes')->default(0);
                         
             $table->unsignedBigInteger("empresa_id");
             $table->foreign("empresa_id")->references("id")->on("empresas");

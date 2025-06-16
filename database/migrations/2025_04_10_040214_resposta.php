@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('vulnerabilidade_vigente', '2');
             $table->boolean('esta_em_risco_altissimo');
             $table->string('risco_altissimo_vigente', '2');
+            $table->string('prazo', '30');
 
             $table->unsignedBigInteger("arquivo_id");
             $table->foreign("arquivo_id")->references("id")->on("arquivos");

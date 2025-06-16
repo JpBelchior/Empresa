@@ -81,6 +81,7 @@ export default defineConfig({
                 'resources/js/formularios/editar.js',                
                 'resources/js/formularios/interagir.js',                
                 'resources/js/formularios/dados-formulario.js',                
+                'resources/js/formularios/relatorio.js',                
                 //AUDITORIA
                 'resources/js/auditoria/index.js'
             ],

@@ -1,0 +1,1 @@
+import{e as a}from"./funcoes-BcfOcYSN.js";import"./index-CnACay8y.js";$(".gerar").click(function(){let t=$(this).attr("formato"),o=$("#inicio").val(),r=$("#fim").val(),i="";if(o==""&&(i+="Data de inicío é obrigatório!"),r==""&&(i+="Data de fim é obrigatório!"),i!=""){a(i);return}window.open(`/auditoria/relatorio/${t}/${o}/${r}`,"_blank")});

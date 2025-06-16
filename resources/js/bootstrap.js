@@ -9,6 +9,13 @@ window.app_url = import.meta.env.VITE_API_URL;
 window.risco_altissimo = import.meta.env.VITE_RISCO_ALTISSIMO;
 window.vulnerabilidade = import.meta.env.VITE_VULNERABILIDADE;
 
+window.curto_prazo_minimo = import.meta.env.VITE_CURTO_PRAZO_MINIMO;
+window.curto_prazo_maximo = import.meta.env.VITE_CURTO_PRAZO_MAXIMO;
+window.medio_prazo_minimo = import.meta.env.VITE_MEDIO_PRAZO_MINIMO;
+window.medio_prazo_maximo = import.meta.env.VITE_MEDIO_PRAZO_MAXIMO;
+window.longo_prazo_minimo = import.meta.env.VITE_LONGO_PRAZO_MINIMO;
+window.longo_prazo_maximo = import.meta.env.VITE_LONGO_PRAZO_MAXIMO;
+
 //JQUERY
 window.$ = $;
 
