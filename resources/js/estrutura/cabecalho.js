@@ -1,3 +1,5 @@
+import { erro } from "../app";
+
 $("#logout").click(function(){    
     Swal.fire("Saindo...");
     axios.post('logout')

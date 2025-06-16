@@ -237,10 +237,14 @@
     ]
   },
   "resources/js/estrutura/cabecalho.js": {
-    "file": "assets/cabecalho-D3dH288u.js",
+    "file": "assets/cabecalho-CrMr4SDF.js",
     "name": "cabecalho",
     "src": "resources/js/estrutura/cabecalho.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-CnACay8y.js"
+    ]
   },
   "resources/js/estrutura/redefinir_senha.js": {
     "file": "assets/redefinir_senha-DbmF4_ej.js",
