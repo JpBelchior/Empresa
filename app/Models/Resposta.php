@@ -73,6 +73,7 @@ class Resposta extends Model
             'prazo' => self::determinar_prazo($dados->esforco, $dados->valor)
         ]);
         self::atualizar_metadados_formulario($dados->formulario_id);        
+        Models\Projeto::atualizar_estatisticas_projeto($dados->formulario_id);
     }
 
     public static function editar($pergunta, $dados)
@@ -102,6 +103,7 @@ class Resposta extends Model
             'prazo' => self::determinar_prazo($dados->esforco, $dados->valor)
         ]);
         self::atualizar_metadados_formulario($dados->formulario_id);
+        Models\Projeto::atualizar_estatisticas_projeto($dados->formulario_id);
     }
 
     private static function determinar_prazo($esforco, $valor)

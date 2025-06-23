@@ -4,6 +4,7 @@
             <x-opcao_sidebar link="/" label="Dashboard" icon="fas fa-chart-line"></x-opcao_sidebar>                   
             @cannot('agente', App\Models\User::class)
             <x-opcao_sidebar link="/funcionarios" label="Funcionários" icon="fas fa-users"></x-opcao_sidebar>
+            <x-opcao_sidebar link="/clientes" label="Clientes" icon="fas fa-address-book"></x-opcao_sidebar>
             @endcannot
             <x-opcao_sidebar link="/projetos" label="Projetos" icon="fa fa-map-pin"></x-opcao_sidebar>
             <x-opcao_sidebar link="/formularios" label="Formulários" icon="fas fa-edit"></x-opcao_sidebar>

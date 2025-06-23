@@ -6,32 +6,10 @@
     <x-botao id="btn_modal_adicionar_projeto" label="Adicionar Projeto" icon="fas fa-plus" cor="verde"></x-botao>
 </div>
 @endcannot
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>                
-                <th scope="col" class="px-6 py-3">
-                    Nome
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Data do projeto
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Tipos de empreendimento
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Funcionários
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    
-                </th>
-            </tr>
-        </thead>
-        <tbody id="projetos">
+<div id="projetos" class="w-full">
 
-        </tbody>
-    </table>
 </div>
+
 <script>
     var atribuicao = '{{ Auth::user()->atribuicao }}';
 </script>

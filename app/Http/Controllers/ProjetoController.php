@@ -25,16 +25,20 @@ class ProjetoController extends Controller
     public function lista(){
         return Models\Projeto::with([
             'tipos_empreendimentos.tipo_empreendimento',
-            'usuarios.usuario'
+            'usuarios.usuario',
+            'usuario_criador',
+            'cliente'
         ])
         ->where('empresa_id', session('empresa_id'))
         ->orderBy('nome', 'asc')->get();
     }
 
-    public function adicionar(Request $request){                   
+    public function adicionar(Request $request){                           
         $validator = Validator::make($request->all(), [
             'nome' => 'required|max:255',
-            'data_projeto' => 'required',
+            'data_inicio' => 'required',
+            'data_conclusao' => 'required',
+            'cliente' => 'required',
             'tipos_empreendimentos' => 'required',
             'funcionarios' => 'required'
         ]);
@@ -48,9 +52,10 @@ class ProjetoController extends Controller
 
     public function editar($projeto_id, Request $request){              
         $validator = Validator::make($request->all(), [
-            'nome' => 'required|max:255',
-            'data_projeto' => 'required',
-            'tipos_empreendimentos' => 'required',
+            'nome' => 'required|max:255',            
+            'data_inicio' => 'required',
+            'data_conclusao' => 'required',
+            'cliente' => 'required',            
             'funcionarios' => 'required'
         ]);      
         if($validator->fails()){    
@@ -59,16 +64,6 @@ class ProjetoController extends Controller
         Models\Auditoria::registrar_atividade('Edição de Projeto');        
         Models\Projeto::editar($projeto_id, $request);
         return response()->json('Projeto editado com sucesso!', 200);
-    }
-
-    public function pesquisar($parametro, $valor){        
-        return Models\Projeto::with([
-            'tipos_empreendimentos.tipo_empreendimento',
-            'usuarios.usuario'
-        ])
-        ->where($parametro, "like", "%$valor%")
-        ->orderBy('nome', 'asc')
-        ->get();
     }
 
     public function detalhes($usuario_id){

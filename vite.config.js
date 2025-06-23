@@ -74,6 +74,11 @@ export default defineConfig({
                 'resources/js/projetos/funcoes.js',
                 'resources/js/projetos/adicionar.js',
                 'resources/js/projetos/editar.js',
+                //CLIENTES
+                'resources/js/clientes/index.js',
+                'resources/js/clientes/funcoes.js',
+                'resources/js/clientes/adicionar.js',
+                'resources/js/clientes/editar.js',
                 //FORMULÁRIOS
                 'resources/js/formularios/index.js',
                 'resources/js/formularios/funcoes.js',

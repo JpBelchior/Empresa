@@ -11,17 +11,40 @@ class Projeto extends Model
     protected $table = 'projetos';
 
     protected $fillable = [
-        'nome',
-        'data_projeto',
+        'nome',        
         'empresa_id',
-        'data_cadastro'
+        'data_cadastro',
+        'data_inicio',
+        'data_conclusao',
+        'usuario_criador_projeto_id',
+        'cliente_id',
+        'status',
+        'total_perguntas',
+        'total_perguntas_respondidas',
+        'porcentagem_preenchimento',
+        'total_vulnerabilidades',
+        'total_riscos_altissimos',
+        'total_recomendacoes',
     ];
+
+    public function usuario_criador()
+    {
+        return $this->belongsTo(User::class, 'usuario_criador_projeto_id');
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
 
     public static function adicionar($dados){        
         $projeto = self::create([
             'nome' => $dados->nome,
-            'data_projeto' => $dados->data_projeto,
-            'empresa_id' => Auth::user()->empresa_id
+            'data_inicio' => $dados->data_inicio,
+            'data_conclusao' => $dados->data_conclusao,
+            'cliente_id' => $dados->cliente,
+            'usuario_criador_projeto_id' => Auth::id(),
+            'empresa_id' => session('empresa_id'),            
         ]);
         foreach($dados->tipos_empreendimentos as $t){
             Models\ProjetoTipoEmpreendimento::create([
@@ -35,23 +58,19 @@ class Projeto extends Model
                 'usuario_id' => $f
             ]);
         }
+        $projeto->update(['total_perguntas' => Models\Formulario::recuperar_total_perguntas_formulario($projeto->id)]);
         return $projeto;
     }
 
     public static function editar(string $projeto_id, $dados){
         $projeto = self::find($projeto_id)->update([
+            'status' => $dados->status,
             'nome' => $dados->nome,
-            'data_projeto' => $dados->data_projeto,
-            'empresa_id' => session('empresa_id')
+            'data_inicio' => $dados->data_inicio,
+            'data_conclusao' => $dados->data_conclusao,
+            'cliente_id' => $dados->cliente            
         ]);        
-        Models\ProjetoTipoEmpreendimento::where('projeto_id', $projeto_id)->delete();
         Models\ProjetoUsuario::where('projeto_id', $projeto_id)->delete();
-        foreach($dados->tipos_empreendimentos as $t){
-            Models\ProjetoTipoEmpreendimento::create([
-                'projeto_id' => $projeto_id,
-                'tipo_empreendimento_id' => $t
-            ]);
-        }
         foreach($dados->funcionarios as $f){
             Models\ProjetoUsuario::create([
                 'projeto_id' => $projeto_id,
@@ -59,6 +78,22 @@ class Projeto extends Model
             ]);
         }
         return $projeto;
+    }
+
+    public static function atualizar_estatisticas_projeto($formulario_id){
+        $formulario = Models\Formulario::find($formulario_id);
+        $projeto = Models\Projeto::find($formulario->projeto_id);
+        if($projeto){
+            $projeto_id = $projeto->id;
+            $projeto->update([
+                'total_perguntas' => Models\Formulario::where('projeto_id', $projeto_id)->sum('total_perguntas'),
+                'total_perguntas_respondidas' => Models\Formulario::where('projeto_id', $projeto_id)->sum('total_perguntas_respondidas'),
+                'porcentagem_preenchimento' => Models\Formulario::where('projeto_id', $projeto_id)->sum('porcentagem_preenchimento'),
+                'total_vulnerabilidades' => Models\Formulario::where('projeto_id', $projeto_id)->sum('total_vulnerabilidades'),
+                'total_riscos_altissimos' => Models\Formulario::where('projeto_id', $projeto_id)->sum('total_riscos_altissimos'),
+                'total_recomendacoes' => Models\Formulario::where('projeto_id', $projeto_id)->sum('total_recomendacoes')
+            ]);
+        }
     }
 
     public function tipos_empreendimentos()

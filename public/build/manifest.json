@@ -1,13 +1,13 @@
 {
-  "_funcoes-BqwcufdH.js": {
-    "file": "assets/funcoes-BqwcufdH.js",
+  "_funcoes-B-RNttlI.js": {
+    "file": "assets/funcoes-B-RNttlI.js",
     "name": "funcoes",
     "imports": [
       "resources/js/usuarios/funcoes.js"
     ]
   },
-  "_funcoes-C-tuSpZF.js": {
-    "file": "assets/funcoes-C-tuSpZF.js",
+  "_funcoes-BqwcufdH.js": {
+    "file": "assets/funcoes-BqwcufdH.js",
     "name": "funcoes",
     "imports": [
       "resources/js/usuarios/funcoes.js"
@@ -57,6 +57,13 @@
   },
   "_funcoes-LxE7Tn4q.js": {
     "file": "assets/funcoes-LxE7Tn4q.js",
+    "name": "funcoes",
+    "imports": [
+      "resources/js/usuarios/funcoes.js"
+    ]
+  },
+  "_funcoes-_X261RTr.js": {
+    "file": "assets/funcoes-_X261RTr.js",
     "name": "funcoes",
     "imports": [
       "resources/js/usuarios/funcoes.js"
@@ -113,7 +120,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Dx7v7EB6.css",
+    "file": "assets/app-Dj-wSoAP.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -189,6 +196,49 @@
     "src": "resources/js/auditoria/index.js",
     "isEntry": true,
     "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-CnACay8y.js"
+    ]
+  },
+  "resources/js/clientes/adicionar.js": {
+    "file": "assets/adicionar-D39d1O4h.js",
+    "name": "adicionar",
+    "src": "resources/js/clientes/adicionar.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_funcoes-_X261RTr.js",
+      "_index-CnACay8y.js"
+    ]
+  },
+  "resources/js/clientes/editar.js": {
+    "file": "assets/editar-q0WIckDu.js",
+    "name": "editar",
+    "src": "resources/js/clientes/editar.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_funcoes-_X261RTr.js",
+      "_index-CnACay8y.js"
+    ]
+  },
+  "resources/js/clientes/funcoes.js": {
+    "file": "assets/funcoes-Bx4rqwy5.js",
+    "name": "funcoes",
+    "src": "resources/js/clientes/funcoes.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/usuarios/funcoes.js",
+      "_index-CnACay8y.js"
+    ]
+  },
+  "resources/js/clientes/index.js": {
+    "file": "assets/index-CDlG7ZeC.js",
+    "name": "index",
+    "src": "resources/js/clientes/index.js",
+    "isEntry": true,
+    "imports": [
+      "_funcoes-_X261RTr.js",
       "resources/js/usuarios/funcoes.js",
       "_index-CnACay8y.js"
     ]
@@ -299,7 +349,7 @@
     ]
   },
   "resources/js/formularios/funcoes.js": {
-    "file": "assets/funcoes-Bx4rqwy5.js",
+    "file": "assets/funcoes-DEySg95q.js",
     "name": "funcoes",
     "src": "resources/js/formularios/funcoes.js",
     "isEntry": true,
@@ -462,28 +512,29 @@
     ]
   },
   "resources/js/projetos/adicionar.js": {
-    "file": "assets/adicionar-Buw4nYoI.js",
+    "file": "assets/adicionar-DVoPxSTT.js",
     "name": "adicionar",
     "src": "resources/js/projetos/adicionar.js",
     "isEntry": true,
     "imports": [
       "_index-CnACay8y.js",
       "resources/js/usuarios/funcoes.js",
-      "_funcoes-C-tuSpZF.js",
+      "_funcoes-B-RNttlI.js",
       "_funcoes-LxE7Tn4q.js",
-      "_funcoes-DeCFn0aS.js"
+      "_funcoes-DeCFn0aS.js",
+      "_funcoes-_X261RTr.js"
     ]
   },
   "resources/js/projetos/editar.js": {
-    "file": "assets/editar-BETmJcNQ.js",
+    "file": "assets/editar-DGly-Iyd.js",
     "name": "editar",
     "src": "resources/js/projetos/editar.js",
     "isEntry": true,
     "imports": [
       "resources/js/usuarios/funcoes.js",
-      "_funcoes-C-tuSpZF.js",
-      "_funcoes-LxE7Tn4q.js",
+      "_funcoes-B-RNttlI.js",
       "_funcoes-DeCFn0aS.js",
+      "_funcoes-_X261RTr.js",
       "_index-CnACay8y.js"
     ]
   },
@@ -498,12 +549,12 @@
     ]
   },
   "resources/js/projetos/index.js": {
-    "file": "assets/index-B29HKBBE.js",
+    "file": "assets/index-DaMeIhRC.js",
     "name": "index",
     "src": "resources/js/projetos/index.js",
     "isEntry": true,
     "imports": [
-      "_funcoes-C-tuSpZF.js",
+      "_funcoes-B-RNttlI.js",
       "resources/js/usuarios/funcoes.js",
       "_index-CnACay8y.js"
     ]

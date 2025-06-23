@@ -125,6 +125,17 @@ Route::middleware(['auth'])->group(function() {
         });
     });
 
+    Route::controller(Controllers\ClienteController::class)->group(function(){
+        Route::prefix('clientes')->group(function(){
+            Route::get('/', 'index');
+            Route::get('lista', 'lista');
+            Route::post('adicionar', 'adicionar');
+            Route::put('editar/{id}', 'editar');
+            Route::get('detalhes/{id}', 'detalhes');
+            Route::get('pesquisar/{parametro}/{valor}', 'pesquisar');
+        });
+    });
+
     Route::controller(Controllers\FormularioController::class)->group(function(){
         Route::prefix('formularios')->group(function(){            
             Route::get('/', 'index');

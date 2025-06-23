@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models;
 class Formulario extends Model
 {
     protected $table = 'formularios';
@@ -37,7 +37,7 @@ class Formulario extends Model
     }
 
     public static function adicionar($dados){                
-        return self::create([
+        $formulario = self::create([
             'nome' => $dados->nome,    
             'projeto_id' => $dados->projeto_id,
             'empresa_id' => session('empresa_id'),
@@ -45,13 +45,15 @@ class Formulario extends Model
             'data_cadastro' => now(),
             'total_perguntas' => self::recuperar_total_perguntas_formulario($dados->projeto_id)
         ]); 
+        Models\Projeto::atualizar_estatisticas_projeto($formulario->id);
     }
 
     public static function editar(string $tag_id, $dados){
-        return self::find($tag_id)->update([
+        $formulario = self::find($tag_id)->update([
             'nome' => $dados->nome,            
             'ativo' => $dados->ativo
         ]);
+        Models\Projeto::atualizar_estatisticas_projeto($formulario->id);
     }
 
     public static function recuperar_total_perguntas_formulario($projeto_id){
