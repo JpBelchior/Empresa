@@ -39,6 +39,52 @@ function validar_email($email)
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }
 
+function datasDoMesVigente() {
+    $dias = [];
+
+    // Data atual
+    $hoje = new DateTime();
+    $ano = $hoje->format('Y');
+    $mes = $hoje->format('m');
+
+    // Último dia do mês
+    $ultimoDia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
+
+    // Loop para preencher o array
+    for ($dia = 1; $dia <= $ultimoDia; $dia++) {
+        $data = DateTime::createFromFormat('Y-m-d', "$ano-$mes-$dia");
+        $dias[] = $data->format('Y-m-d');
+    }
+
+    return $dias;
+}
+
+function diasNumericosDoMesVigente() {
+    $dias = [];
+
+    $hoje = new DateTime();
+    $ano = $hoje->format('Y');
+    $mes = $hoje->format('m');
+
+    // Descobre quantos dias tem o mês atual
+    $ultimoDia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
+
+    for ($dia = 1; $dia <= $ultimoDia; $dia++) {
+        $dias[] = $dia;
+    }
+
+    return $dias;
+}
+
+function percentual($qtdAnterior, $qtdAtual){
+    if ($qtdAnterior == 0) {
+        $percentual = $qtdAtual > 0 ? 100 : 0; // Crescimento total ou nenhum
+    } else {
+        $percentual = (($qtdAtual - $qtdAnterior) / $qtdAnterior) * 100;
+    }
+    return $percentual;
+}
+
 function enviar_email($email_destinatario, $assunto, $html)
 {
     $mail = new PHPMailer(true);

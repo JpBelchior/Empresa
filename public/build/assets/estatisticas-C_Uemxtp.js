@@ -1,1 +1,0 @@
-$(document).ready(function(){axios.get("usuarios/estatisticas").then(o=>{let t=o.data.projetos,r=o.data.formularios;$("#projetos_spinner").hide(),$("#formularios_spinner").hide(),$("#projetos_texto").html(t),$("#formularios_texto").html(r)}).catch(o=>{}).finally(()=>{})});

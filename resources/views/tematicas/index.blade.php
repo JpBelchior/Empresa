@@ -1,8 +1,8 @@
 @extends('estrutura_principal.estrutura')
 @section('conteudo')
-<h1>Temáticas</h1>
+<h1>Pilares</h1>
 <div class="flex justify-center">
-    <x-botao id="btn_modal_adicionar_tematica" label="Adicionar Temática" icon="fas fa-plus" cor="verde"></x-botao>
+    <x-botao id="btn_modal_adicionar_tematica" label="Adicionar Pilar" icon="fas fa-plus" cor="verde"></x-botao>
 </div>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

@@ -167,22 +167,38 @@ export function iniciar_select(id){
     });
 }
 
+export function mesEAnoAtual() {
+  const data = new Date();
+  return data.toLocaleDateString('pt-BR', {
+    month: 'long',
+    year: 'numeric'
+  });
+}
+
 //FORMATAR DATA
-export function formatar_data(data, segundos = true) {    
-    const dataObj = new Date(data);
-    if (isNaN(dataObj)) {
-        return "Data inválida";
-    }
-    const dia = String(dataObj.getDate()).padStart(2, '0');
-    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-    const ano = dataObj.getFullYear();
-    if(segundos){
-        const horas = String(dataObj.getHours()).padStart(2, '0');
-        const minutos = String(dataObj.getMinutes()).padStart(2, '0');
-        const segundos = String(dataObj.getSeconds()).padStart(2, '0');
-        return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
-    }
-    return `${dia}/${mes}/${ano}`;    
+export function formatar_data(data, segundos = true) {
+  if (!data) return "Data inválida";
+
+  const partes = data.split("-");
+  if (partes.length < 3) return "Data inválida";
+
+  const [ano, mes, dia] = partes.map(Number);
+  const dataObj = new Date(ano, mes - 1, dia); // mês é zero-based
+
+  if (isNaN(dataObj)) return "Data inválida";
+
+  const diaStr = String(dataObj.getDate()).padStart(2, '0');
+  const mesStr = String(dataObj.getMonth() + 1).padStart(2, '0');
+  const anoStr = dataObj.getFullYear();
+
+  if (segundos) {
+    const horas = String(dataObj.getHours()).padStart(2, '0');
+    const minutos = String(dataObj.getMinutes()).padStart(2, '0');
+    const seg = String(dataObj.getSeconds()).padStart(2, '0');
+    return `${diaStr}/${mesStr}/${anoStr} ${horas}:${minutos}:${seg}`;
+  }
+
+  return `${diaStr}/${mesStr}/${anoStr}`;
 }
 
 //RETORNAR O BADGE

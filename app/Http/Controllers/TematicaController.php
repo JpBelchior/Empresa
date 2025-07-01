@@ -14,7 +14,7 @@ class TematicaController extends Controller
     use AuthorizesRequests;
 
     public function __construct(){
-        session(["primeira_sessao" => "Temática"]);
+        session(["primeira_sessao" => "Pilares"]);
     }
     
     public function index(){             

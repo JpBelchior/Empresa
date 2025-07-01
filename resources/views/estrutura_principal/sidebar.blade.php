@@ -16,7 +16,7 @@
             <x-opcao_sidebar link="/tipos_empreendimentos" label="Tipos de empreendimentos" icon="fas fa-border-all"></x-opcao_sidebar>
             <x-opcao_sidebar link="/topicos" label="Tópicos" icon="fas fa-book"></x-opcao_sidebar>
             <x-opcao_sidebar link="/areas" label="Áreas" icon="fas fa-border-style"></x-opcao_sidebar>
-            <x-opcao_sidebar link="/tematicas" label="Temáticas" icon="fas fa-braille"></x-opcao_sidebar>
+            <x-opcao_sidebar link="/tematicas" label="Pilares" icon="fas fa-braille"></x-opcao_sidebar>
             <x-opcao_sidebar link="/tags" label="Tags" icon="fas fa-bookmark"></x-opcao_sidebar>
             @endcan
         </ul>

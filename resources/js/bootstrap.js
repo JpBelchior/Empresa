@@ -3,6 +3,32 @@ import $ from 'jquery';
 import 'jquery-mask-plugin';
 import Swal from 'sweetalert2';
 import TomSelect from 'tom-select';
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Title,
+  Tooltip,
+  Legend,
+  BarController,
+  BarElement
+} from 'chart.js';
+
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Title,
+  Tooltip,
+  Legend,
+  BarController,
+  BarElement
+);
 
 //VARIÁVEIS GLOBAIS DA APLICAÇÃO
 window.app_url = import.meta.env.VITE_API_URL;
@@ -28,6 +54,9 @@ window.axios = axios;
 
 //SWEETALERT
 window.Swal = Swal;
+
+//CHART JS
+window.Chart = Chart;
 
 
 

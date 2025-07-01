@@ -26,6 +26,13 @@ body, .breadcrumb-estrutura{
     background-color: #F5F5F6 !important;
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #F5F5F6 !important;
+        color: black !important;
+    }
+}
+
 .swal2-container {
     position: fixed !important;
     z-index: 1050 !important; /* Ajuste o z-index se necessário */
@@ -33,4 +40,25 @@ body, .breadcrumb-estrutura{
 
 nav, aside{
     background-color: #FFFFFF !important;        
+}
+
+.azul{
+    background-color: #43BEDA !important;   
+}
+
+.preto{
+    background-color: black !important;   
+}
+
+.card-dashboard{
+    border-radius: 30px;
+    color: white;
+}
+
+.card-dashboard .titulo{
+    margin-right: 100px;
+}
+
+.card-dashboard .numero_absoluto{
+    font-size: 130%;
 }
