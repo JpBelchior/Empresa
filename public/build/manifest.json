@@ -120,7 +120,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DNH5Y6EK.css",
+    "file": "assets/app-BumBRi0k.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -434,7 +434,7 @@
     ]
   },
   "resources/js/login/login.js": {
-    "file": "assets/login-NTE1gX8O.js",
+    "file": "assets/login-DfrJC4YH.js",
     "name": "login",
     "src": "resources/js/login/login.js",
     "isEntry": true,
