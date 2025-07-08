@@ -464,9 +464,9 @@
       <img src="{{ $imagens['imagem_area'] }}" alt="" srcset="">
     </div>
     <p class="paragrafo text-center mb-4">Referências próximas</p>
-    <p class="paragrafo">{{ $dados->referencias_proximas }}</p>
+    <p class="paragrafo m-4">{{ $dados->referencias_proximas }}</p>
     <p class="paragrafo text-center mb-4">Panorama situacional - Exposição ao Risco</p>
-    <p class="paragrafo">{{ $dados->panorama }}</p>
+    <p class="paragrafo m-4">{{ $dados->panorama }}</p>
   </div>
   <div class="quebra-pagina-normal">
     <div class="cabecalho">
