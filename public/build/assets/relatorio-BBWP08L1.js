@@ -1,0 +1,1 @@
+import{a as r}from"./funcoes-DyzI_Slr.js";import"./index-BxfsJSEQ.js";$("#btn_modal_relatorio").click(function(){let o=$("#formulario_id").val();$("input[name='relatorio_formulario_id']").val(o),r("modal_relatorio")});

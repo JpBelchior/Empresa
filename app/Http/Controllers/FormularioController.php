@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models;
+use App\Models\Arquivo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -277,5 +278,149 @@ class FormularioController extends Controller
             'usuarios.usuario'
         ])
         ->find($usuario_id);
+    }
+
+    public function relatorio_personalizado(Request $request){        
+        $dados = [
+            'dados' => $request,
+            'dados_modelo' => self::modelo1($request),            
+            'imagens' => [
+                'logo_empresa' => Arquivo::converter_imagem_base_64($request, 'logo_empresa'),
+                'logo_cliente' => Arquivo::converter_imagem_base_64($request, 'logo_cliente'),                
+                'imagem_area' => Arquivo::converter_imagem_base_64($request, 'imagem_area'),
+            ]            
+        ];        
+        return view('formularios.modelos_de_relatorio.modelo1', $dados);
+    }
+
+    private static function modelo1($request){
+        $total_perguntas_respondidas = Models\Resposta::where("formulario_id", $request->relatorio_formulario_id)->count();        
+        $total_pilares = [
+            'Pessoas' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Pessoas'),
+            'Tecnologia' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Tecnologia'),
+            'Processos' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Processos'),
+            'Informação' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Informação'),
+            'Gestão' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Gestão'),
+        ];
+        $porcentagem_pilar = [
+            'Pessoas' => percentual_puro($total_perguntas_respondidas, $total_pilares['Pessoas']),
+            'Tecnologia' => percentual_puro($total_perguntas_respondidas, $total_pilares['Tecnologia']),
+            'Processos' => percentual_puro($total_perguntas_respondidas, $total_pilares['Processos']),
+            'Informação' => percentual_puro($total_perguntas_respondidas, $total_pilares['Informação']),
+            'Gestão' => percentual_puro($total_perguntas_respondidas, $total_pilares['Gestão']),
+        ];
+        return [
+            'porcentagem_pilar' => $porcentagem_pilar,
+            'respostas' => self::todas_perguntas_respondidas($request->relatorio_formulario_id)
+        ];
+    }
+
+    private static function total_perguntas_respondidas_pilar($formulario_id, $pilar){
+        $tematica = Models\Tematica::where('nome', $pilar)->first();
+        if(!$tematica){
+            return 0;
+        }
+        return DB::table("respostas")->join("perguntas", "respostas.pergunta_id", "=", "perguntas.id")
+        ->where('respostas.formulario_id', $formulario_id)->where('perguntas.tematica_id', $tematica->id)->count();        
+    }
+
+    private static function todas_perguntas_respondidas($formulario_id){
+        $lista_pilares = Models\Tematica::pluck('id', 'nome')->toArray();
+        $respostas = DB::table("respostas")
+        ->join("perguntas", "respostas.pergunta_id", "=", "perguntas.id")
+        ->where('respostas.formulario_id', $formulario_id)
+        ->orderBy('respostas.data_cadastro', 'desc')        
+        ->get();
+        $lista = [];
+        $posicao = 1;
+        foreach($respostas as $resposta){
+            $nome_pilar = self::escolher_imagem_pilar(array_search($resposta->tematica_id, $lista_pilares));
+            $l = [
+                'pilar' => $nome_pilar,
+                'nc' => $posicao,
+                'nao_conformidade' => self::classificar_vulnerabilidade($resposta->nivel_adequacao),
+                'topicos' => self::pegar_topicos_pergunta($resposta->pergunta_id),
+                'criticidade' => self::classificar_risco($resposta->nivel_probabilidade,$resposta->nivel_impacto),
+                'recomendacao' => $resposta->resposta,
+                'prioridade' => self::classificar_prioridade($resposta->nivel_esforco, $resposta->nivel_valor),
+                'risco' => $resposta->esta_em_risco_altissimo
+            ];
+            $lista[] = $l;
+            $posicao++;            
+        }
+        Log::info($lista);
+        return $lista;
+    }
+
+    private static function escolher_imagem_pilar($pilar){
+        $imagem = "";
+        switch($pilar){
+            case 'Pessoas': $imagem = asset('img/simbolo_pessoas_azul.png'); break;
+            case 'Tecnologia': $imagem = asset('img/simbolo_tecnologia_azul.png'); break;
+            case 'Processos': $imagem = asset('img/simbolo_processos_azul.png'); break;
+            case 'Informação': $imagem = asset('img/simbolo_informacao_azul.png'); break;
+            case 'Gestão': $imagem = asset('img/simbolo_gestao_azul.png'); break;
+            default: $imagem = ""; break;
+        }
+        return $imagem;
+    }
+
+    private static function classificar_risco($probabilidade, $impacto){
+        $produto = $probabilidade * $impacto;
+        $classe = "";
+        if($produto >= 1 && $produto <= 3){
+            $classe = "verde-claro";
+        }
+        if($produto >= 4 && $produto <= 6){
+            $classe = "verde-escuro";
+        }
+        if($produto >= 7 && $produto <= 12){
+            $classe = "amarelo";
+        }
+        if($produto >= 13 && $produto <= 20){
+            $classe = "laranja";
+        }
+        if($produto >= 20 && $produto <= 25){
+            $classe = "vermelho-escuro";
+        }
+        return $classe;
+    }
+
+    private static function classificar_vulnerabilidade($vulnerabilidade){
+        $nivel = "";
+        switch($vulnerabilidade){
+            case 1: $nivel = "Atende plenamento"; break;
+            case 2: $nivel = "Atende após ajustes"; break;
+            case 3: $nivel = "Atende após ajustes médios"; break;
+            case 4: $nivel = "Não atende"; break;
+            case 5: $nivel = "Não existe"; break;
+            default: $nivel = ""; break;            
+        }
+        return $nivel;
+    }
+
+    private static function pegar_topicos_pergunta($pergunta_id){
+        $topicos_pergunta = Models\PerguntaTopico::where("pergunta_id", $pergunta_id)->pluck('topico_id')->toArray();
+        $topicos = Models\Topico::whereIn('id', $topicos_pergunta)->select('nome')->get();
+        $lista = "";
+        foreach($topicos as $topico){
+            $lista .= " ".$topico->nome;
+        }
+        return $lista;
+    }
+
+    private static function classificar_prioridade($esforco, $valor){
+        $produto = $esforco * $valor;
+        $classe = "";
+        if($produto >= getenv("VITE_LONGO_PRAZO_MINIMO") && $produto <= getenv("VITE_LONGO_PRAZO_MAXIMO")){
+            $classe = "verde-claro";
+        }
+        if($produto >= getenv("VITE_MEDIO_PRAZO_MINIMO") && $produto <= getenv("VITE_MEDIO_PRAZO_MAXIMO")){
+            $classe = "amarelo";
+        }
+        if($produto >= getenv("VITE_CURTO_PRAZO_MINIMO") && $produto <= getenv("VITE_CURTO_PRAZO_MAXIMO")){
+            $classe = "vermelho-escuro";
+        }
+        return $classe;        
     }
 }

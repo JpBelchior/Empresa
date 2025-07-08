@@ -7,13 +7,15 @@
     'class' => '',
     'maxlength' => '',
     'obrigatorio' => '',
-    'accept' => ''
+    'accept' => '',
+    'name' => ''
 ])
 <div>
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $label }} @if($obrigatorio == 'sim')<span class="text-red-600">*</span>@endif</label>
-    <input 
+    <input
+        name="{{ $name }}"
         type="{{ $type }}" 
-        id="{{ $id }}" 
+        @if($id != '') id="{{ $id }}" @endif
         placeholder="{{ $placeholder }}" 
         value="{{ $value }}" 
         maxlength="{{ $maxlength }}" 

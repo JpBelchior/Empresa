@@ -90,7 +90,7 @@ export default defineConfig({
                 //AUDITORIA
                 'resources/js/auditoria/index.js'
             ],
-            refresh: true,
+            refresh: false,
         }),
         tailwindcss(),
     ],

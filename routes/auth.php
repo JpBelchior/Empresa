@@ -142,6 +142,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get('interagir/{id}', 'interagir');
             //NOVA REGRA DE NEGOCIO
             Route::get('formulario/{id}', 'formulario');
+            Route::post('relatorio_personalizado', 'relatorio_personalizado');
             Route::post('responder_pergunta', 'responder_pergunta');
 
             Route::post('registrar_perguntas_em_espera/{id}', 'registrar_perguntas_em_espera');
@@ -168,4 +169,8 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/relatorio/{formato}/{inicio}/{fim}', 'relatorio');
         });
     });
+
+    /* Route::get('teste', function(){
+        return view('formularios.modelos_de_relatorio.modelo1');
+    }); */
 });

@@ -120,7 +120,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BumBRi0k.css",
+    "file": "assets/app-sj4oKhjv.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -381,7 +381,7 @@
     ]
   },
   "resources/js/formularios/relatorio.js": {
-    "file": "assets/relatorio-w_jwmFaw.js",
+    "file": "assets/relatorio-BBWP08L1.js",
     "name": "relatorio",
     "src": "resources/js/formularios/relatorio.js",
     "isEntry": true,

@@ -76,13 +76,17 @@ function diasNumericosDoMesVigente() {
     return $dias;
 }
 
-function percentual($qtdAnterior, $qtdAtual){
+function percentual($qtdAnterior, $qtdAtual, $com_sinal = true){
     if ($qtdAnterior == 0) {
         $percentual = $qtdAtual > 0 ? 100 : 0; // Crescimento total ou nenhum
     } else {
         $percentual = (($qtdAtual - $qtdAnterior) / $qtdAnterior) * 100;
     }
-    return $percentual;
+    return $com_sinal ? $percentual : abs($percentual);
+}
+
+function percentual_puro($qtdAnterior, $qtdAtual){    
+    return (($qtdAtual) / $qtdAnterior) * 100;
 }
 
 function enviar_email($email_destinatario, $assunto, $html)
