@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="w-full overflow-x-auto">
-        <canvas id="grafico_projetos" width="600" height="200" class="hidden"></canvas>
+        <canvas id="grafico_projetos" class="hidden w-full h-auto"></canvas>
     </div>    
 </div>
 <div class="flex flex-col md:flex-row gap-6 w-full">
