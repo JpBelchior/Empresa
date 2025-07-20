@@ -134,6 +134,7 @@ function renderizar_grafico_projetos(dias, quantidade_projetos, quantidade_risco
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: { beginAtZero: true }
             }

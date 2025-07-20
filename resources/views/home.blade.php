@@ -74,7 +74,7 @@
     </div>
 
     <div class="relative w-full">
-        <canvas id="grafico_projetos" class="hidden w-full h-auto aspect-[3/1]"></canvas>
+        <canvas id="grafico_projetos" class="w-full min-h-[300px] h-auto"></canvas>
     </div>
 </div>
 <div class="flex flex-col md:flex-row gap-6 w-full">

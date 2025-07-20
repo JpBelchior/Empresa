@@ -120,7 +120,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CBnAwOf1.css",
+    "file": "assets/app-rAoVO41J.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -754,7 +754,7 @@
     ]
   },
   "resources/js/usuarios/estatisticas.js": {
-    "file": "assets/estatisticas-BxuY9mqh.js",
+    "file": "assets/estatisticas-CeGmXHZf.js",
     "name": "estatisticas",
     "src": "resources/js/usuarios/estatisticas.js",
     "isEntry": true,
