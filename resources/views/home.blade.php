@@ -50,7 +50,7 @@
         </div>
     </a>
 </div>
-<div class="my-4">
+<div class="my-4 w-full">
     <div id="grafico_projetos_spinner" class="text-center">
         <div role="status">
             <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,7 +59,9 @@
             </svg>            
         </div>
     </div>
-    <canvas id="grafico_projetos" width="600" height="200" class="hidden"></canvas>
+    <div class="w-full overflow-x-auto">
+        <canvas id="grafico_projetos" width="600" height="200" class="hidden"></canvas>
+    </div>    
 </div>
 <div class="flex flex-col md:flex-row gap-6 w-full">
     
