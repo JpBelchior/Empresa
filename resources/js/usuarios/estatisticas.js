@@ -224,6 +224,7 @@ function ajustarLarguraCanvas(canvasId) {
 window.addEventListener('resize', () => {
     ajustarLarguraCanvas('grafico_pilares');
     ajustarLarguraCanvas('grafico_topicos');
+    ajustarLarguraCanvas('grafico_projetos');
 });
 
 // executar após carregamento inicial
