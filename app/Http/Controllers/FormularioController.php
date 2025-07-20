@@ -75,7 +75,7 @@ class FormularioController extends Controller
                 $risco_altissimo = $resposta->esta_em_risco_altissimo ? 'sim' : 'nao';
                 $prazo = $resposta->prazo;
                 $foto = $resposta->arquivo_id;
-            }
+            }            
             $perguntas[$i]->foto = $foto;
             $perguntas[$i]->respondido = $respondido;
             $perguntas[$i]->nivel_adequacao = $nivel_adequacao;             
@@ -281,6 +281,25 @@ class FormularioController extends Controller
     }
 
     public function relatorio_personalizado(Request $request){        
+        $request->validate([
+            'relatorio_formulario_id' => 'required',
+            'nome_empresa' => 'required|max:255',
+            'nome_cliente' => 'required|max:255',
+            'objetivo' => 'required|max:500',
+            'observacoes' => 'required|max:500',
+            'localizacao_analise' => 'required|max:255',
+            'referencias_proximas' => 'required|max:255',
+            'panorama' => 'required|max:255',
+            'logo_empresa' => 'required|file',
+            'logo_cliente' => 'required|file',
+        ], 
+        [
+            'required' => 'O campo :attribute é obrigatório.',
+            'max' => 'O campo :attribute deve ter no máximo :max caracteres.',
+            'logo_empresa.file' => 'Você precisa enviar o arquivo da logo da empresa.',
+            'logo_cliente.file' => 'Você precisa enviar o arquivo da logo do cliente.',
+            'imagem_area.file' => 'Você precisa enviar o arquivo da localização da análise.',
+        ]);
         $dados = [
             'dados' => $request,
             'dados_modelo' => self::modelo1($request),            

@@ -8,7 +8,7 @@
 </script>
 <h1>Funcionários</h1>
 <h3>Limite de usuários: {{ session('limite_usuarios_empresa') }}</h3>
-<div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+<div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50" role="alert">
   <span class="font-medium">Para que o funcionário Rh seja adicionado, será necessário solicitar ao administrador do sistema!</span>
 </div>
 @can('rh', App\Models\User::class)
@@ -17,8 +17,8 @@
 </div>
 @endcan
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase">
             <tr>
                 <th scope="col" class="px-6 py-3">
                     Ativo

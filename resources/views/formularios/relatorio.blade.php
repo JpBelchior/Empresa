@@ -32,8 +32,8 @@
     <h1 class="my-4">{{ $formulario->nome }}</h1>
     <h2>Respostas ({{ count($respostas) }})</h2>
     <div class="relative overflow-x-auto">
-        <table class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">                
+        <table class="text-sm text-left rtl:text-right text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase">                
                 <tr>
                     <th class="px-6 py-3">
                         Pergunta
@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 @foreach($respostas as $resposta)
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                <tr class="bg-white border-b border-gray-200">
                     <td class="pergunta px-6 py-4">
                         {{ $resposta->pergunta->titulo }}
                     </td>

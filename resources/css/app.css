@@ -55,10 +55,33 @@ nav, aside{
     color: white;
 }
 
-.card-dashboard .titulo{
-    margin-right: 100px;
+.card-dashboard .titulo{    
+    width: 100px;
+    font-size: 150%;
 }
 
 .card-dashboard .numero_absoluto{
-    font-size: 130%;
+    font-size: 200%;
+}
+
+.card-dashboard .estatisticas_load{
+    font-size: 110%;
+}
+
+.completo{
+    width: 100px;
+    background-color: #228B22;
+    color: white;
+    border-radius: 10px;
+    padding: 1px;
+    text-align: center;
+}
+
+.andamento{
+    width: 100px;
+    background-color: 	#FFD700;
+    color: white;    
+    border-radius: 10px;
+    padding: 2px;
+    text-align: center;
 }

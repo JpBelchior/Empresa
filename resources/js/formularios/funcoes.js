@@ -6,10 +6,10 @@ export function lista_formularios() {
         .then(response => {
             let formularios = response.data;            
             for (let i in formularios) {
-                let formulario = `  <a href="/formularios/formulario/${formularios[i].id}" class="w-full block p-6 bg-white border border-black-800 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${formularios[i].nome}</h5>
-                                        <p class="font-normal text-gray-700 dark:text-gray-400">Data de início: ${formatar_data(formularios[i].data_cadastro)}</p>
-                                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                let formulario = `  <a href="/formularios/formulario/${formularios[i].id}" class="mb-4 w-full block p-6 bg-white border border-black-800 rounded-lg shadow-sm hover:bg-gray-100">
+                                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${formularios[i].nome}</h5>
+                                        <p class="font-normal text-gray-700">Data de início: ${formatar_data(formularios[i].data_cadastro)}</p>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
                                             <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${formularios[i].porcentagem_preenchimento}%"></div>
                                         </div>
                                         <div class="flex justify-between">
@@ -40,14 +40,14 @@ export function lista_respostas(){
         let respostas = response.data;                
         for(let i in respostas){    
             let imagem = respostas[i].arquivo_id == null ? "<p>(SEM FOTO)</p>" : `<img src="${app_url+"/arquivos/exibir/"+respostas[i].arquivo_id}">`;
-            let linha = `<tr class="bg-white dark:bg-gray-800">                        
+            let linha = `<tr class="bg-white">                        
                             <td class="px-6 py-4">
                                 <p>Pergunta: ${respostas[i].pergunta.titulo}</p>
                                 <p>Resposta: ${respostas[i].resposta}</p>
                                 <p>Responsável: ${respostas[i].usuario.nome}</p>
                                 <p>Momento do cadastro: ${formatar_data(respostas[i].data_cadastro, true)}</p>                                
                                 ${imagem}                                                                
-                                <button id="excluir_resposta${respostas[i].id}" resposta="${respostas[i].id}" class="excluir_resposta px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-blue-700 dark:focus:ring-red-800">
+                                <button id="excluir_resposta${respostas[i].id}" resposta="${respostas[i].id}" class="excluir_resposta px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </td>                        

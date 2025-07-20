@@ -6,3 +6,5 @@ $("#btn_modal_relatorio").click(function(){
     $("input[name='relatorio_formulario_id']").val(formulario_id);    
     abrir_modal('modal_relatorio');
 });
+
+$("#panorama").val(panorama);

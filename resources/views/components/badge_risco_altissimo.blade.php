@@ -3,8 +3,8 @@
 ])
 <div>
     @if($risco_altissimo == 'sim')
-        <span class="bg-red-600 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-600">Risco altíssimo</span>
+        <span class="bg-red-600 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">Risco altíssimo</span>
     @else
-        <span class="bg-green-900 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900">Risco insignificante</span>
+        <span class="bg-green-900 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">Risco insignificante</span>
     @endif
 </div>

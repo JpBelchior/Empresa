@@ -6,12 +6,12 @@ $(document).ready(function () {
     renderizar_perguntas();
     let lista = "";
     for(let i in todas_perguntas){
-        let pergunta = `<div id="pergunta${todas_perguntas[i].id}" class="my-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">    
+        let pergunta = `<div id="pergunta${todas_perguntas[i].id}" class="my-4 bg-white border border-gray-200 rounded-lg shadow-sm">    
                             <div class="p-5">        
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${todas_perguntas[i].titulo}</h5>                                        
-                                <textarea placeholder="Resposta..." class="resposta p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>                                
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${todas_perguntas[i].titulo}</h5>                                        
+                                <textarea placeholder="Resposta..." class="resposta p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>                                
                                 <div class="flex items-start gap-4">
-                                    <button id="btn_registrar_pergunta_id_${todas_perguntas[i].id}" propriedade="${todas_perguntas[i].id}" type="button" class="registrar flex justify-center mt-4 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>                                
+                                    <button id="btn_registrar_pergunta_id_${todas_perguntas[i].id}" propriedade="${todas_perguntas[i].id}" type="button" class="registrar flex justify-center mt-4 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Registrar</button>                                
                                     <div>                                    
                                         <label class="block text-gray-700 font-bold mb-2" for="fileUpload">+ FOTO</label>
                                         <input

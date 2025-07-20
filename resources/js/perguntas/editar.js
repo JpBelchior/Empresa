@@ -91,11 +91,11 @@ $(document).on('click', '.editar', function(){
         select_tag.setValue(opcoes);
         let fotos = dados.fotos;
         for(let i in fotos){            
-            let foto = `<div id="foto${numero_foto_editar}" class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">                            
+            let foto = `<div id="foto${numero_foto_editar}" class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">                            
                             <img class="rounded-t-lg" src="${app_url}/arquivos/exibir/${fotos[i].arquivo_id}" alt="" />                            
                             <div class="p-5">                                
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${fotos[i].legenda}</h5>                                
-                                <button foto="foto${numero_foto_editar}" foto_id="${fotos[i].id}" type="button" class="editar_pergunta_excluir_foto text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"><i class="fas fa-times"></i></button>
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">${fotos[i].legenda}</h5>                                
+                                <button foto="foto${numero_foto_editar}" foto_id="${fotos[i].id}" type="button" class="editar_pergunta_excluir_foto text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"><i class="fas fa-times"></i></button>
                             </div>
                         </div>`;
             $("#editar_pergunta_fotos").append(foto);
@@ -160,9 +160,9 @@ $("#btn_editar_pergunta").click(function(){
 
 $("#btn_adicionar_foto_editar_pergunta").click(function(){
     let elemento = `<div id="foto${numero_foto_editar}" class="my-2 border border-radius">                        
-                        <input class="foto_editar mb-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept=".png, .jpg, .jpeg">
-                        <input type="text"  class="legenda_editar block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Legenda...">
-                        <button foto="foto${numero_foto_editar}" type="button" class="adicionar_pergunta_excluir_foto text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"><i class="fas fa-times"></i></button>
+                        <input class="foto_editar mb-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none " type="file" accept=".png, .jpg, .jpeg">
+                        <input type="text"  class="legenda_editar block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Legenda...">
+                        <button foto="foto${numero_foto_editar}" type="button" class="adicionar_pergunta_excluir_foto text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"><i class="fas fa-times"></i></button>
                     </div>`;
     $("#editar_pergunta_fotos").append(elemento);                    
     numero_foto_editar++;
