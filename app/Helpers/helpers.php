@@ -86,7 +86,11 @@ function percentual($qtdAnterior, $qtdAtual, $com_sinal = true){
 }
 
 function percentual_puro($qtdAnterior, $qtdAtual){    
-    return (($qtdAtual) / $qtdAnterior) * 100;
+    if($qtdAnterior == 0 || $qtdAnterior == 0){
+        return 0;
+    }        
+    $p = (($qtdAtual) / $qtdAnterior) * 100;
+    return number_format($p,2,'.',',');
 }
 
 function enviar_email($email_destinatario, $assunto, $html)

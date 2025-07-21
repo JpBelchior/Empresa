@@ -114,31 +114,32 @@ class UsuarioController extends Controller
         $ano_anterior = $dataAnterior->format('Y');
         //PROJETOS
         $quantidade_projetos_criados_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
-        ->whereMonth('data_inicio', $mes_atual)
+        ->whereMonth('data_inicio', $mes_atual)        
         ->where('empresa_id', session('empresa_id'))
-        ->count();
+        ->count();        
         $quantidade_projetos_criados_mes_anterior = Models\Projeto::whereYear('data_inicio', $ano_anterior)
-        ->whereMonth('data_inicio', $mes_anterior)
+        ->whereMonth('data_inicio', $mes_anterior)        
         ->where('empresa_id', session('empresa_id'))
-        ->count();
+        ->count();        
         //VULNERABILIDADES
         $quantidade_vulnerabilidades_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
-        ->whereMonth('data_inicio', $mes_atual)
+        ->whereMonth('data_inicio', $mes_atual)        
         ->where('empresa_id', session('empresa_id'))
-        ->sum('total_vulnerabilidades');
+        ->sum('total_vulnerabilidades');        
         $quantidade_vulnerabilidades_mes_anterior = Models\Projeto::whereYear('data_inicio', $ano_anterior)
         ->whereMonth('data_inicio', $mes_anterior)
+        ->whereYear('data_inicio', $ano_atual)
         ->where('empresa_id', session('empresa_id'))
-        ->sum('total_vulnerabilidades');
+        ->sum('total_vulnerabilidades');        
         //RISCOS ALTÍSSIMOS
         $quantidade_riscos_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
         ->whereMonth('data_inicio', $mes_atual)
         ->where('empresa_id', session('empresa_id'))
-        ->sum('total_riscos_altissimos');
+        ->sum('total_riscos_altissimos');        
         $quantidade_riscos_mes_anterior = Models\Projeto::whereYear('data_inicio', $ano_anterior)
         ->whereMonth('data_inicio', $mes_anterior)
         ->where('empresa_id', session('empresa_id'))
-        ->sum('total_riscos_altissimos');
+        ->sum('total_riscos_altissimos');        
         //RECOMENDAÇÕES
         $quantidade_recomendacoes_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
         ->whereMonth('data_inicio', $mes_atual)
@@ -238,7 +239,7 @@ class UsuarioController extends Controller
                 'status' => $projeto->status,
                 'criador' => $projeto->usuario_criador?->nome,
             ];
-        });
+        });        
         $dados = [
             'qtd_projetos_mes' => $quantidade_projetos_criados_mes_vigente,
             'percentual_projetos' => percentual($quantidade_projetos_criados_mes_anterior, $quantidade_projetos_criados_mes_vigente),

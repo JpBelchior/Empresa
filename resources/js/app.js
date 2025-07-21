@@ -185,7 +185,7 @@ export function formatar_data(data, segundos = true) {
   const [ano, mes, dia] = partes.map(Number);
   const dataObj = new Date(ano, mes - 1, dia); // mês é zero-based
 
-  if (isNaN(dataObj)) return "Data inválida";
+  if (isNaN(dataObj)) return "Data inválidah";
 
   const diaStr = String(dataObj.getDate()).padStart(2, '0');
   const mesStr = String(dataObj.getMonth() + 1).padStart(2, '0');
@@ -199,6 +199,17 @@ export function formatar_data(data, segundos = true) {
   }
 
   return `${diaStr}/${mesStr}/${anoStr}`;
+}
+
+export function formatar_data_simples(dataHora) {
+  // Divide a data da hora
+  const [data] = dataHora.split(" ");
+
+  // Divide ano, mês e dia
+  const [ano, mes, dia] = data.split("-");
+
+  // Retorna no formato d/m/Y
+  return `${dia}/${mes}/${ano}`;
 }
 
 //RETORNAR O BADGE

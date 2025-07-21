@@ -30,7 +30,7 @@ class ProjetoController extends Controller
             'cliente'
         ])
         ->where('empresa_id', session('empresa_id'))
-        ->orderBy('nome', 'asc')->get();
+        ->orderBy('data_inicio', 'desc')->get();
     }
 
     public function adicionar(Request $request){                           

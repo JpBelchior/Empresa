@@ -79,22 +79,20 @@ $(document).ready(function () {
 
 function badge_projeto(status) {
     let badge = "";
-    switch (status) {
-        //case "Completo": badge = `<span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">Completo</span>`; break;
+    switch (status) {        
         case "Completo": badge = `<div class="completo">${status}</div>`; break;
-        case "Em andamento": badge = `<div class="andamento">${status}</div>`; break;
-        //case "Em andamento": badge = `<span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">Em Andamento</span>`; break;
+        case "Em andamento": badge = `<div class="andamento">${status}</div>`; break;        
         default: badge = `<span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">${status}</span>`; break;
     }
     return badge;
 }
 
 function apresentacao_porcentagem(numero) {
-    let elemento = "-";
+    let elemento = "";
     if (numero > 0) {
-        elemento = `+ ${numero} %`;
+        elemento = `+ ${numero.toFixed(2)} %`;
     } else if (numero < 0) {
-        elemento = `- ${numero} %`;
+        elemento = `- ${numero.toFixed(2)} %`;
     }
     return elemento;
 }

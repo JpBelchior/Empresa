@@ -32,7 +32,7 @@ class FormularioController extends Controller
             'projeto'
         ])
         ->where('empresa_id', session('empresa_id'))
-        ->orderBy('nome', 'asc')->get();
+        ->orderBy('data_cadastro', 'desc')->get();
     }
 
     public function interagir($formulario_id){
