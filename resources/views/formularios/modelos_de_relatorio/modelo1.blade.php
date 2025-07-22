@@ -84,6 +84,7 @@
         min-height: 100vh;
         box-sizing: border-box;
         page-break-after: always;
+        page-break-inside: avoid;
       }
 
       .quebra-pagina-normal {
