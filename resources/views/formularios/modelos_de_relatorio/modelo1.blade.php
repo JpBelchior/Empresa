@@ -202,6 +202,7 @@
         height: 100px !important;
         margin: 10px;
         border: 1px solid black;
+        object-fit: contain; /* Ou use 'cover' dependendo do que preferir */
       }
 
       #pagina1_divisao1 {
