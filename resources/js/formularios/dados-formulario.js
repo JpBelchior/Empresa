@@ -290,7 +290,7 @@ $("#btn_salvar_respostas").click(async function () {
     };
 
     // 2. Se OFFLINE, salva localmente
-    if (typeof online !== "undefined" && online === false) {
+    if (online === false) {
         try {
             let tx = db.transaction(["respostas"], "readwrite");
             let store = tx.objectStore("respostas");
