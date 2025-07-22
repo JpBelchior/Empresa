@@ -42,6 +42,20 @@
 
     /* LightGreen */
 
+
+    @media screen and (max-width: 767px) {
+      .pagina {
+        width: 100vw !important;
+        min-height: 100vh !important;
+        box-sizing: border-box;
+        padding: 16px;
+        margin: 0 auto !important;
+        page-break-after: always;
+        overflow: hidden;
+        background: white;
+      }
+    }
+
     @media print {
       * {
         -webkit-print-color-adjust: exact;
