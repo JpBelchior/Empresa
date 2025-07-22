@@ -1,6 +1,12 @@
 @extends('estrutura_principal.estrutura')
 @section('conteudo')
 @vite('resources/css/formulario.css')
+<div class="flex justify-center">
+    <div id="online" class="p-4 mb-4 text-sm rounded-lg" role="alert">
+        <span class="font-medium text-center">ONLINE</span>
+    </div>
+</div>
+
 <h1 id="nome_formulario">Formulário {{ $formulario->nome }}</h1>
 <input id="formulario_id" type="hidden" value="{{ $formulario->id }}">
 <h2>{{ count($perguntas) }} perguntas</h2>

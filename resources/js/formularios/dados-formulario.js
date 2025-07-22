@@ -5,6 +5,19 @@ $(".responder-pergunta").click(function () {
     let pergunta = $(this).attr('pergunta');
     $("#btn_salvar_respostas").attr('pergunta', pergunta);
     let formulario = $("#formulario_id").val();
+    if(online == false){
+        badge_adequacao(false);
+        badge_prazo(false);
+        badge_risco_altissimo(false);
+        $("input[name='adequacao']").prop('checked', false);
+        $("input[name='probabilidade']").prop('checked', false);
+        $("input[name='impacto']").prop('checked', false);
+        $("input[name='esforco']").prop('checked', false);
+        $("input[name='valor']").prop('checked', false);
+        $("#resposta").val("");
+        abrir_modal("modal_dados_formulario");
+        return;
+    }
     axios.get(`${app_url}/respostas/detalhes_resposta/${formulario}/${pergunta}`)
         .then(response => {
             let pergunta = response.data.pergunta;
@@ -117,8 +130,78 @@ function badge_prazo(mostrar = true) {
 
 }
 
-$("#btn_salvar_respostas").click(function () {
-    habilitar_botao('btn_salvar_respostas', false);
+// 1. Inicializar ou abrir o IndexedDB
+let db;
+let request = indexedDB.open("FormulariosDB", 1);
+
+request.onupgradeneeded = function (event) {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains("respostas")) {
+        db.createObjectStore("respostas", { keyPath: "id", autoIncrement: true });
+    }
+};
+
+request.onsuccess = function (event) {
+    db = event.target.result;
+};
+
+request.onerror = function (event) {
+    console.error("Erro ao abrir o IndexedDB", event);
+};
+
+/* $("#btn_salvar_respostas").click(async function () {
+    habilitar_botao('btn_salvar_respostas', false);    
+    if(online == false){
+        let pergunta = $(this).attr('pergunta');
+        let adequacao = $("input[name='adequacao']:checked").val() || 1;
+        let probabilidade = $("input[name='probabilidade']:checked").val() || 1;
+        let impacto = $("input[name='impacto']:checked").val() || 1;
+        let esforco = $("input[name='esforco']:checked").val() || 1;
+        let valor = $("input[name='valor']:checked").val() || 1;
+        let resposta = $("#resposta").val();
+        let formulario_id = $("#formulario_id").val();
+        let fotoInput = document.getElementById("foto");
+        let foto = fotoInput.files && fotoInput.files[0];
+
+        // Converte a imagem para base64 (ou null)
+        let fotoBase64 = await toBase64(foto);
+
+        // 1. Salva localmente no IndexedDB
+        let dadosResposta = {
+            timestamp: new Date().toISOString(),
+            formulario_id,
+            pergunta_id: pergunta,
+            adequacao,
+            probabilidade,
+            impacto,
+            esforco,
+            valor,
+            resposta,
+            fotoBase64
+        };
+
+        try {
+            let tx = db.transaction(["respostas"], "readwrite");
+            let store = tx.objectStore("respostas");
+            store.add(dadosResposta);
+
+            tx.oncomplete = function () {            
+                sucesso("Resposta salva localmente!");
+            };
+
+            tx.onerror = function (event) {
+                erro("Erro ao salvar localmente");
+                console.error("Erro ao salvar no IndexedDB:", event);
+            };
+        } catch (e) {
+            erro("Erro ao salvar localmente");
+            console.error("Erro inesperado com IndexedDB:", e);
+        }
+        finally{
+            habilitar_botao('btn_salvar_respostas', true);
+        }
+        return;
+    }
     let pergunta = $(this).attr('pergunta');
     let adequacao = $("input[name='adequacao']:checked").val();
     adequacao = adequacao == undefined ? 1 : adequacao;
@@ -140,7 +223,7 @@ $("#btn_salvar_respostas").click(function () {
     form.append("esforco", esforco);
     form.append("valor", valor);
     form.append("resposta", resposta);
-    form.append("foto", document.getElementById("foto").files[0]);
+    form.append("foto", document.getElementById("foto").files[0]);    
     axios.post("/formularios/responder_pergunta", form)
         .then(response => {
             sucesso(response.data.mensagem);
@@ -152,3 +235,210 @@ $("#btn_salvar_respostas").click(function () {
             habilitar_botao('btn_salvar_respostas', true);
         });
 });
+
+async function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        if (!(file instanceof Blob)) {
+            return resolve(null); // ignora se não for imagem
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+} */
+
+// Converte imagem em base64 (ou retorna null)
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        if (!(file instanceof Blob)) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+$("#btn_salvar_respostas").click(async function () {
+    habilitar_botao('btn_salvar_respostas', false);
+
+    // 1. Coleta de dados do formulário
+    let pergunta = $(this).attr('pergunta');
+    let adequacao = $("input[name='adequacao']:checked").val() || 1;
+    let probabilidade = $("input[name='probabilidade']:checked").val() || 1;
+    let impacto = $("input[name='impacto']:checked").val() || 1;
+    let esforco = $("input[name='esforco']:checked").val() || 1;
+    let valor = $("input[name='valor']:checked").val() || 1;
+    let resposta = $("#resposta").val();
+    let formulario_id = $("#formulario_id").val();
+    let fotoInput = document.getElementById("foto");
+    let foto = fotoInput.files && fotoInput.files[0];
+    let fotoBase64 = await toBase64(foto);
+
+    // Objeto com os dados
+    const dadosResposta = {
+        timestamp: new Date().toISOString(),
+        formulario_id,
+        pergunta_id: pergunta,
+        adequacao,
+        probabilidade,
+        impacto,
+        esforco,
+        valor,
+        resposta,
+        fotoBase64
+    };
+
+    // 2. Se OFFLINE, salva localmente
+    if (typeof online !== "undefined" && online === false) {
+        try {
+            let tx = db.transaction(["respostas"], "readwrite");
+            let store = tx.objectStore("respostas");
+            store.add(dadosResposta);
+
+            tx.oncomplete = () => sucesso("Resposta salva localmente!");
+            tx.onerror = (event) => {
+                erro("Erro ao salvar localmente");
+                console.error("Erro IndexedDB:", event);
+            };
+        } catch (e) {
+            erro("Erro ao salvar localmente");
+            console.error("Erro inesperado:", e);
+        } finally {
+            habilitar_botao('btn_salvar_respostas', true);
+        }
+        return;
+    }
+
+    // 3. Se ONLINE, envia com Axios
+    const form = new FormData();
+    form.append("formulario_id", formulario_id);
+    form.append("pergunta_id", pergunta);
+    form.append("adequacao", adequacao);
+    form.append("probabilidade", probabilidade);
+    form.append("impacto", impacto);
+    form.append("esforco", esforco);
+    form.append("valor", valor);
+    form.append("resposta", resposta);
+    if (foto) form.append("foto", foto);
+
+    axios.post("/formularios/responder_pergunta", form)
+        .then(response => {
+            sucesso(response.data.mensagem);
+            fechar_modal("modal_dados_formulario");
+            location.reload();
+        })
+        .catch(error => {
+            erro("Erro ao enviar dados");
+            console.error(error);
+        })
+        .finally(() => {
+            habilitar_botao('btn_salvar_respostas', true);
+        });
+});
+
+var online = true;
+
+function verificarConexao() {
+    axios.get(app_url+"/online")
+    .then(response => {
+        online = true;
+        $("#online").removeClass("bg-red-100");
+        $("#online").addClass("bg-green-100");
+        $("#online").html("ONLINE");
+        sincronizarRespostasOffline();        
+    })
+    .catch(error => {
+        online = false;
+        $("#online").removeClass("bg-green-100");
+        $("#online").addClass("bg-red-100");
+        $("#online").html("OFFLINE");                
+    })    
+}
+
+setInterval(function () {
+    verificarConexao();
+}, 1000);
+
+
+async function sincronizarRespostasOffline() {
+    if (!navigator.onLine) return; // Só executa se estiver online
+
+    const request = indexedDB.open("FormulariosDB", 1);
+
+    request.onsuccess = function (event) {
+        const db = event.target.result;
+        const tx = db.transaction(["respostas"], "readonly");
+        const store = tx.objectStore("respostas");
+        const getAll = store.getAll();
+
+        getAll.onsuccess = async function () {
+            const respostas = getAll.result;
+
+            for (let resposta of respostas) {
+                const form = new FormData();
+                form.append("formulario_id", resposta.formulario_id);
+                form.append("pergunta_id", resposta.pergunta_id);
+                form.append("adequacao", resposta.adequacao);
+                form.append("probabilidade", resposta.probabilidade);
+                form.append("impacto", resposta.impacto);
+                form.append("esforco", resposta.esforco);
+                form.append("valor", resposta.valor);
+                form.append("resposta", resposta.resposta);
+
+                if (resposta.fotoBase64) {
+                    const blob = base64ToBlob(resposta.fotoBase64);
+                    form.append("foto", blob);
+                }
+
+                try {
+                    const response = await axios.post("/formularios/responder_pergunta", form);
+                    console.log("Sincronizado:", response.data);
+                    $("#online").html("ONLINE, Sincronizando...");                    
+
+                    // Remoção segura com transação separada
+                    if ('id' in resposta) {
+                        const deleteTx = db.transaction(["respostas"], "readwrite");
+                        const deleteStore = deleteTx.objectStore("respostas");
+                        const deleteRequest = deleteStore.delete(resposta.id);
+
+                        deleteRequest.onsuccess = () => {
+                            console.log("Item excluído do IndexedDB:", resposta.id);
+                        };
+                        deleteRequest.onerror = () => {
+                            console.error("Erro ao excluir item do IndexedDB:", resposta.id);
+                            erro("Erro ao excluir resposta sincronizada localmente.");
+                        };
+                    } else {
+                        console.warn("Resposta sem ID. Não foi possível excluir:", resposta);
+                    }
+
+                } catch (error) {
+                    console.error("Erro ao sincronizar resposta:", error);
+                    erro("Erro ao enviar resposta offline para o servidor.");
+                }
+            }
+        };
+    };
+
+    request.onerror = function (event) {
+        console.error("Erro ao abrir IndexedDB:", event);
+        erro("Não foi possível acessar os dados offline.");
+    };
+}
+
+
+function base64ToBlob(base64Data) {
+    const parts = base64Data.split(',');
+    const byteString = atob(parts[1]);
+    const mimeString = parts[0].split(':')[1].split(';')[0];
+
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+}

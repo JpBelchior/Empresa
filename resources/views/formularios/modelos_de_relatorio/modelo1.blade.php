@@ -9,6 +9,11 @@
   <title>{{ $dados->nome_empresa }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+     /* Força o Tailwind a imprimir cores */
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
     :root {
       --azul-escuro: #4682B4;
       --azul-claro: #87CEFA;
@@ -150,7 +155,7 @@
       #pagina2_divisao_azul,
       #pagina1_divisao_azul {
         flex: 1;
-        background-color: var(--azul-escuro);
+        background-color: var(--azul-escuro);        
       }
 
       #pagina2_divisao_azul_circulo_circulo,

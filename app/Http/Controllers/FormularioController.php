@@ -366,8 +366,7 @@ class FormularioController extends Controller
             ];
             $lista[] = $l;
             $posicao++;            
-        }
-        Log::info($lista);
+        }        
         return $lista;
     }
 
