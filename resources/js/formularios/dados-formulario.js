@@ -329,7 +329,7 @@ $("#btn_salvar_respostas").click(async function () {
             location.reload();
         })
         .catch(error => {
-            erro("Erro ao enviar dados");
+            erro(error);
             console.error(error);
         })
         .finally(() => {
