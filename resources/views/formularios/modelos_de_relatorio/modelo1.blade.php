@@ -391,7 +391,7 @@
     <div id="pagina1_divisao_branca">
       <div class="flex justify-end">
         <div id="pagina1_logo_empresa">
-          <img src="{{ $imagens['logo_empresa'] }}" alt="">
+          <img class="w-full" src="{{ $imagens['logo_empresa'] }}" alt="">
         </div>
       </div>
       <div id="pagina1_divisao1">
