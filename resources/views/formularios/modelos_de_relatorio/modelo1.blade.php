@@ -9,11 +9,7 @@
   <title>{{ $dados->nome_empresa }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-     /* Força o Tailwind a imprimir cores */
-    * {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
+     /* Força o Tailwind a imprimir cores */    
     :root {
       --azul-escuro: #4682B4;
       --azul-claro: #87CEFA;
@@ -46,9 +42,11 @@
 
     /* LightGreen */
 
-
     @media print {
-
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
       /* Cores */
 
       @page {
@@ -200,8 +198,8 @@
       }
 
       #pagina1_logo_empresa {
-        width: 100px;
-        height: 100px;
+        width: 100px !important;
+        height: 100px !important;
         margin: 10px;
         border: 1px solid black;
       }
