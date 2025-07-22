@@ -197,7 +197,7 @@
         padding-left: 30px;
       }
 
-      #pagina1_logo_empresa {
+      #pagina1_logo_empresa img{
         width: 100px !important;
         height: 100px !important;
         margin: 10px;
@@ -392,7 +392,7 @@
     <div id="pagina1_divisao_branca">
       <div class="flex justify-end">
         <div id="pagina1_logo_empresa">
-          <img class="w-full" src="{{ $imagens['logo_empresa'] }}" alt="">
+          <img src="{{ $imagens['logo_empresa'] }}" alt="">
         </div>
       </div>
       <div id="pagina1_divisao1">
