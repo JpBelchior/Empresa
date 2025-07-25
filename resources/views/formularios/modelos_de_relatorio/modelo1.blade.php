@@ -92,10 +92,13 @@ $respostas = $dados_modelo['respostas'];
         display: flex;
         flex-direction: row;
         width: 100%;
-        min-height: 100vh;
+        /* min-height: 100vh;
         box-sizing: border-box;
-        page-break-after: always !important;
-        page-break-inside: avoid !important;
+        page-break-after: always;
+        page-break-inside: avoid; */
+        height: 27.7cm; /* 29.7cm menos margem */
+        page-break-after: always;
+        break-after: page;
       }
 
       .quebra-pagina-normal {
