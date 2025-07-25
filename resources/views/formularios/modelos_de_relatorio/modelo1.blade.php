@@ -1,5 +1,5 @@
 @php
-  $respostas = $dados_modelo['respostas'];
+$respostas = $dados_modelo['respostas'];
 @endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -9,7 +9,7 @@
   <title>{{ $dados->nome_empresa }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-     /* Força o Tailwind a imprimir cores */    
+    /* Força o Tailwind a imprimir cores */
     :root {
       --azul-escuro: #4682B4;
       --azul-claro: #87CEFA;
@@ -43,18 +43,12 @@
     /* LightGreen */
 
 
-    @media screen and (max-width: 767px) {
+
+    @media print and (max-width: 768px) {
       .pagina {
-        width: 100vw !important;
-        min-height: 100vh !important;
-        box-sizing: border-box;
-        padding: 16px;
-        margin: 0 auto !important;
-        page-break-after: always;
-        overflow: hidden;
-        background: white;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+        padding: 0.5cm !important;
+        min-height: auto !important;
+        page-break-after: avoid !important;
         overflow: hidden !important;
       }
     }
@@ -64,6 +58,7 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
+
       /* Cores */
 
       @page {
@@ -172,7 +167,7 @@
       #pagina2_divisao_azul,
       #pagina1_divisao_azul {
         flex: 1;
-        background-color: var(--azul-escuro);        
+        background-color: var(--azul-escuro);
       }
 
       #pagina2_divisao_azul_circulo_circulo,
@@ -216,12 +211,13 @@
         padding-left: 30px;
       }
 
-      #pagina1_logo_empresa img{
+      #pagina1_logo_empresa img {
         width: 100px !important;
         height: 100px !important;
         margin: 10px;
         border: 1px solid black;
-        object-fit: contain; /* Ou use 'cover' dependendo do que preferir */
+        object-fit: contain;
+        /* Ou use 'cover' dependendo do que preferir */
       }
 
       #pagina1_divisao1 {
@@ -262,10 +258,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;                
+        justify-content: center;
       }
 
-      #pagina4_imagem img{
+      #pagina4_imagem img {
         width: 350px;
         height: 350px;
       }
@@ -394,7 +390,7 @@
   </style>
 </head>
 
-<body>  
+<body>
   <div id="pagina1" class="quebra-pagina sem-rodape">
     <div id="pagina1_divisao_azul">
       <div id="pagina1_divisao_azul_divisao">
@@ -567,7 +563,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
   <div class="quebra-pagina-normal">
     <div class="cabecalho">
       <p class="titulo">NÃO CONFORMIDADES - NC</p>
@@ -591,7 +587,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($respostas as $resposta)          
+          @foreach($respostas as $resposta)
           @if($resposta['vulnerabilidade'] != 1)
           <tr class="border-b border-gray-200">
             <td class="px-6 py-4">
@@ -642,7 +638,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>          
+        <tbody>
           @foreach($respostas as $resposta)
           @if($resposta['risco'])
           <tr class="border-b border-gray-200">
@@ -664,7 +660,7 @@
           @php $pos++; @endphp
           @endif
           @endforeach
-          
+
         </tbody>
       </table>
       <div>
@@ -673,9 +669,9 @@
     </div>
   </div>
   <script>
-    window.onload = function(){
+    window.onload = function() {
       window.print();
-    }    
+    }
   </script>
 </body>
 
