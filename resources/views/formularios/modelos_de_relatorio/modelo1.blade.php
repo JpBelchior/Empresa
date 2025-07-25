@@ -94,8 +94,8 @@ $respostas = $dados_modelo['respostas'];
         width: 100%;
         min-height: 100vh;
         box-sizing: border-box;
-        page-break-after: always;
-        page-break-inside: avoid;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
       }
 
       .quebra-pagina-normal {
