@@ -437,9 +437,9 @@ $respostas = $dados_modelo['respostas'];
       <div id="pagina2_divisao_azul_divisao">
         <div id="pagina2_divisao_azul_circulo">
           <div id="pagina2_divisao_azul_circulo_circulo">
-            <div class="externo">
+            <!-- <div class="externo">
               <div class="interno"></div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div id="pagina2_divisao_azul_tarja"></div>
