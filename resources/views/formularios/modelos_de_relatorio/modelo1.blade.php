@@ -589,7 +589,7 @@
         </thead>
         <tbody>
           @foreach($respostas as $resposta)          
-          @if($resposta->vulnerabilidade != 1)
+          @if($resposta['vulnerabilidade'] != 1)
           <tr class="border-b border-gray-200">
             <td class="px-6 py-4">
               <div class="flex justify-center">
