@@ -45,7 +45,7 @@ $respostas = $dados_modelo['respostas'];
 
 
     @media print and (max-width: 768px) {
-      .pagina {
+      .quebra-pagina, .quebra-pagina-normal {
         padding: 0.5cm !important;
         min-height: auto !important;
         page-break-after: avoid !important;
