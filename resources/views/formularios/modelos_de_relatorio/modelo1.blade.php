@@ -670,7 +670,9 @@
     </div>
   </div>
   <script>
-    window.print();
+    windows.onload = function(){
+      window.print();
+    }    
   </script>
 </body>
 
