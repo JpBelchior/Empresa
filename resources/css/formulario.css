@@ -29,7 +29,13 @@
 }
 
 .opcoes{
+    max-width: 100% !important;
+    width: 100% !important;    
     font-size: 80%;
+}
+
+.opcoes li:nth-last-of-type(1){    
+    width: 200px;
 }
 
 .classe-opcao{

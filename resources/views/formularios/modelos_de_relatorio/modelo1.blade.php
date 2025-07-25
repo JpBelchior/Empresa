@@ -105,8 +105,8 @@
         width: 100%;
         min-height: 100vh;
         box-sizing: border-box;
-        page-break-after: always;
-        page-break-inside: avoid;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
       }
 
       .externo_azul {
@@ -589,6 +589,7 @@
         </thead>
         <tbody>
           @foreach($respostas as $resposta)          
+          @if($resposta->vulnerabilidade != 1)
           <tr class="border-b border-gray-200">
             <td class="px-6 py-4">
               <div class="flex justify-center">
@@ -605,6 +606,7 @@
               <div class="circulo {{ $resposta['criticidade'] }}"></div>
             </td>
           </tr>
+          @endif
           @endforeach
         </tbody>
       </table>

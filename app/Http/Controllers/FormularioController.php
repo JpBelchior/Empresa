@@ -357,6 +357,7 @@ class FormularioController extends Controller
             $l = [
                 'pilar' => $nome_pilar,
                 'nc' => $posicao,
+                'vulnerabilidade' => $resposta->nivel_adequacao,
                 'nao_conformidade' => self::classificar_vulnerabilidade($resposta->nivel_adequacao),
                 'topicos' => self::pegar_topicos_pergunta($resposta->pergunta_id),
                 'criticidade' => self::classificar_risco($resposta->nivel_probabilidade,$resposta->nivel_impacto),
