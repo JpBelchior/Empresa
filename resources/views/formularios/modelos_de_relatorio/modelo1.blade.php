@@ -53,6 +53,9 @@
         page-break-after: always;
         overflow: hidden;
         background: white;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        overflow: hidden !important;
       }
     }
 
