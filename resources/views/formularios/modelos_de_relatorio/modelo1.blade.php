@@ -14,10 +14,14 @@ $respostas = $dados_modelo['respostas'];
       --azul-escuro: #4682B4;
       --azul-claro: #87CEFA;
       --azul-clarissimo: #e7e8ec;
-    }
+      --texto: #114769;
+      --titulo: #004aad;
+      --cabecalho: #004aad;
+      --paragrafo: #114769;
+    }    
 
     .vermelho-escuro {
-      background-color: #8B0000 !important;
+      background-color: #8B0000 !important;      
     }
 
     /* DarkRed */
@@ -40,8 +44,7 @@ $respostas = $dados_modelo['respostas'];
       background-color: #90EE90 !important
     }
 
-    /* LightGreen */
-
+    /* LightGreen */      
 
 
     @media print and (max-width: 768px) {
@@ -58,12 +61,22 @@ $respostas = $dados_modelo['respostas'];
         print-color-adjust: exact;
       }
 
+       @font-face {
+        font-family: 'Garet';
+        src: url('{{ asset('fonts/Garet.ttf') }}');
+      }
+
+      @font-face {
+        font-family: 'OpenSans';
+        src: url('{{ asset('fonts/OpenSans.ttf') }}');
+      }
+
       /* Cores */
 
       @page {
         size: A4;
-        margin: 0;
-      }
+        margin: 0;        
+      }      
 
       html,
       body {
@@ -73,8 +86,7 @@ $respostas = $dados_modelo['respostas'];
         background-color: white;
       }
 
-      .quebra-pagina .rodape {
-        position: fixed;
+      .quebra-pagina .rodape {        
         bottom: 0;
         left: 0;
         right: 0;
@@ -92,11 +104,7 @@ $respostas = $dados_modelo['respostas'];
         display: flex;
         flex-direction: row;
         width: 100%;
-        /* min-height: 100vh;
-        box-sizing: border-box;
-        page-break-after: always;
-        page-break-inside: avoid; */
-        height: 27.7cm; /* 29.7cm menos margem */
+        height: 29.7cm;
         page-break-after: always;
         break-after: page;
       }
@@ -145,9 +153,12 @@ $respostas = $dados_modelo['respostas'];
         transform: translate(-50%, -50%);
       }
 
-      .paragrafo {
+      .paragrafo, p {
+        font-family: 'OpenSans';
+        margin-left: 100px;
+        margin-right: 100px;
         font-size: 20px;
-        color: var(--azul-escuro);
+        color: var(--paragrafo);
       }
 
       .cabecalho {
@@ -159,9 +170,10 @@ $respostas = $dados_modelo['respostas'];
       }
 
       .cabecalho .titulo {
+        font-family: 'Garet';
         font-size: 30px;
-        font-weight: bold;
-        color: var(--azul-escuro);
+        font-weight: bolder;
+        color: var(--titulo);
         text-align: center;
       }
 
@@ -216,8 +228,7 @@ $respostas = $dados_modelo['respostas'];
       #pagina1_logo_empresa img {
         width: 100px !important;
         height: 100px !important;
-        margin: 10px;
-        border: 1px solid black;
+        margin: 10px;        
         object-fit: contain;
         /* Ou use 'cover' dependendo do que preferir */
       }
@@ -268,6 +279,11 @@ $respostas = $dados_modelo['respostas'];
         height: 350px;
       }
 
+      #conforme{
+        margin-left: 90px;
+        margin-right: 90px;
+      }
+
       /*PAGINA 5 */
       .circulo_resumo {
         width: 150px;
@@ -307,7 +323,7 @@ $respostas = $dados_modelo['respostas'];
       }
 
       .alinhado-meio p:first-child {
-        font-size: 40px;
+        font-size: 25px;
         font-weight: bold;
       }
 
@@ -372,7 +388,7 @@ $respostas = $dados_modelo['respostas'];
       }
 
       .img_tabela {
-        width: 60%;
+        width:30%;
       }
 
       thead {
@@ -413,33 +429,25 @@ $respostas = $dados_modelo['respostas'];
         </div>
       </div>
       <div id="pagina1_divisao1">
-        <p id="pagina1_data">{{ date('d/m/Y') }}</p>
-        <p id="pagina1_analise_risco">ANÁLISE <br> DE RISCO</p>
-        <p>Conformidade e segurança se alcançam <br> com a análise de riscos aplicada</p>
+        <p id="pagina1_data" style="color:black !important">{{ date('d/m/Y') }}</p>
+        <p id="pagina1_analise_risco" style="color:black !important">ANÁLISE <br> DE RISCO</p>
+        <p style="color:black !important">Conformidade e segurança se alcançam <br> com a análise de riscos aplicada</p>
       </div>
       <div class="mb-4">
-        <p class="pagina1_dizeres">Preparado para:</p>
-        <p class="dizeres_sumario">{{ $dados->nome_cliente }}</p>
+        <p style="color:black !important" class="pagina1_dizeres">Preparado para:</p>
+        <p style="color:black !important" class="dizeres_sumario">{{ $dados->nome_cliente }}</p>
       </div>
       <div>
-        <p class="pagina1_dizeres">Elaborado por:</p>
-        <p class="dizeres_sumario">{{ $dados->nome_empresa }}</p>
-      </div>
-      <div class="rodape flex justify-between">
-        <p>Análise de riscos</p>
-        <p>{{ $dados->nome_cliente }}</p>
-        <p>{{ $dados->nome_empresa }}</p>
-      </div>
+        <p style="color:black !important" class="pagina1_dizeres">Elaborado por:</p>
+        <p style="color:black !important" class="dizeres_sumario">{{ $dados->nome_empresa }}</p>
+      </div>      
     </div>
   </div>
   <div class="quebra-pagina sem-rodape">
     <div id="pagina2_divisao_azul">
       <div id="pagina2_divisao_azul_divisao">
         <div id="pagina2_divisao_azul_circulo">
-          <div id="pagina2_divisao_azul_circulo_circulo">
-            <!-- <div class="externo">
-              <div class="interno"></div>
-            </div> -->
+          <div id="pagina2_divisao_azul_circulo_circulo">            
           </div>
         </div>
         <div id="pagina2_divisao_azul_tarja"></div>
@@ -463,9 +471,14 @@ $respostas = $dados_modelo['respostas'];
       <img src="{{ asset('img/camera.png') }}" alt="" srcset="" class="w-full">
     </div>
     <div class="p-4">
-      <p class="paragrafo">Realizar análise de riscos para elevar o nível de segurança da {{ $dados->localizacao_analise }}, propondo soluções priorizadas para mitigar vulnerabilidadesidentificadas. O trabalho contempla: identificação dos riscos efragilidades; definição das recomendações mais adequadas;classificação por criticidade; consolidação dos resultados em relatórioexecutivo, permitindo ao {{ $dados->nome_empresa }} planejar ações corretivase prevenir incidentes que possam impactar pessoas, ativos e operação,de forma contínua e eficaz.</p>
+      <p class="paragrafo">Realizar análise de riscos para elevar o nível de segurança da {{ $dados->localizacao_analise }}, propondo soluções priorizadas para mitigar vulnerabilidades identificadas. O trabalho contempla: identificação dos riscos efragilidades; definição das recomendações mais adequadas;classificação por criticidade; consolidação dos resultados em relatórioexecutivo, permitindo ao {{ $dados->nome_empresa }} planejar ações corretivase prevenir incidentes que possam impactar pessoas, ativos e operação,de forma contínua e eficaz.</p>
       <p class="paragrafo">{{ $dados->objetivo }}</p>
     </div>
+      <!-- <div class="rodape flex justify-between">
+        <p>Análise de riscos</p>
+        <p>{{ $dados->nome_cliente }}</p>
+        <p>{{ $dados->nome_empresa }}</p>
+      </div> -->
   </div>
   <div class="quebra-pagina-normal">
     <div class="cabecalho">
@@ -484,16 +497,16 @@ $respostas = $dados_modelo['respostas'];
     <div id="pagina4_imagem">
       <img src="{{ $imagens['imagem_area'] }}" alt="" srcset="">
     </div>
-    <p class="paragrafo text-center mb-4">Referências próximas</p>
-    <p class="paragrafo m-4">{{ $dados->referencias_proximas }}</p>
+    <p class="paragrafo text-center my-4">Referências próximas</p>
+    <p class="paragrafo mt-4">{{ $dados->referencias_proximas }}</p>
     <p class="paragrafo text-center mb-4">Panorama situacional - Exposição ao Risco</p>
-    <p class="paragrafo m-4">{{ $dados->panorama }}</p>
+    <p class="paragrafo mt-4">{{ $dados->panorama }}</p>
   </div>
   <div class="quebra-pagina-normal">
     <div class="cabecalho">
       <p class="titulo">RESUMO EXECUTIVO</p>
     </div>
-    <div class="mx-4">
+    <div id="conforme" class="mx-4">
       <div class="flex">
         <div class="circulo_resumo">
           <div>
@@ -509,7 +522,7 @@ $respostas = $dados_modelo['respostas'];
         </div>
       </div>
       <div class="flex">
-        <div class="alinhado-meio">
+        <div class="alinhado-meio text-end">
           <div>
             <p>PROCESSOS - CONFORME</p>
             <p>Revisão contínua alinha fluxos a padrões de controles.</p>
@@ -537,7 +550,7 @@ $respostas = $dados_modelo['respostas'];
         </div>
       </div>
       <div class="flex">
-        <div class="alinhado-meio">
+        <div class="alinhado-meio text-end">
           <div>
             <p>TECNOLOGIA - CONFORME</p>
             <p>Tecnologias atuais ampliam vigilância e pronta reação.</p>
@@ -553,7 +566,7 @@ $respostas = $dados_modelo['respostas'];
       <div class="flex">
         <div class="circulo_resumo">
           <div>
-            <img src="{{ asset('img/simbolo_informacao.png') }}" alt="">
+            <img style="width: 60%" src="{{ asset('img/simbolo_informacao.png') }}" alt="">
             <p>{{ $dados_modelo["porcentagem_pilar"]["Informação"] }} %</p>
           </div>
         </div>
@@ -570,7 +583,7 @@ $respostas = $dados_modelo['respostas'];
     <div class="cabecalho">
       <p class="titulo">NÃO CONFORMIDADES - NC</p>
     </div>
-    <div class="relative overflow-x-auto">
+    <div style="margin-left:70px;margin-right:70px" class="relative overflow-x-auto">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs uppercase">
           <tr>
@@ -592,18 +605,18 @@ $respostas = $dados_modelo['respostas'];
           @foreach($respostas as $resposta)
           @if($resposta['vulnerabilidade'] != 1)
           <tr class="border-b border-gray-200">
-            <td class="px-6 py-4">
+            <td class="">
               <div class="flex justify-center">
                 <img class="img_tabela" src="{{ $resposta['pilar'] }}" alt="">
               </div>
             </td>
-            <td class="px-6 py-4">
+            <td class="">
               NC - {{ $resposta['nc'] }}
             </td>
-            <td class="px-6 py-4">
+            <td class="">
               {{ $resposta['topicos'] }} - {{ $resposta['nao_conformidade'] }}
             </td>
-            <td class="px-6 py-4">
+            <td class="flex justify-center">
               <div class="circulo {{ $resposta['criticidade'] }}"></div>
             </td>
           </tr>
@@ -622,7 +635,7 @@ $respostas = $dados_modelo['respostas'];
       <p class="titulo">RECOMENDAÇÕES</p>
     </div>
     @php $pos = 1; @endphp
-    <div class="relative overflow-x-auto">
+    <div style="margin-left:70px;margin-right:70px" class="relative overflow-x-auto">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs uppercase">
           <tr>
@@ -644,18 +657,18 @@ $respostas = $dados_modelo['respostas'];
           @foreach($respostas as $resposta)
           @if($resposta['risco'])
           <tr class="border-b border-gray-200">
-            <td class="px-6 py-4">
+            <td class="">
               <div class="flex justify-center">
                 <img class="img_tabela" src="{{ $resposta['pilar'] }}" alt="">
               </div>
             </td>
-            <td class="px-6 py-4">
+            <td class="">
               NC - {{ $pos }}
             </td>
-            <td class="px-6 py-4">
+            <td class="">
               {{ $resposta['recomendacao'] }}
             </td>
-            <td class="px-6 py-4">
+            <td class="flex justify-center">
               <div class="circulo {{ $resposta['prioridade'] }}"></div>
             </td>
           </tr>
