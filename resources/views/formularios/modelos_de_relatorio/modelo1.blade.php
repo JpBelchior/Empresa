@@ -8,7 +8,7 @@ $respostas = $dados_modelo['respostas'];
   <meta charset="UTF-8">
   <title>{{ $dados->nome_empresa }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- <style>
+  <style>
     /* Força o Tailwind a imprimir cores */
     :root {
       --azul-escuro: #4682B4;
@@ -56,6 +56,10 @@ $respostas = $dados_modelo['respostas'];
     }
 
     @media print {
+
+      .btn-print {
+        display: none !important;
+      }
       * {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -405,226 +409,16 @@ $respostas = $dados_modelo['respostas'];
         border: 2px solid white;
       }
     }
-  </style> -->
-  <style>
-  :root {
-    --azul-escuro: #4682B4;
-    --azul-claro: #87CEFA;
-    --azul-clarissimo: #e7e8ec;
-    --texto: #114769;
-    --titulo: #004aad;
-    --cabecalho: #004aad;
-    --paragrafo: #114769;
-  }
-
-  .vermelho-escuro { background-color: #8B0000 !important; }
-  .laranja { background-color: #FFA500 !important; }
-  .amarelo { background-color: #FFD700 !important; }
-  .verde-escuro { background-color: #006400 !important; }
-  .verde-claro { background-color: #90EE90 !important; }
-
-  /* ✅ Correção: Evita quebra de layout na impressão mobile */
-  @media print and (max-width: 768px) {
-    .quebra-pagina-normal {
-      min-height: auto !important;
-      page-break-after: avoid !important;
-      overflow: visible !important; /* Corrigido */
-    }
-  }
-
-  @media print {
-    * {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    /* ✅ Correção: substitui asset() por caminho direto ou CDN */
-    @font-face {
-      font-family: 'Garet';
-      src: url('/fonts/Garet.ttf') format('truetype');
-    }
-
-    @font-face {
-      font-family: 'OpenSans';
-      src: url('/fonts/OpenSans.ttf') format('truetype');
-    }
-
-    @page {
-      size: A4;
-      margin: 0;
-    }
-
-    html, body {
-      height: auto;
-      margin: 0;
-      padding: 0;
-      background-color: white;
-    }
-
-    /* ✅ Correção: evita flex quebrando na impressão */
-    .quebra-pagina {
-      display: block !important;
-      width: 100%;
-      height: auto;
-      page-break-after: always;
-      break-after: page;
-    }
-
-    .quebra-pagina-normal {
-      width: 100%;
-      min-height: auto;
-      box-sizing: border-box;
-      page-break-after: always !important;
-      page-break-inside: avoid !important;
-    }
-
-    .quebra-pagina .rodape {
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1.25cm;
-      text-align: center;
-      font-size: 12px;
-      color: #555;
-      border-top: 1px solid #ccc;
-      padding-top: 2px;
-      margin: 0 10px;
-    }
-
-    /* ✅ Correção: substitui position absolute por margin auto */
-    .interno {
-      width: 220px;
-      height: 220px;
-      border: 10px solid white;
-      border-radius: 50%;
-      margin: auto;
-    }
-
-    /* ✅ Correção: garante que imagens sejam impressas corretamente */
-    img {
-      display: block !important;
-      max-width: 100% !important;
-      height: auto !important;
-    }
-
-    /* ✅ Correção: evita que flex cause quebra de página */
-    .resumo_sessao {
-      border: 1px solid var(--azul-escuro);
-      border-radius: 20px;
-      display: block;
-      height: auto;
-    }
-
-    /* ✅ Correção: evita quebras em tabelas */
-    table, thead, tbody, tr, td, th {
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-
-    /* ✅ Correção: define altura automática para evitar cortes */
-    #pagina3_metodologia img,
-    #pagina4_imagem img {
-      height: auto !important;
-    }
-
-    /* ✅ Correção: evita margin-top negativa que quebra layout */
-    #pagina1_divisao_azul_circulo_circulo,
-    #pagina2_divisao_azul_circulo_circulo {
-      margin-top: 0 !important;
-      margin-left: 0 !important;
-    }
-
-    /* ✅ Correção: evita uso de vh/cm que não funcionam bem na impressão mobile */
-    .cabecalho {
-      height: auto;
-      padding: 20px 0;
-    }
-
-    .paragrafo, p {
-      margin: 0 40px;
-      font-size: 20px;
-      color: var(--paragrafo);
-    }
-
-    .cabecalho .titulo {
-      font-family: 'Garet';
-      font-size: 30px;
-      font-weight: bolder;
-      color: var(--titulo);
-      text-align: center;
-    }
-
-    /* ✅ Correção: define largura fixa para evitar quebra */
-    .circulo_resumo {
-      width: 150px;
-      height: 150px;
-      border: 10px solid var(--azul-escuro);
-      border-radius: 50%;
-      display: block;
-      margin: auto;
-      text-align: center;
-    }
-
-    .circulo_resumo p {
-      font-size: 130%;
-      color: var(--azul-escuro);
-    }
-
-    .circulo_resumo img {
-      width: 70%;
-      margin: auto;
-    }
-
-    /* ✅ Correção: evita que flex cause quebra em impressão */
-    .alinhado-meio {
-      padding-left: 20px;
-      text-align: center;
-      color: var(--azul-escuro);
-    }
-
-    .alinhado-meio p:first-child {
-      font-size: 25px;
-      font-weight: bold;
-    }
-
-    .alinhado-meio p:nth-of-type(2) {
-      font-size: 20px;
-    }
-
-    /* ✅ Correção: define display block para evitar quebra */
-    .circulo {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: gray;
-      display: block;
-      text-align: center;
-      line-height: 50px;
-      color: white;
-      font-weight: bold;
-      font-size: 1rem;
-      margin: 1px auto;
-    }
-
-    thead {
-      background-color: var(--azul-escuro);
-      color: white;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    td {
-      background-color: var(--azul-clarissimo);
-      color: black;
-      text-align: center;
-      border: 2px solid white;
-    }
-  }
-</style>
-
+  </style>
 </head>
 
 <body>
+  <div class="btn-print fixed bottom-4 right-4 z-50">
+    <button onclick="window.print()" 
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg">
+      Imprimir
+    </button>
+  </div>
   <div id="pagina1" class="quebra-pagina sem-rodape">
     <div id="pagina1_divisao_azul">
       <div id="pagina1_divisao_azul_divisao">
@@ -900,8 +694,23 @@ $respostas = $dados_modelo['respostas'];
     </div>
   </div>
   <script>
-    window.onload = function() {
+    /* window.onload = function() {
       window.print();
+    } */
+   // Detecta se é mobile ou desktop
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+        .test(navigator.userAgent);
+    }
+
+    window.onload = function() {
+      if (!isMobile()) {
+        // No desktop: imprime automaticamente
+        window.print();
+      } else {
+        // No mobile: mostra botão de imprimir
+        document.querySelector(".btn-print").style.display = "block";
+      }
     }
   </script>
 </body>
