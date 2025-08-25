@@ -423,10 +423,30 @@ $respostas = $dados_modelo['respostas'];
   .verde-escuro { background-color: #006400 !important; }
   .verde-claro { background-color: #90EE90 !important; }
 
+  /* ✅ Correção: Evita quebra de layout na impressão mobile */
+  @media print and (max-width: 768px) {
+    .quebra-pagina-normal {
+      min-height: auto !important;
+      page-break-after: avoid !important;
+      overflow: visible !important; /* Corrigido */
+    }
+  }
+
   @media print {
     * {
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
+    }
+
+    /* ✅ Correção: substitui asset() por caminho direto ou CDN */
+    @font-face {
+      font-family: 'Garet';
+      src: url('/fonts/Garet.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'OpenSans';
+      src: url('/fonts/OpenSans.ttf') format('truetype');
     }
 
     @page {
@@ -435,38 +455,34 @@ $respostas = $dados_modelo['respostas'];
     }
 
     html, body {
+      height: auto;
       margin: 0;
       padding: 0;
       background-color: white;
-      font-family: 'OpenSans', sans-serif;
     }
 
-    img {
-      display: block !important;
-      max-width: 100% !important;
-      height: auto !important;
-    }
-
+    /* ✅ Correção: evita flex quebrando na impressão */
     .quebra-pagina {
-      display: block;
+      display: block !important;
       width: 100%;
       height: auto;
       page-break-after: always;
+      break-after: page;
     }
 
     .quebra-pagina-normal {
       width: 100%;
       min-height: auto;
+      box-sizing: border-box;
       page-break-after: always !important;
       page-break-inside: avoid !important;
-      overflow: visible !important;
     }
 
-    .rodape {
+    .quebra-pagina .rodape {
       bottom: 0;
       left: 0;
       right: 0;
-      height: 60px;
+      height: 1.25cm;
       text-align: center;
       font-size: 12px;
       color: #555;
@@ -475,26 +491,7 @@ $respostas = $dados_modelo['respostas'];
       margin: 0 10px;
     }
 
-    .externo_azul {
-      width: 250px;
-      height: 250px;
-      border: 20px solid var(--azul-escuro);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .externo {
-      width: 450px;
-      height: 450px;
-      border: 10px solid white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
+    /* ✅ Correção: substitui position absolute por margin auto */
     .interno {
       width: 220px;
       height: 220px;
@@ -503,145 +500,85 @@ $respostas = $dados_modelo['respostas'];
       margin: auto;
     }
 
+    /* ✅ Correção: garante que imagens sejam impressas corretamente */
+    img {
+      display: block !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    /* ✅ Correção: evita que flex cause quebra de página */
+    .resumo_sessao {
+      border: 1px solid var(--azul-escuro);
+      border-radius: 20px;
+      display: block;
+      height: auto;
+    }
+
+    /* ✅ Correção: evita quebras em tabelas */
+    table, thead, tbody, tr, td, th {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
+    /* ✅ Correção: define altura automática para evitar cortes */
+    #pagina3_metodologia img,
+    #pagina4_imagem img {
+      height: auto !important;
+    }
+
+    /* ✅ Correção: evita margin-top negativa que quebra layout */
+    #pagina1_divisao_azul_circulo_circulo,
+    #pagina2_divisao_azul_circulo_circulo {
+      margin-top: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    /* ✅ Correção: evita uso de vh/cm que não funcionam bem na impressão mobile */
+    .cabecalho {
+      height: auto;
+      padding: 20px 0;
+    }
+
     .paragrafo, p {
       margin: 0 40px;
       font-size: 20px;
       color: var(--paragrafo);
     }
 
-    .cabecalho {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 150px;
-    }
-
     .cabecalho .titulo {
+      font-family: 'Garet';
       font-size: 30px;
-      font-weight: bold;
+      font-weight: bolder;
       color: var(--titulo);
       text-align: center;
     }
 
-    #pagina1_logo_empresa img {
-      width: 100px !important;
-      height: 100px !important;
-      margin: 10px;
-      object-fit: contain;
-    }
-
-    #pagina1_divisao_azul,
-    #pagina2_divisao_azul {
-      flex: 1;
-      background-color: var(--azul-escuro);
-    }
-
-    #pagina1_divisao_azul_divisao,
-    #pagina2_divisao_azul_divisao {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-    }
-
-    #pagina1_divisao_azul_circulo,
-    #pagina2_divisao_azul_circulo {
-      flex: 1;
-      background-color: var(--azul-claro);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #pagina1_divisao_azul_tarja,
-    #pagina2_divisao_azul_tarja {
-      width: 5mm;
-      writing-mode: vertical-rl;
-      font-size: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #pagina1_divisao_branca,
-    #pagina2_divisao_branca {
-      flex: 2;
-      padding-left: 30px;
-    }
-
-    #pagina1_divisao1 {
-      margin: 100px 0;
-    }
-
-    #pagina1_data {
-      font-size: 30px;
-    }
-
-    #pagina1_analise_risco {
-      font-size: 60px;
-    }
-
-    .pagina1_dizeres {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    #pagina2_divisao_branca h2 {
-      font-size: 70px;
-      margin-bottom: 100px;
-    }
-
-    #pagina2_divisao_branca p {
-      margin-bottom: 30px;
-    }
-
-    #pagina3_metodologia img {
-      width: 100%;
-    }
-
-    #pagina4_imagem {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #pagina4_imagem img {
-      width: 350px;
-      height: 350px;
-    }
-
-    #conforme {
-      margin: 0 40px;
-    }
-
+    /* ✅ Correção: define largura fixa para evitar quebra */
     .circulo_resumo {
       width: 150px;
       height: 150px;
       border: 10px solid var(--azul-escuro);
       border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: block;
+      margin: auto;
+      text-align: center;
     }
 
     .circulo_resumo p {
-      text-align: center;
       font-size: 130%;
       color: var(--azul-escuro);
     }
 
     .circulo_resumo img {
       width: 70%;
+      margin: auto;
     }
 
+    /* ✅ Correção: evita que flex cause quebra em impressão */
     .alinhado-meio {
       padding-left: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
       color: var(--azul-escuro);
     }
 
@@ -654,60 +591,19 @@ $respostas = $dados_modelo['respostas'];
       font-size: 20px;
     }
 
-    .resumo_sessao {
-      border: 1px solid var(--azul-escuro);
-      border-radius: 20px;
-      height: auto;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .resumo_sessao .primeira-divisao {
-      flex: 1;
-      border-right: 1px solid var(--azul-escuro);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .resumo_sessao .segunda-divisao {
-      flex: 4;
-      text-align: center;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      padding: 10px;
-    }
-
-    .grafico {
-      width: 100px;
-      height: 100px;
-      margin: auto;
-    }
-
-    .texto {
-      font-size: 10px;
-      font-weight: bold;
-      fill: #1f2937;
-    }
-
+    /* ✅ Correção: define display block para evitar quebra */
     .circulo {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       background-color: gray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
+      text-align: center;
+      line-height: 50px;
       color: white;
       font-weight: bold;
       font-size: 1rem;
-      margin: 1px;
-    }
-
-    .img_tabela {
-      width: 30%;
+      margin: 1px auto;
     }
 
     thead {
