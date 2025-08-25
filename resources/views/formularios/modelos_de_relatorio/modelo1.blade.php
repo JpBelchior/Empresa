@@ -9,6 +9,11 @@ $respostas = $dados_modelo['respostas'];
   <title>{{ $dados->nome_empresa }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+
+    #conteudo{
+      display: none;
+    }
+
     /* Força o Tailwind a imprimir cores */
     :root {
       --azul-escuro: #4682B4;
@@ -56,7 +61,9 @@ $respostas = $dados_modelo['respostas'];
     }
 
     @media print {
-
+    #conteudo{
+      display: block;
+    }
       .btn-print {
         display: none !important;
       }
@@ -419,6 +426,7 @@ $respostas = $dados_modelo['respostas'];
       Imprimir
     </button>
   </div>
+  <div id="conteudo">
   <div id="pagina1" class="quebra-pagina sem-rodape">
     <div id="pagina1_divisao_azul">
       <div id="pagina1_divisao_azul_divisao">
@@ -693,10 +701,8 @@ $respostas = $dados_modelo['respostas'];
       </div>
     </div>
   </div>
+  </div>
   <script>
-    /* window.onload = function() {
-      window.print();
-    } */
    // Detecta se é mobile ou desktop
     function isMobile() {
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
