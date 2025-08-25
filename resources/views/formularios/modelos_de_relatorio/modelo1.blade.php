@@ -8,7 +8,7 @@ $respostas = $dados_modelo['respostas'];
   <meta charset="UTF-8">
   <title>{{ $dados->nome_empresa }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
+  <!-- <style>
     /* Força o Tailwind a imprimir cores */
     :root {
       --azul-escuro: #4682B4;
@@ -405,7 +405,327 @@ $respostas = $dados_modelo['respostas'];
         border: 2px solid white;
       }
     }
-  </style>
+  </style> -->
+  <style>
+  :root {
+    --azul-escuro: #4682B4;
+    --azul-claro: #87CEFA;
+    --azul-clarissimo: #e7e8ec;
+    --texto: #114769;
+    --titulo: #004aad;
+    --cabecalho: #004aad;
+    --paragrafo: #114769;
+  }
+
+  .vermelho-escuro { background-color: #8B0000 !important; }
+  .laranja { background-color: #FFA500 !important; }
+  .amarelo { background-color: #FFD700 !important; }
+  .verde-escuro { background-color: #006400 !important; }
+  .verde-claro { background-color: #90EE90 !important; }
+
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      font-family: 'OpenSans', sans-serif;
+    }
+
+    img {
+      display: block !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    .quebra-pagina {
+      display: block;
+      width: 100%;
+      height: auto;
+      page-break-after: always;
+    }
+
+    .quebra-pagina-normal {
+      width: 100%;
+      min-height: auto;
+      page-break-after: always !important;
+      page-break-inside: avoid !important;
+      overflow: visible !important;
+    }
+
+    .rodape {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      border-top: 1px solid #ccc;
+      padding-top: 2px;
+      margin: 0 10px;
+    }
+
+    .externo_azul {
+      width: 250px;
+      height: 250px;
+      border: 20px solid var(--azul-escuro);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .externo {
+      width: 450px;
+      height: 450px;
+      border: 10px solid white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .interno {
+      width: 220px;
+      height: 220px;
+      border: 10px solid white;
+      border-radius: 50%;
+      margin: auto;
+    }
+
+    .paragrafo, p {
+      margin: 0 40px;
+      font-size: 20px;
+      color: var(--paragrafo);
+    }
+
+    .cabecalho {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 150px;
+    }
+
+    .cabecalho .titulo {
+      font-size: 30px;
+      font-weight: bold;
+      color: var(--titulo);
+      text-align: center;
+    }
+
+    #pagina1_logo_empresa img {
+      width: 100px !important;
+      height: 100px !important;
+      margin: 10px;
+      object-fit: contain;
+    }
+
+    #pagina1_divisao_azul,
+    #pagina2_divisao_azul {
+      flex: 1;
+      background-color: var(--azul-escuro);
+    }
+
+    #pagina1_divisao_azul_divisao,
+    #pagina2_divisao_azul_divisao {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+
+    #pagina1_divisao_azul_circulo,
+    #pagina2_divisao_azul_circulo {
+      flex: 1;
+      background-color: var(--azul-claro);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #pagina1_divisao_azul_tarja,
+    #pagina2_divisao_azul_tarja {
+      width: 5mm;
+      writing-mode: vertical-rl;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #pagina1_divisao_branca,
+    #pagina2_divisao_branca {
+      flex: 2;
+      padding-left: 30px;
+    }
+
+    #pagina1_divisao1 {
+      margin: 100px 0;
+    }
+
+    #pagina1_data {
+      font-size: 30px;
+    }
+
+    #pagina1_analise_risco {
+      font-size: 60px;
+    }
+
+    .pagina1_dizeres {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #pagina2_divisao_branca h2 {
+      font-size: 70px;
+      margin-bottom: 100px;
+    }
+
+    #pagina2_divisao_branca p {
+      margin-bottom: 30px;
+    }
+
+    #pagina3_metodologia img {
+      width: 100%;
+    }
+
+    #pagina4_imagem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #pagina4_imagem img {
+      width: 350px;
+      height: 350px;
+    }
+
+    #conforme {
+      margin: 0 40px;
+    }
+
+    .circulo_resumo {
+      width: 150px;
+      height: 150px;
+      border: 10px solid var(--azul-escuro);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circulo_resumo p {
+      text-align: center;
+      font-size: 130%;
+      color: var(--azul-escuro);
+    }
+
+    .circulo_resumo img {
+      width: 70%;
+    }
+
+    .alinhado-meio {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--azul-escuro);
+    }
+
+    .alinhado-meio p:first-child {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .alinhado-meio p:nth-of-type(2) {
+      font-size: 20px;
+    }
+
+    .resumo_sessao {
+      border: 1px solid var(--azul-escuro);
+      border-radius: 20px;
+      height: auto;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .resumo_sessao .primeira-divisao {
+      flex: 1;
+      border-right: 1px solid var(--azul-escuro);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .resumo_sessao .segunda-divisao {
+      flex: 4;
+      text-align: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 10px;
+    }
+
+    .grafico {
+      width: 100px;
+      height: 100px;
+      margin: auto;
+    }
+
+    .texto {
+      font-size: 10px;
+      font-weight: bold;
+      fill: #1f2937;
+    }
+
+    .circulo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      margin: 1px;
+    }
+
+    .img_tabela {
+      width: 30%;
+    }
+
+    thead {
+      background-color: var(--azul-escuro);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    td {
+      background-color: var(--azul-clarissimo);
+      color: black;
+      text-align: center;
+      border: 2px solid white;
+    }
+  }
+</style>
+
 </head>
 
 <body>
