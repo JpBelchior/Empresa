@@ -19,3 +19,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+pdf-generator/node_modules/
+pdf-generator/package-lock.json
