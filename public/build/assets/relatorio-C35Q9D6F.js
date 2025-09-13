@@ -1,1 +1,0 @@
-import{a as o}from"./funcoes-CNXYSAtO.js";import"./index-BxfsJSEQ.js";$("#btn_modal_relatorio").click(function(){let a=$("#formulario_id").val();$("input[name='relatorio_formulario_id']").val(a),o("modal_relatorio")});$("#panorama").val(panorama);

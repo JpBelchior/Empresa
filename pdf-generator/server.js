@@ -7,10 +7,16 @@ const moment = require("moment");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const {
+    calcularPaginasSumario,
+    mostrarDetalhamento,
+} = require("./utils/paginacao");
+
 // Middleware
 app.use(express.json({ limit: "50mb" }));
 app.use(express.static("assets"));
 
+app.use("/imagens", express.static(path.join(__dirname, "imagens")));
 // Configurar EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "templates"));
@@ -30,9 +36,40 @@ app.post("/generate-pdf", async (req, res) => {
 
         const dados = req.body;
 
+        console.log("🔍 DADOS RECEBIDOS DO LARAVEL:");
+        console.log("Empresa:", dados.dados?.nome_empresa);
+        console.log("Cliente:", dados.dados?.nome_cliente);
+        console.log("Objetivo:", dados.dados?.objetivo);
+        console.log(
+            "Total Perguntas:",
+            dados.dados_modelo?.total_perguntas_respondidas
+        );
+        console.log("Pilares:", dados.dados_modelo?.total_pilares);
+        console.log("Percentuais:", dados.dados_modelo?.porcentagem_pilar);
+        console.log("Tem imagens:", {
+            logo_empresa: dados.imagens?.logo_empresa ? "SIM" : "NÃO",
+            logo_cliente: dados.imagens?.logo_cliente ? "SIM" : "NÃO",
+        });
+        console.log("=====================================");
+
+        if (!dados.imagens) dados.imagens = {};
+        dados.imagens.thalion = "/imagens/Thalion.jpg";
+
+        const numeroPaginas = calcularPaginasSumario(
+            dados.dados,
+            dados.dados_modelo
+        );
+
+        console.log("📄 PAGINAÇÃO CALCULADA:");
+        Object.entries(numeroPaginas).forEach(([secao, pagina]) => {
+            console.log(`${secao}: Página ${pagina}`);
+        });
+        console.log("=====================================");
+
         // Processar dados (por enquanto só passamos direto)
         const dadosProcessados = {
             ...dados,
+            numeroPaginas,
             dataGeracao: moment().format("DD/MM/YYYY HH:mm:ss"),
             timestamp: Date.now(),
         };
@@ -134,6 +171,8 @@ app.get("/test-pdf", async (req, res) => {
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
                 imagem_area:
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+
+                thalion: "/imagens/Thalion.jpg",
             },
         };
 
