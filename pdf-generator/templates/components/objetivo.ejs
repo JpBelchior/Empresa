@@ -1,89 +1,17 @@
-<!-- OBJETIVO - AJUSTES FINAIS DE ESTILO -->
+<!-- OBJETIVO - VERSÃO REFATORADA COM COMPONENTES -->
 <div
     class="min-h-screen page-break bg-white text-black relative"
     style="position: relative"
 >
-    <!-- Container para elementos decorativos -->
-    <div
-        class="absolute inset-0"
-        style="
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 5;
-            pointer-events: none;
-        "
-    >
-        <!-- Círculo decorativo azul no topo esquerdo - 20px mais para cima e esquerda -->
-        <div
-            class="absolute"
-            style="position: absolute; top: -125px; left: -125px; z-index: 5"
-        >
-            <div
-                class="w-80 h-80 border-8 border-blue-500 rounded-full flex items-center justify-center opacity-80"
-            >
-                <div
-                    class="w-48 h-48 border-8 border-blue-500 rounded-full flex items-center justify-center opacity-80"
-                ></div>
-            </div>
-        </div>
-
-        <!-- Bolinhas azuis no topo - POSIÇÃO MANTIDA -->
-        <div
-            class="absolute"
-            style="position: absolute; top: 10px; left: 15px; z-index: 6"
-        >
-            <div class="grid grid-cols-2 gap-2">
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-70"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-70"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-60"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-60"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-50"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-50"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-40"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-40"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-30"></div>
-                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-30"></div>
-            </div>
-        </div>
-    </div>
+    <!-- CABEÇALHO REUTILIZÁVEL -->
+    <%- include('header', { numeroPagina: numeroPaginas?.objetivo || '03',
+    tituloSecao: 'OBJETIVO' }) %>
 
     <!-- Conteúdo principal - z-index MENOR que elementos decorativos de cima -->
     <div class="relative z-0 flex flex-col min-h-screen">
-        <!-- Cabeçalho da página com título - ABAIXADO COM PADDING-TOP -->
-        <div
-            class="bg-white relative"
-            style="padding-top: 80px; padding-bottom: 40px"
-        >
-            <div class="flex items-center w-full px-12">
-                <!-- Espaço vazio -->
-                <div class="w-1/4"></div>
-
-                <!-- Linha azul bem fina (do 1/3 até 4/5 da página) -->
-                <div class="flex-1 h-[1px] bg-blue-400"></div>
-
-                <!-- Número da página à direita (1/5 da página) -->
-                <div class="w-1/5 text-right">
-                    <span
-                        class="text-sm font-bold text-black uppercase tracking-wide"
-                    >
-                        Página <%= numeroPaginas?.objetivo || '03' %>
-                    </span>
-                </div>
-            </div>
-
-            <h1 class="mt-8 text-5xl font-bold text-blue-800 text-center">
-                OBJETIVO
-            </h1>
-        </div>
-
         <!-- Imagem ocupando toda a largura da página -->
         <div class="w-full relative" style="z-index: 2">
-            <div
-                class="h-6 w-full bg-gradient-to-r from-blue-500 to-blue-700"
-            ></div>
+            <div class="h-6 w-full bg-blue-500"></div>
 
             <% if (imagens && imagens.thalion) { %>
             <img
@@ -114,16 +42,14 @@
             </div>
             <% } %>
 
-            <div
-                class="h-6 w-full bg-gradient-to-r from-blue-500 to-blue-700"
-            ></div>
+            <div class="h-6 w-full bg-blue-500"></div>
         </div>
 
         <!-- Conteúdo Principal - MAIS ESPAÇADO + COR AZUL MARINHO ESCURO -->
         <div class="flex-1 px-16 py-12 space-y-9 relative" style="z-index: 1">
             <p class="text-xl text-sky-900 leading-relaxed text-justify">
                 Realizar análise de riscos para elevar o nível de segurança da
-                <strong class="text-blue-800">
+                <strong class="text-blue-600">
                     <%= dados?.nome_cliente || 'NOME DO LOCAL' %> </strong
                 >, propondo soluções priorizadas para mitigar vulnerabilidades
                 identificadas.
@@ -134,7 +60,7 @@
                 definição das recomendações mais adequadas; classificação por
                 criticidade; consolidação dos resultados em relatório executivo,
                 permitindo ao
-                <strong class="text-blue-800">
+                <strong class="text-blue-600">
                     <%= dados?.nome_empresa || 'NOME DA EMPRESA' %>
                 </strong>
                 planejar ações corretivas e prevenir incidentes que possam
@@ -142,20 +68,7 @@
             </p>
         </div>
 
-        <!-- Linha fina azul separando conteúdo do rodapé -->
-        <div
-            class="w-full h-px bg-gradient-to-r from-blue-200 via-blue-500 to-blue-200 relative"
-            style="z-index: 1"
-        ></div>
-
-        <!-- Rodapé simples -->
-        <div
-            class="p-6 flex justify-between text-sm text-gray-800 relative"
-            style="z-index: 1"
-        >
-            <div class="text-gray-600">Análise de risco</div>
-            <div><%= dados?.nome_cliente || 'Nome do cliente' %></div>
-            <div><%= dados?.nome_empresa || 'Nome da empresa' %></div>
-        </div>
+        <!-- RODAPÉ REUTILIZÁVEL -->
+        <%- include('footer', { dados: dados }) %>
     </div>
 </div>
