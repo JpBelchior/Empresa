@@ -3,6 +3,7 @@ const puppeteer = require("puppeteer");
 const ejs = require("ejs");
 const path = require("path");
 const moment = require("moment");
+const fs = require("fs"); // ADICIONADO
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,6 +30,28 @@ app.get("/", (req, res) => {
     });
 });
 
+// Função para converter imagem para base64
+function imageToBase64(imagePath) {
+    try {
+        if (fs.existsSync(imagePath)) {
+            const imageData = fs.readFileSync(imagePath);
+            const base64 = Buffer.from(imageData).toString("base64");
+            const ext = path.extname(imagePath).toLowerCase();
+            let mimeType = "image/jpeg";
+
+            if (ext === ".png") mimeType = "image/png";
+            else if (ext === ".gif") mimeType = "image/gif";
+            else if (ext === ".webp") mimeType = "image/webp";
+
+            return `data:${mimeType};base64,${base64}`;
+        }
+        return null;
+    } catch (error) {
+        console.error("❌ Erro ao converter imagem:", error);
+        return null;
+    }
+}
+
 // Rota principal para gerar PDF
 app.post("/generate-pdf", async (req, res) => {
     try {
@@ -52,8 +75,71 @@ app.post("/generate-pdf", async (req, res) => {
         });
         console.log("=====================================");
 
+        // CORREÇÃO DA IMAGEM THALION
         if (!dados.imagens) dados.imagens = {};
-        dados.imagens.thalion = "/imagens/Thalion.jpg";
+
+        console.log("🔍 Procurando imagem Thalion...");
+        const possiveisCaminhos = [
+            path.join(__dirname, "imagens", "Thalion.jpg"),
+            path.join(__dirname, "imagens", "thalion.jpg"),
+            path.join(__dirname, "imagens", "Thalion.jpeg"),
+            path.join(__dirname, "imagens", "thalion.jpeg"),
+            path.join(__dirname, "imagens", "Thalion.png"),
+            path.join(__dirname, "imagens", "thalion.png"),
+        ];
+
+        let imagemEncontrada = false;
+        for (const caminho of possiveisCaminhos) {
+            if (fs.existsSync(caminho)) {
+                console.log("✅ Imagem encontrada:", caminho);
+                dados.imagens.thalion = imageToBase64(caminho);
+                imagemEncontrada = true;
+                break;
+            }
+        }
+
+        if (!imagemEncontrada) {
+            console.log(
+                "⚠️ Imagem Thalion não encontrada. Verificando pasta imagens..."
+            );
+            try {
+                const imagensDir = path.join(__dirname, "imagens");
+                if (fs.existsSync(imagensDir)) {
+                    console.log("📁 Conteúdo da pasta imagens:");
+                    const arquivos = fs.readdirSync(imagensDir);
+                    arquivos.forEach((arquivo) =>
+                        console.log(`   - ${arquivo}`)
+                    );
+                } else {
+                    console.log("❌ Pasta 'imagens' não existe!");
+                    console.log("📍 Caminho esperado:", imagensDir);
+                }
+            } catch (error) {
+                console.log("❌ Erro ao listar pasta imagens:", error.message);
+            }
+            dados.imagens.thalion = null;
+        }
+
+        console.log(
+            "🖼️ Status da imagem thalion:",
+            dados.imagens.thalion ? "CARREGADA" : "NÃO ENCONTRADA"
+        );
+
+        // DEBUG: Listar todas as imagens disponíveis
+        console.log("🔍 TODAS AS IMAGENS DISPONÍVEIS:");
+        console.log(
+            "- logo_empresa:",
+            dados.imagens?.logo_empresa ? "SIM" : "NÃO"
+        );
+        console.log(
+            "- logo_cliente:",
+            dados.imagens?.logo_cliente ? "SIM" : "NÃO"
+        );
+        console.log(
+            "- imagem_area:",
+            dados.imagens?.imagem_area ? "SIM" : "NÃO"
+        );
+        console.log("- thalion:", dados.imagens?.thalion ? "SIM" : "NÃO");
 
         const numeroPaginas = calcularPaginasSumario(
             dados.dados,
@@ -126,115 +212,6 @@ app.post("/generate-pdf", async (req, res) => {
         console.error("❌ Erro ao gerar PDF:", error);
         res.status(500).json({
             error: "Erro ao gerar PDF",
-            details: error.message,
-        });
-    }
-});
-
-// Rota de teste com dados mock
-app.get("/test-pdf", async (req, res) => {
-    try {
-        console.log("🧪 Iniciando teste de PDF...");
-
-        // Dados de teste simulando o que vem do Laravel
-        const dadosMock = {
-            dados: {
-                nome_empresa: "Empresa Teste LTDA",
-                nome_cliente: "Cliente Exemplo",
-                objetivo: "Análise de segurança do ambiente",
-                observacoes: "Observações importantes sobre o projeto",
-                localizacao_analise: "São Paulo, SP - Brasil",
-                referencias_proximas: "Centro da cidade, próximo ao shopping",
-                panorama: "Situação de risco médio identificada",
-            },
-            dados_modelo: {
-                total_perguntas_respondidas: 25,
-                total_pilares: {
-                    Pessoas: 5,
-                    Tecnologia: 8,
-                    Processos: 4,
-                    Informação: 3,
-                    Gestão: 5,
-                },
-                porcentagem_pilar: {
-                    Pessoas: 20,
-                    Tecnologia: 32,
-                    Processos: 16,
-                    Informação: 12,
-                    Gestão: 20,
-                },
-            },
-            imagens: {
-                logo_empresa:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-                logo_cliente:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-                imagem_area:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-
-                thalion: "/imagens/Thalion.jpg",
-            },
-        };
-
-        // Processar dados
-        const dadosProcessados = {
-            ...dadosMock,
-            dataGeracao: moment().format("DD/MM/YYYY HH:mm:ss"),
-            timestamp: Date.now(),
-        };
-
-        console.log("🎨 Renderizando template EJS...");
-
-        // Renderizar template EJS
-        const html = await ejs.renderFile(
-            path.join(__dirname, "templates", "relatorio.ejs"),
-            dadosProcessados
-        );
-
-        console.log("📄 Gerando PDF com Puppeteer...");
-
-        // Gerar PDF com Puppeteer
-        const browser = await puppeteer.launch({
-            headless: "new",
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        });
-
-        const page = await browser.newPage();
-
-        // Configurar página para PDF
-        await page.setContent(html, {
-            waitUntil: "networkidle0",
-            timeout: 30000,
-        });
-
-        // Gerar PDF
-        const pdf = await page.pdf({
-            format: "A4",
-            printBackground: true,
-            margin: {
-                top: "1cm",
-                right: "1cm",
-                bottom: "1cm",
-                left: "1cm",
-            },
-        });
-
-        await browser.close();
-
-        console.log("✅ PDF gerado com sucesso!");
-
-        // Retornar PDF
-        res.set({
-            "Content-Type": "application/pdf",
-            "Content-Disposition": 'inline; filename="teste-relatorio.pdf"',
-            "Content-Length": pdf.length,
-        });
-
-        res.send(pdf);
-    } catch (error) {
-        console.error("❌ Erro no teste:", error);
-        res.status(500).json({
-            error: "Erro no teste de PDF",
             details: error.message,
         });
     }

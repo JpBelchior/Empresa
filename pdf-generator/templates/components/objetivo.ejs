@@ -1,212 +1,161 @@
-<!-- OBJETIVO -->
+<!-- OBJETIVO - AJUSTES FINAIS DE ESTILO -->
 <div
-    class="min-h-screen flex flex-col page-break bg-white text-black relative"
-    style="overflow: hidden"
+    class="min-h-screen page-break bg-white text-black relative"
+    style="position: relative"
 >
-    <!-- Círculo decorativo azul no topo esquerdo -->
-    <div style="position: absolute; top: -100px; left: -100px; z-index: 0">
+    <!-- Container para elementos decorativos -->
+    <div
+        class="absolute inset-0"
+        style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 5;
+            pointer-events: none;
+        "
+    >
+        <!-- Círculo decorativo azul no topo esquerdo - 20px mais para cima e esquerda -->
         <div
-            style="
-                width: 300px;
-                height: 300px;
-                border: 8px solid #3b82f6;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            "
+            class="absolute"
+            style="position: absolute; top: -125px; left: -125px; z-index: 5"
         >
             <div
-                style="
-                    width: 150px;
-                    height: 150px;
-                    border: 8px solid #3b82f6;
-                    border-radius: 50%;
-                    background-color: rgba(191, 219, 254, 0.3);
-                "
-            ></div>
-        </div>
-    </div>
-
-    <!-- Bolinhas azuis no topo -->
-    <div style="position: absolute; top: 50px; left: 50px; z-index: 10">
-        <div
-            style="
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
-            "
-        >
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.7;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.7;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.6;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.6;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.5;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.5;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.4;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.4;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.3;
-                "
-            ></div>
-            <div
-                style="
-                    width: 16px;
-                    height: 16px;
-                    background-color: #3b82f6;
-                    border-radius: 50%;
-                    opacity: 0.3;
-                "
-            ></div>
-        </div>
-    </div>
-
-    <!-- Cabeçalho da página com título -->
-    <div class="bg-white p-8 border-b-4 border-blue-600 relative z-10">
-        <div class="flex justify-between items-center mb-4">
-            <div class="flex-1"></div>
-            <span class="text-sm font-semibold text-blue-600">
-                PÁGINA <%= numeroPaginas?.objetivo || '04' %>
-            </span>
-        </div>
-        <h1 class="text-4xl font-bold text-blue-800 text-center">OBJETIVO</h1>
-    </div>
-
-    <!-- Imagem do topo com bordas azuis acima e abaixo -->
-    <div class="relative z-10">
-        <div
-            class="h-4 w-full bg-gradient-to-r from-blue-500 to-blue-700"
-        ></div>
-        <% if (imagens && imagens.thalion) { %>
-        <img
-            src="<%= imagens.thalion %>"
-            alt="Imagem do objetivo"
-            class="w-full h-48 object-cover"
-        />
-        <% } else { %>
-        <!-- Fallback caso a imagem não esteja disponível -->
-        <div
-            class="w-full h-48 flex items-center justify-center bg-gradient-to-r from-blue-800 to-blue-600"
-        >
-            <span class="text-white text-lg font-semibold text-center">
-                Adicione a imagem: imagens.predio_alto_noite
-            </span>
-        </div>
-        <% } %>
-        <div
-            class="h-4 w-full bg-gradient-to-r from-blue-500 to-blue-700"
-        ></div>
-    </div>
-
-    <!-- Conteúdo Principal -->
-    <div class="flex-1 p-8 space-y-6 relative z-10">
-        <p class="text-lg text-gray-700 leading-relaxed text-justify">
-            Realizar análise de riscos para elevar o nível de segurança da
-            <strong class="text-blue-800"
-                ><%= dados?.nome_cliente || 'NOME DO LOCAL' %></strong
-            >, propondo soluções priorizadas para mitigar vulnerabilidades
-            identificadas.
-        </p>
-
-        <p class="text-lg text-gray-700 leading-relaxed text-justify">
-            O trabalho contempla: identificação dos riscos e fragilidades;
-            definição das recomendações mais adequadas; classificação por
-            criticidade; consolidação dos resultados em relatório executivo,
-            permitindo ao
-            <strong class="text-blue-800"
-                ><%= dados?.nome_empresa || 'NOME DA EMPRESA' %></strong
+                class="w-80 h-80 border-8 border-blue-500 rounded-full flex items-center justify-center opacity-80"
             >
-            planejar ações corretivas e prevenir incidentes que possam impactar
-            pessoas, ativos e operação, de forma contínua e eficaz.
-        </p>
+                <div
+                    class="w-48 h-48 border-8 border-blue-500 rounded-full flex items-center justify-center opacity-80"
+                ></div>
+            </div>
+        </div>
 
-        <% if (dados?.objetivo && dados.objetivo.trim() !== '') { %>
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-            <p class="text-lg text-gray-800 leading-relaxed text-justify">
-                <%= dados.objetivo %>
+        <!-- Bolinhas azuis no topo - POSIÇÃO MANTIDA -->
+        <div
+            class="absolute"
+            style="position: absolute; top: 10px; left: 15px; z-index: 6"
+        >
+            <div class="grid grid-cols-2 gap-2">
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-70"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-70"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-60"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-60"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-50"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-50"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-40"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-40"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-30"></div>
+                <div class="w-4 h-4 bg-blue-500 rounded-full opacity-30"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo principal - z-index MENOR que elementos decorativos de cima -->
+    <div class="relative z-0 flex flex-col min-h-screen">
+        <!-- Cabeçalho da página com título - ABAIXADO COM PADDING-TOP -->
+        <div
+            class="bg-white relative"
+            style="padding-top: 80px; padding-bottom: 40px"
+        >
+            <div class="flex items-center w-full px-12">
+                <!-- Espaço vazio -->
+                <div class="w-1/4"></div>
+
+                <!-- Linha azul bem fina (do 1/3 até 4/5 da página) -->
+                <div class="flex-1 h-[1px] bg-blue-400"></div>
+
+                <!-- Número da página à direita (1/5 da página) -->
+                <div class="w-1/5 text-right">
+                    <span
+                        class="text-sm font-bold text-black uppercase tracking-wide"
+                    >
+                        Página <%= numeroPaginas?.objetivo || '03' %>
+                    </span>
+                </div>
+            </div>
+
+            <h1 class="mt-8 text-5xl font-bold text-blue-800 text-center">
+                OBJETIVO
+            </h1>
+        </div>
+
+        <!-- Imagem ocupando toda a largura da página -->
+        <div class="w-full relative" style="z-index: 2">
+            <div
+                class="h-6 w-full bg-gradient-to-r from-blue-500 to-blue-700"
+            ></div>
+
+            <% if (imagens && imagens.thalion) { %>
+            <img
+                src="<%= imagens.thalion %>"
+                alt="Imagem do objetivo"
+                class="w-full object-cover"
+                style="
+                    width: 100%;
+                    height: 300px;
+                    object-fit: cover;
+                    display: block;
+                "
+            />
+            <% } else { %>
+            <!-- Fallback caso a imagem não esteja disponível -->
+            <div
+                class="w-full flex items-center justify-center bg-gradient-to-r from-blue-800 to-blue-600"
+                style="height: 300px"
+            >
+                <span class="text-white text-lg font-semibold text-center">
+                    🖼️ Imagem não encontrada
+                    <br />
+                    <small
+                        >Verifique se Thalion.jpg está em
+                        pdf-generator/imagens/</small
+                    >
+                </span>
+            </div>
+            <% } %>
+
+            <div
+                class="h-6 w-full bg-gradient-to-r from-blue-500 to-blue-700"
+            ></div>
+        </div>
+
+        <!-- Conteúdo Principal - MAIS ESPAÇADO + COR AZUL MARINHO ESCURO -->
+        <div class="flex-1 px-16 py-12 space-y-9 relative" style="z-index: 1">
+            <p class="text-xl text-sky-900 leading-relaxed text-justify">
+                Realizar análise de riscos para elevar o nível de segurança da
+                <strong class="text-blue-800">
+                    <%= dados?.nome_cliente || 'NOME DO LOCAL' %> </strong
+                >, propondo soluções priorizadas para mitigar vulnerabilidades
+                identificadas.
+            </p>
+
+            <p class="text-xl text-sky-900 leading-relaxed text-justify">
+                O trabalho contempla: identificação dos riscos e fragilidades;
+                definição das recomendações mais adequadas; classificação por
+                criticidade; consolidação dos resultados em relatório executivo,
+                permitindo ao
+                <strong class="text-blue-800">
+                    <%= dados?.nome_empresa || 'NOME DA EMPRESA' %>
+                </strong>
+                planejar ações corretivas e prevenir incidentes que possam
+                impactar pessoas, ativos e operação, de forma contínua e eficaz.
             </p>
         </div>
-        <% } %>
-    </div>
 
-    <!-- Linha fina azul separando conteúdo do rodapé -->
-    <div
-        class="w-full h-px bg-gradient-to-r from-blue-200 via-blue-500 to-blue-200"
-    ></div>
+        <!-- Linha fina azul separando conteúdo do rodapé -->
+        <div
+            class="w-full h-px bg-gradient-to-r from-blue-200 via-blue-500 to-blue-200 relative"
+            style="z-index: 1"
+        ></div>
 
-    <!-- Rodapé simples -->
-    <div class="p-6 relative z-10 flex justify-between text-sm text-gray-800">
-        <div class="text-gray-600">Análise de risco</div>
-        <div><%= dados?.nome_cliente || 'Nome do cliente' %></div>
-        <div><%= dados?.nome_empresa || 'Nome da empresa' %></div>
+        <!-- Rodapé simples -->
+        <div
+            class="p-6 flex justify-between text-sm text-gray-800 relative"
+            style="z-index: 1"
+        >
+            <div class="text-gray-600">Análise de risco</div>
+            <div><%= dados?.nome_cliente || 'Nome do cliente' %></div>
+            <div><%= dados?.nome_empresa || 'Nome da empresa' %></div>
+        </div>
     </div>
 </div>
