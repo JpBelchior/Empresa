@@ -13,6 +13,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+
+//Belchior
 use Illuminate\Support\Facades\Http;
 use Exception;
 
@@ -304,9 +306,10 @@ class FormularioController extends Controller
         'imagem_area.file' => 'Você precisa enviar o arquivo da localização da análise.',
     ]);
 
-    // PREPARAR DADOS PARA O NODE.JS
+    // PREPARAR DADOS PARA O NODE.JS BELCHIOR
     $dados_modelo = self::modelo1($request);
-    
+    $referencias_proximas_array = self::processarCampoTexto($request->referencias_proximas);
+    $panorama_array = self::processarCampoTexto($request->panorama);
     $dados_para_nodejs = [
         'dados' => [
             'nome_empresa' => $request->nome_empresa,
@@ -316,6 +319,10 @@ class FormularioController extends Controller
             'localizacao_analise' => $request->localizacao_analise,
             'referencias_proximas' => $request->referencias_proximas,
             'panorama' => $request->panorama,
+
+            //pra separar com virgulas no pdf
+             'referencias_proximas_lista' => $referencias_proximas_array,
+            'panorama_lista' => $panorama_array,
         ],
         'dados_modelo' => [
             'total_perguntas_respondidas' => Models\Resposta::where("formulario_id", $request->relatorio_formulario_id)->count(),
@@ -515,4 +522,27 @@ class FormularioController extends Controller
         }
         return $classe;        
     }
+
+    /**
+ * Processa campo de texto dividindo por vírgulas e limpando espaços | Belchior
+ *  ideia para melhorar o campo de referencias proximas e panorama situacional no pdf.
+ * @param string $texto
+ * @return array
+ */
+private static function processarCampoTexto($texto) {
+    if (empty($texto)) {
+        return [];
+    }
+    
+    // Dividir por vírgula
+    $itens = explode(',', $texto);
+    
+    // Limpar espaços e filtrar itens vazios
+    $itens_limpos = array_filter(array_map('trim', $itens), function($item) {
+        return !empty($item);
+    });
+    
+    // Retornar array reindexado
+    return array_values($itens_limpos);
+}
 }

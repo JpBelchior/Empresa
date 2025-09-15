@@ -17,6 +17,29 @@
             }
             .page-break {
                 page-break-before: always;
+                page-break-inside: auto;
+                position: relative;
+                overflow: visible;
+                height: auto;
+                min-height: 100vh;
+                width: 100%;
+            }
+
+            /* Primeira página não força quebra */
+            .page-break:first-child {
+                page-break-before: auto;
+            }
+
+            /* Para conteúdo longo como listas */
+            .section-break-inside {
+                page-break-inside: auto;
+                break-inside: auto;
+            }
+
+            /* Itens de lista que podem quebrar entre eles, mas não no meio */
+            .breakable-list li {
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
 
             /* === ESTILOS ESPECÍFICOS PARA PDF - ADICIONE ESTA SEÇÃO === */
@@ -72,8 +95,8 @@
             @media print {
                 .page-break {
                     page-break-before: always;
-                    height: 100vh;
-                    overflow: hidden;
+                    height: auto;
+                    overflow: visible;
                 }
 
                 /* Força renderização de backgrounds em PDF */
@@ -193,6 +216,9 @@
 
             <!-- PÁGINA 4 - METODOLOGIA -->
             <%- include('components/metodologia') %>
+
+            <!-- PÁGINA 5 - PANORAMA SITUACIONAL -->
+            <%- include('components/panorama') %>
         </body>
     </body>
 </html>
