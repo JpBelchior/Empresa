@@ -95,7 +95,6 @@
                 min-height: 100vh;
                 overflow: hidden;
             }
-
             /* Círculo decorativo com contenção melhorada */
             .circle-decoration {
                 position: absolute;
@@ -179,18 +178,21 @@
                 display: block !important;
                 overflow: visible !important;
             }
-
-            /* === FIM DOS ESTILOS ESPECÍFICOS PARA PDF === */
         </style>
     </head>
     <body class="bg-white text-gray-900">
-        <!-- PÁGINA 1 - CAPA -->
-        <%- include('components/capa') %>
-        <!-- PÁGINA 2 - SUMÁRIO -->
-        <%- include('components/sumario') %>
-        <!-- PÁGINA 3 - OBJETIVO -->
-        <%- include('components/objetivo') %>
-        <!-- PÁGINA 4 - METODOLOGIA -->
-        <%- include('components/metodologia') %>
+        <body class="bg-white text-gray-900">
+            <!-- PÁGINA 1 - CAPA -->
+            <%- include('components/capa') %>
+
+            <!-- PÁGINA 2 - SUMÁRIO -->
+            <%- include('components/sumario') %>
+
+            <!-- PÁGINA 3 - OBJETIVO -->
+            <%- include('components/objetivo') %>
+
+            <!-- PÁGINA 4 - METODOLOGIA -->
+            <%- include('components/metodologia') %>
+        </body>
     </body>
 </html>

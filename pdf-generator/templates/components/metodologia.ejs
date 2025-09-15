@@ -1,11 +1,11 @@
 <!-- METODOLOGIA - VERSÃO FINAL COM IMAGEM MAIS PARA BAIXO -->
-<div class="min-h-screen page-break bg-white text-black relative">
+<div class="min-h-screen page-break bg-white text-black flex flex-col relative">
     <!-- CABEÇALHO REUTILIZÁVEL -->
     <%- include('header', { numeroPagina: numeroPaginas?.metodologia || '04',
     tituloSecao: 'METODOLOGIA' }) %>
 
     <!-- Conteúdo principal -->
-    <div class="relative z-0 flex flex-col min-h-screen gap-y-4">
+    <div class="flex-1 flex flex-col relative z-0 gap-y-4">
         <!-- Texto explicativo centralizado -->
         <div class="text-center px-6 max-w-xl mx-auto">
             <p class="text-xl text-sky-900 leading-relaxed">
@@ -15,10 +15,7 @@
         </div>
 
         <!-- Imagem dos pilares centralizada e maior -->
-        <div
-            class="flex justify-center px-4 -mt-[60px]"
-            style="height: calc(100vh - 270px)"
-        >
+        <div class="flex justify-center px-4 -mt-[60px] flex-1 relative z-10">
             <% if (imagens && imagens.pilares) { %>
             <img
                 src="<%= imagens.pilares %>"
@@ -35,19 +32,15 @@
                 <span class="text-white text-lg font-semibold text-center">
                     🖼️ Imagem dos pilares não encontrada
                     <br />
-                    <small
-                        >Verifique se pilares.png está em
-                        pdf-generator/imagens/</small
-                    >
+                    <small>
+                        Verifique se pilares.png está em pdf-generator/imagens/
+                    </small>
                 </span>
             </div>
             <% } %>
         </div>
-
-        <!-- Espaçamento para o rodapé -->
-        <div style="height: 50px"></div>
     </div>
 
-    <!-- RODAPÉ REUTILIZÁVEL -->
-    <%- include('footer', { dados: dados }) %>
+    <!-- Rodapé -->
+    <%- include('footer') %>
 </div>

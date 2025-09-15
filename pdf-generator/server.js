@@ -60,6 +60,7 @@ function carregarImagensEstaticas(dados) {
     // Definir quais imagens estáticas precisamos carregar
     const imagensEstaticas = {
         cidade: ["cidade.jpg", "cidade.jpeg", "cidade.png"],
+        pilares: ["pilares.jpg", "pilares.jpeg", "pilares.png"],
     };
 
     console.log("🔍 Carregando imagens estáticas...");
