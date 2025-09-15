@@ -10,37 +10,17 @@
     <!-- Conteúdo principal - z-index MENOR que elementos decorativos de cima -->
     <div class="relative z-0 flex flex-col min-h-screen">
         <!-- Imagem ocupando toda a largura da página -->
-        <div class="w-full relative" style="z-index: 2">
+        <div
+            class="w-full relative"
+            style="
+                z-index: 2;
+                background: linear-gradient(to bottom, #01244ef8, #0061fc);
+            "
+        >
+            <!-- 👈 FUNDO AMARELO -->
             <div class="h-6 w-full bg-blue-500"></div>
 
-            <% if (imagens && imagens.thalion) { %>
-            <img
-                src="<%= imagens.thalion %>"
-                alt="Imagem do objetivo"
-                class="w-full object-cover"
-                style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    display: block;
-                "
-            />
-            <% } else { %>
-            <!-- Fallback caso a imagem não esteja disponível -->
-            <div
-                class="w-full flex items-center justify-center bg-gradient-to-r from-blue-800 to-blue-600"
-                style="height: 300px"
-            >
-                <span class="text-white text-lg font-semibold text-center">
-                    🖼️ Imagem não encontrada
-                    <br />
-                    <small
-                        >Verifique se Thalion.jpg está em
-                        pdf-generator/imagens/</small
-                    >
-                </span>
-            </div>
-            <% } %>
+            <div class="imagem-cidade-forca"></div>
 
             <div class="h-6 w-full bg-blue-500"></div>
         </div>

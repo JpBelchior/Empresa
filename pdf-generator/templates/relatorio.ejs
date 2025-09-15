@@ -169,6 +169,17 @@
                 print-color-adjust: exact;
             }
 
+            .imagem-cidade-forca {
+                background-image: url("<%= imagens.cidade %>") !important;
+                background-size: 100% 100% !important;
+                background-position: center !important;
+                background-repeat: no-repeat !important;
+                width: 100% !important;
+                height: 300px !important;
+                display: block !important;
+                overflow: visible !important;
+            }
+
             /* === FIM DOS ESTILOS ESPECÍFICOS PARA PDF === */
         </style>
     </head>
@@ -179,5 +190,7 @@
         <%- include('components/sumario') %>
         <!-- PÁGINA 3 - OBJETIVO -->
         <%- include('components/objetivo') %>
+        <!-- PÁGINA 4 - METODOLOGIA -->
+        <%- include('components/metodologia') %>
     </body>
 </html>

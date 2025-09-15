@@ -53,106 +53,97 @@ function imageToBase64(imagePath) {
 }
 
 // Rota principal para gerar PDF
-app.post("/generate-pdf", async (req, res) => {
-    try {
-        console.log("📨 Recebendo dados para PDF...");
+// Função para carregar todas as imagens automaticamente
+function carregarImagensEstaticas(dados) {
+    if (!dados.imagens) dados.imagens = {};
 
-        const dados = req.body;
+    // Definir quais imagens estáticas precisamos carregar
+    const imagensEstaticas = {
+        cidade: ["cidade.jpg", "cidade.jpeg", "cidade.png"],
+    };
 
-        console.log("🔍 DADOS RECEBIDOS DO LARAVEL:");
-        console.log("Empresa:", dados.dados?.nome_empresa);
-        console.log("Cliente:", dados.dados?.nome_cliente);
-        console.log("Objetivo:", dados.dados?.objetivo);
-        console.log(
-            "Total Perguntas:",
-            dados.dados_modelo?.total_perguntas_respondidas
-        );
-        console.log("Pilares:", dados.dados_modelo?.total_pilares);
-        console.log("Percentuais:", dados.dados_modelo?.porcentagem_pilar);
-        console.log("Tem imagens:", {
-            logo_empresa: dados.imagens?.logo_empresa ? "SIM" : "NÃO",
-            logo_cliente: dados.imagens?.logo_cliente ? "SIM" : "NÃO",
-        });
-        console.log("=====================================");
+    console.log("🔍 Carregando imagens estáticas...");
 
-        // CORREÇÃO DA IMAGEM THALION
-        if (!dados.imagens) dados.imagens = {};
-
-        console.log("🔍 Procurando imagem Thalion...");
-        const possiveisCaminhos = [
-            path.join(__dirname, "imagens", "Thalion.jpg"),
-            path.join(__dirname, "imagens", "thalion.jpg"),
-            path.join(__dirname, "imagens", "Thalion.jpeg"),
-            path.join(__dirname, "imagens", "thalion.jpeg"),
-            path.join(__dirname, "imagens", "Thalion.png"),
-            path.join(__dirname, "imagens", "thalion.png"),
-        ];
-
+    // Para cada imagem definida, tentar carregar
+    for (const [nomeImagem, possiveisNomes] of Object.entries(
+        imagensEstaticas
+    )) {
         let imagemEncontrada = false;
-        for (const caminho of possiveisCaminhos) {
-            if (fs.existsSync(caminho)) {
-                console.log("✅ Imagem encontrada:", caminho);
-                dados.imagens.thalion = imageToBase64(caminho);
+
+        for (const nomeArquivo of possiveisNomes) {
+            const caminhoCompleto = path.join(
+                __dirname,
+                "imagens",
+                nomeArquivo
+            );
+
+            if (fs.existsSync(caminhoCompleto)) {
+                console.log(`✅ ${nomeImagem} encontrada: ${nomeArquivo}`);
+                dados.imagens[nomeImagem] = imageToBase64(caminhoCompleto);
                 imagemEncontrada = true;
                 break;
             }
         }
 
         if (!imagemEncontrada) {
+            console.log(`⚠️ ${nomeImagem} não encontrada`);
+            dados.imagens[nomeImagem] = null;
+        }
+    }
+
+    return dados;
+}
+
+// Na rota principal, substitua todo o código de carregamento de imagens por:
+app.post("/generate-pdf", async (req, res) => {
+    try {
+        console.log("📨 Recebendo dados para PDF...");
+
+        const dados = req.body;
+
+        // Log inicial dos dados
+        console.log("🔍 DADOS RECEBIDOS DO LARAVEL:");
+        console.log("Empresa:", dados.dados?.nome_empresa);
+        console.log("Cliente:", dados.dados?.nome_cliente);
+        console.log("Objetivo:", dados.dados?.objetivo);
+
+        // CARREGAR TODAS AS IMAGENS ESTÁTICAS DE UMA VEZ
+        carregarImagensEstaticas(dados);
+
+        // DEBUG: Listar todas as imagens carregadas
+        console.log("🔍 IMAGENS CARREGADAS:");
+        for (const [nome, status] of Object.entries(dados.imagens)) {
             console.log(
-                "⚠️ Imagem Thalion não encontrada. Verificando pasta imagens..."
+                `- ${nome}: ${status ? "✅ CARREGADA" : "❌ NÃO ENCONTRADA"}`
             );
+        }
+
+        // Verificar pasta de imagens se alguma estiver faltando
+        const imagensFaltando = Object.entries(dados.imagens)
+            .filter(([nome, dados]) => !dados)
+            .map(([nome]) => nome);
+
+        if (imagensFaltando.length > 0) {
+            console.log("📁 Verificando conteúdo da pasta imagens...");
             try {
                 const imagensDir = path.join(__dirname, "imagens");
                 if (fs.existsSync(imagensDir)) {
-                    console.log("📁 Conteúdo da pasta imagens:");
                     const arquivos = fs.readdirSync(imagensDir);
-                    arquivos.forEach((arquivo) =>
-                        console.log(`   - ${arquivo}`)
-                    );
+                    console.log("Arquivos disponíveis:", arquivos);
                 } else {
                     console.log("❌ Pasta 'imagens' não existe!");
-                    console.log("📍 Caminho esperado:", imagensDir);
                 }
             } catch (error) {
                 console.log("❌ Erro ao listar pasta imagens:", error.message);
             }
-            dados.imagens.thalion = null;
         }
-
-        console.log(
-            "🖼️ Status da imagem thalion:",
-            dados.imagens.thalion ? "CARREGADA" : "NÃO ENCONTRADA"
-        );
-
-        // DEBUG: Listar todas as imagens disponíveis
-        console.log("🔍 TODAS AS IMAGENS DISPONÍVEIS:");
-        console.log(
-            "- logo_empresa:",
-            dados.imagens?.logo_empresa ? "SIM" : "NÃO"
-        );
-        console.log(
-            "- logo_cliente:",
-            dados.imagens?.logo_cliente ? "SIM" : "NÃO"
-        );
-        console.log(
-            "- imagem_area:",
-            dados.imagens?.imagem_area ? "SIM" : "NÃO"
-        );
-        console.log("- thalion:", dados.imagens?.thalion ? "SIM" : "NÃO");
 
         const numeroPaginas = calcularPaginasSumario(
             dados.dados,
             dados.dados_modelo
         );
 
-        console.log("📄 PAGINAÇÃO CALCULADA:");
-        Object.entries(numeroPaginas).forEach(([secao, pagina]) => {
-            console.log(`${secao}: Página ${pagina}`);
-        });
-        console.log("=====================================");
-
-        // Processar dados (por enquanto só passamos direto)
+        // Resto do código continua igual...
         const dadosProcessados = {
             ...dados,
             numeroPaginas,
@@ -162,7 +153,6 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("🎨 Renderizando template EJS...");
 
-        // Renderizar template EJS
         const html = await ejs.renderFile(
             path.join(__dirname, "templates", "relatorio.ejs"),
             dadosProcessados
@@ -170,7 +160,6 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("📄 Gerando PDF com Puppeteer...");
 
-        // Gerar PDF com Puppeteer
         const browser = await puppeteer.launch({
             headless: "new",
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -178,13 +167,11 @@ app.post("/generate-pdf", async (req, res) => {
 
         const page = await browser.newPage();
 
-        // Configurar página para PDF
         await page.setContent(html, {
             waitUntil: "networkidle0",
             timeout: 30000,
         });
 
-        // Gerar PDF
         const pdf = await page.pdf({
             format: "A4",
             printBackground: true,
@@ -200,7 +187,6 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("✅ PDF gerado com sucesso!");
 
-        // Retornar PDF
         res.set({
             "Content-Type": "application/pdf",
             "Content-Disposition": 'inline; filename="relatorio.pdf"',
