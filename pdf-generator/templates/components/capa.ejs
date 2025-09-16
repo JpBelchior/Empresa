@@ -49,20 +49,6 @@
                 </p>
             </div>
 
-            <!-- Estatística Destaque -->
-            <div
-                class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 text-center"
-            >
-                <div class="text-4xl font-bold text-blue-800">
-                    <%= dados_modelo?.total_perguntas_respondidas || 0 %>
-                </div>
-                <div
-                    class="text-sm text-gray-700 uppercase tracking-wide font-bold"
-                >
-                    Itens Analisados
-                </div>
-            </div>
-
             <!-- Informações -->
             <div class="space-y-4">
                 <div>
@@ -91,6 +77,20 @@
                     </div>
                 </div>
                 <% } %>
+            </div>
+
+            <!-- Estatística Destaque -->
+            <div
+                class="bg-blue-50 border-l-4 border-blue-500 p-6 mt-8 text-center"
+            >
+                <div class="text-4xl font-bold text-blue-800">
+                    <%= dados_modelo?.total_perguntas_respondidas || 0 %>
+                </div>
+                <div
+                    class="text-sm text-gray-700 uppercase tracking-wide font-bold"
+                >
+                    Itens Analisados
+                </div>
             </div>
         </div>
     </div>

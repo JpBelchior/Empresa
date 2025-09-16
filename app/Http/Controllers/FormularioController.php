@@ -309,7 +309,6 @@ class FormularioController extends Controller
     // PREPARAR DADOS PARA O NODE.JS BELCHIOR
     $dados_modelo = self::modelo1($request);
     $referencias_proximas_array = self::processarCampoTexto($request->referencias_proximas);
-    $panorama_array = self::processarCampoTexto($request->panorama);
     $dados_para_nodejs = [
         'dados' => [
             'nome_empresa' => $request->nome_empresa,
@@ -322,7 +321,6 @@ class FormularioController extends Controller
 
             //pra separar com virgulas no pdf
              'referencias_proximas_lista' => $referencias_proximas_array,
-            'panorama_lista' => $panorama_array,
         ],
         'dados_modelo' => [
             'total_perguntas_respondidas' => Models\Resposta::where("formulario_id", $request->relatorio_formulario_id)->count(),
@@ -393,26 +391,34 @@ class FormularioController extends Controller
 }
 
     private static function modelo1($request){
-        $total_perguntas_respondidas = Models\Resposta::where("formulario_id", $request->relatorio_formulario_id)->count();        
-        $total_pilares = [
-            'Pessoas' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Pessoas'),
-            'Tecnologia' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Tecnologia'),
-            'Processos' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Processos'),
-            'Informação' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Informação'),
-            'Gestão' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Gestão'),
-        ];
-        $porcentagem_pilar = [
-            'Pessoas' => percentual_puro($total_perguntas_respondidas, $total_pilares['Pessoas']),
-            'Tecnologia' => percentual_puro($total_perguntas_respondidas, $total_pilares['Tecnologia']),
-            'Processos' => percentual_puro($total_perguntas_respondidas, $total_pilares['Processos']),
-            'Informação' => percentual_puro($total_perguntas_respondidas, $total_pilares['Informação']),
-            'Gestão' => percentual_puro($total_perguntas_respondidas, $total_pilares['Gestão']),
-        ];
-        return [
-            'porcentagem_pilar' => $porcentagem_pilar,
-            'respostas' => self::todas_perguntas_respondidas($request->relatorio_formulario_id)
-        ];
-    }
+    $total_perguntas_respondidas = Models\Resposta::where("formulario_id", $request->relatorio_formulario_id)->count();        
+    $total_pilares = [
+        'Pessoas' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Pessoas'),
+        'Tecnologia' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Tecnologia'),
+        'Processos' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Processos'),
+        'Informação' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Informação'),
+        'Gestão' => self::total_perguntas_respondidas_pilar($request->relatorio_formulario_id, 'Gestão'),
+    ];
+    
+    
+    $porcentagem_pilar_original = [
+        'Pessoas' => percentual_puro($total_perguntas_respondidas, $total_pilares['Pessoas']),
+        'Tecnologia' => percentual_puro($total_perguntas_respondidas, $total_pilares['Tecnologia']),
+        'Processos' => percentual_puro($total_perguntas_respondidas, $total_pilares['Processos']),
+        'Informação' => percentual_puro($total_perguntas_respondidas, $total_pilares['Informação']),
+        'Gestão' => percentual_puro($total_perguntas_respondidas, $total_pilares['Gestão']),
+    ];
+    
+    //  NOVA PORCENTAGEM  - BASEADA EM "ATENDE PLENAMENTE" BELCHIOR
+    $porcentagem_pilar = self::calcular_porcentagem_adequacao_por_pilar($request->relatorio_formulario_id);
+    
+    return [
+        'porcentagem_pilar' => $porcentagem_pilar, 
+        'porcentagem_pilar_original' => $porcentagem_pilar_original, 
+        'total_pilares' => $total_pilares, 
+        'respostas' => self::todas_perguntas_respondidas($request->relatorio_formulario_id)
+    ];
+}
 
     private static function total_perguntas_respondidas_pilar($formulario_id, $pilar){
         $tematica = Models\Tematica::where('nome', $pilar)->first();
@@ -544,5 +550,47 @@ private static function processarCampoTexto($texto) {
     
     // Retornar array reindexado
     return array_values($itens_limpos);
+}
+
+//BELCHIOR
+/**
+ * Calcula a porcentagem de adequação por pilar
+ * Fórmula: (Perguntas com nivel_adequacao = 1) / (Total de perguntas do pilar) × 100
+ * 
+ * @param int $formulario_id
+ * @return array
+ */
+private static function calcular_porcentagem_adequacao_por_pilar($formulario_id) {
+    // Buscar todas as respostas com JOIN para pegar a temática
+    $resultados = DB::table('respostas')
+        ->join('perguntas', 'respostas.pergunta_id', '=', 'perguntas.id')
+        ->join('tematicas', 'perguntas.tematica_id', '=', 'tematicas.id')
+        ->where('respostas.formulario_id', $formulario_id)
+        ->select(
+            'tematicas.nome as tematica_nome',
+            DB::raw('COUNT(*) as total_respostas'),
+            DB::raw('COUNT(CASE WHEN respostas.nivel_adequacao = 1 THEN 1 END) as respostas_adequadas')
+        )
+        ->groupBy('tematicas.nome')
+        ->get();
+
+    // Inicializar array com todos os pilares zerados
+    $porcentagens = [
+        'Pessoas' => 0,
+        'Tecnologia' => 0,
+        'Processos' => 0,
+        'Informação' => 0,
+        'Gestão' => 0,
+    ];
+
+    // Calcular porcentagem para cada pilar que tem dados
+    foreach ($resultados as $resultado) {
+        if ($resultado->total_respostas > 0) {
+            $porcentagem = ($resultado->respostas_adequadas / $resultado->total_respostas) * 100;
+            $porcentagens[$resultado->tematica_nome] = round($porcentagem, 1);
+        }
+    }
+
+    return $porcentagens;
 }
 }

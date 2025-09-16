@@ -42,7 +42,7 @@
                 break-inside: avoid;
             }
 
-            /* === ESTILOS ESPECÍFICOS PARA PDF - ADICIONE ESTA SEÇÃO === */
+            /* === ESTILOS ESPECÍFICOS PARA PDF  === */
 
             /* Garante que cada página seja independente */
             .page-break {
@@ -106,13 +106,6 @@
                 }
             }
 
-            /* Container específico para a página objetivo */
-            .objetivo-page {
-                position: relative;
-                min-height: 100vh;
-                overflow: hidden;
-            }
-
             /* Corrigir posicionamento de elementos absolutos no PDF */
             .min-h-screen {
                 position: relative;
@@ -139,21 +132,22 @@
         </style>
     </head>
     <body class="bg-white text-gray-900">
-        <body class="bg-white text-gray-900">
-            <!-- PÁGINA 1 - CAPA -->
-            <%- include('components/capa') %>
+        <!-- PÁGINA 1 - CAPA -->
+        <%- include('components/capa') %>
 
-            <!-- PÁGINA 2 - SUMÁRIO -->
-            <%- include('components/sumario') %>
+        <!-- PÁGINA 2 - SUMÁRIO -->
+        <%- include('components/sumario') %>
 
-            <!-- PÁGINA 3 - OBJETIVO -->
-            <%- include('components/objetivo') %>
+        <!-- PÁGINA 3 - OBJETIVO -->
+        <%- include('components/objetivo') %>
 
-            <!-- PÁGINA 4 - METODOLOGIA -->
-            <%- include('components/metodologia') %>
+        <!-- PÁGINA 4 - METODOLOGIA -->
+        <%- include('components/metodologia') %>
 
-            <!-- PÁGINA 5 - PANORAMA SITUACIONAL -->
-            <%- include('components/panorama') %>
-        </body>
+        <!-- PÁGINA 5 - PANORAMA SITUACIONAL -->
+        <%- include('components/panorama') %>
+
+        <!-- PÁGINA 6 - RESUMO EXECUTIVO -->
+        <%- include('components/resumoExecutivo') %>
     </body>
 </html>

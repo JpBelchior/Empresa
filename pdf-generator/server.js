@@ -12,6 +12,7 @@ const {
     calcularPaginasSumario,
     mostrarDetalhamento,
 } = require("./utils/paginacao");
+const { info } = require("console");
 
 // Middleware
 app.use(express.json({ limit: "50mb" }));
@@ -61,6 +62,11 @@ function carregarImagensEstaticas(dados) {
     const imagensEstaticas = {
         cidade: ["cidade.jpg", "cidade.jpeg", "cidade.png"],
         pilares: ["pilares.jpg", "pilares.jpeg", "pilares.png"],
+        pessoas: ["pessoas.jpg", "pessoas.jpeg", "pessoas.png"],
+        tecnologia: ["tecnologia.jpg", "tecnologia.jpeg", "tecnologia.png"],
+        gestao: ["gestao.jpg", "gestao.jpeg", "gestao.png"],
+        informacoes: ["informacoes.jpg", "informacoes.jpeg", "informacoes.png"],
+        processos: ["processos.jpg", "processos.jpeg", "processos.png"],
     };
 
     console.log("🔍 Carregando imagens estáticas...");

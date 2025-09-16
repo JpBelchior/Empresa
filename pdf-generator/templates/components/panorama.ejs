@@ -14,7 +14,7 @@
             </h2>
 
             <!-- Container da Imagem da Área -->
-            <div class="flex justify-center items-center mb-12">
+            <div class="flex justify-center items-center mb-1">
                 <!-- Barra azul lateral mais próxima -->
                 <div
                     class="w-12 bg-blue-500 mr-4 rounded-md"
@@ -23,14 +23,14 @@
 
                 <!-- Imagem da área -->
                 <div
-                    class="relative border-4 border-blue-300 bg-gray-100 shadow-md"
+                    class="relative border-4 border-blue-300 border-r-4 bg-gray-100 shadow-md flex items-center justify-center"
                     style="width: 500px; height: 280px"
                 >
                     <% if (imagens && imagens.imagem_area) { %>
                     <img
                         src="<%= imagens.imagem_area %>"
                         alt="Imagem da Área"
-                        class="w-full h-full object-cover rounded-sm"
+                        class="max-w-full max-h-full object-contain rounded-sm"
                     />
                     <% } else { %>
                     <div class="w-full h-full flex items-center justify-center">
@@ -44,52 +44,50 @@
         </div>
 
         <!-- Seção de Referências Próximas -->
-        <div class="px-16 py-8 bg-white">
-            <h3 class="text-2xl font-bold text-sky-900 mb-6 text-center">
+        <div class="px-16 py-4 bg-white">
+            <h3 class="text-2xl font-bold text-sky-900 mb-4 text-center">
                 Referências Próximas
             </h3>
 
-            <ol class="list-none space-y-3">
+            <% if (dados?.referencias_proximas_lista &&
+            dados.referencias_proximas_lista.length > 0) { %>
+            <ol class="list-none space-y-1">
                 <% dados.referencias_proximas_lista.forEach((item, index) => {
                 %>
                 <li class="flex items-start">
                     <span
-                        class="inline-flex items-center justify-center w-7 h-7 bg-blue-400 text-white rounded-full text-sm font-bold mr-3 mt-0.5 flex-shrink-0"
+                        class="inline-flex items-center justify-center w-6 h-6 bg-blue-400 text-white rounded-full text-sm font-bold mr-3 mb-1 flex-shrink-0"
                     >
                         <%= index + 1 %>
                     </span>
                     <span
-                        class="text-lg text-gray-800 leading-relaxed flex-1 bg-blue-100 rounded-md pl-2"
+                        class="text-sm text-gray-800 leading-relaxed flex-1 bg-blue-100 rounded-md pl-2"
                     >
                         <%= item %>
                     </span>
                 </li>
                 <% }); %>
             </ol>
+            <% } else { %>
+            <p class="text-lg text-gray-800 leading-relaxed text-justify">
+                <%= dados?.referencias_proximas || 'Informações não fornecidas.'
+                %>
+            </p>
+            <% } %>
         </div>
 
         <!-- Seção de Panorama Situacional - Exposição ao Risco -->
-        <div class="px-16 py-8 bg-white">
-            <h3 class="text-2xl font-bold text-sky-900 mb-6 text-center">
+        <div class="px-16 py-4 bg-white section-break-inside">
+            <h3 class="text-2xl font-bold text-sky-900 mb-4 text-center">
                 Panorama Situacional - Exposição ao Risco
             </h3>
-
-            <ol class="list-none space-y-4">
-                <% dados.panorama_lista.forEach((item, index) => { %>
-                <li class="flex items-start">
-                    <span
-                        class="inline-flex items-center justify-center w-8 h-8 bg-red-400 text-white rounded-full text-sm font-bold mr-4 mt-0.5 flex-shrink-0"
-                    >
-                        <%= index + 1 %>
-                    </span>
-                    <span
-                        class="text-lg text-gray-800 leading-relaxed flex-1 capitalize bg-red-100 rounded-md pl-2"
-                    >
-                        <%= item %>
-                    </span>
-                </li>
-                <% }); %>
-            </ol>
+            <div class="max-w-3xl mx-auto">
+                <p
+                    class="text-lg text-red-400 leading-relaxed text-justify break-words hyphens-auto"
+                >
+                    <%= dados?.panorama || 'Informações não fornecidas.' %>
+                </p>
+            </div>
         </div>
     </div>
 
