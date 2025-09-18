@@ -455,7 +455,7 @@ class FormularioController extends Controller
         $respostas = DB::table("respostas")
         ->join("perguntas", "respostas.pergunta_id", "=", "perguntas.id")
         ->where('respostas.formulario_id', $formulario_id)
-        ->orderBy('respostas.data_cadastro', 'desc')        
+      //  ->orderBy('respostas.data_cadastro', 'desc')   Belchior - tirei essa linha para poder reordenar nas Nao conformidades.     
         ->get();
         $lista = [];
         $posicao = 1;

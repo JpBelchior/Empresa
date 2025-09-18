@@ -24,7 +24,7 @@ class ListaPaginada {
                 itens: vetor.slice(i, i + itensPorPagina),
                 numeroPagina: paginaAtual + 1,
                 numeroPaginaReal: numeroPaginaReal,
-                numeroPaginaExibicao: String(numeroPaginaReal).padStart(2, "0"),
+                numeroPaginaExibicao: numeroPaginaReal,
                 totalPaginas: totalPaginas,
                 indiceInicio: i + 1,
                 indiceFim: Math.min(i + itensPorPagina, vetor.length),
@@ -39,7 +39,7 @@ class ListaPaginada {
 
     /**
      * Processa não conformidades que JÁ VEM processadas do Laravel
-     * Só precisa: filtrar, ordenar por criticidade e paginar
+     * Filtra, ordena por criticidade e renumera sequencialmente
      * @param {Array} respostas - Array de respostas do Laravel (já processadas)
      * @returns {Array} Array de não conformidades paginadas
      */
@@ -63,26 +63,55 @@ class ListaPaginada {
             `📋 Filtradas ${naoConformidades.length} não conformidades (vulnerabilidade > 1)`
         );
 
+        // DEBUG: Mostrar todas as criticidades encontradas
+        const criticidadesEncontradas = [
+            ...new Set(naoConformidades.map((item) => item.criticidade)),
+        ];
+        console.log(
+            `📋 Criticidades encontradas: ${criticidadesEncontradas.join(", ")}`
+        );
+
         if (naoConformidades.length === 0) {
             return [];
         }
 
-        // PASSO 2: Ordenar por criticidade (Extremo primeiro, Baixo último)
+        // PASSO 2: Ordenar por criticidade (ordem correta: vermelho-escuro → verde-claro)
         const ordemCriticidade = {
-            Extremo: 1,
-            Alto: 2,
-            Médio: 3,
-            Baixo: 4,
+            "vermelho-escuro": 5, // Mais crítico
+            laranja: 4, // Alto
+            amarelo: 3, // Médio
+            "verde-escuro": 2, // Baixo
+            "verde-claro": 1, // Menos crítico
         };
 
         const naoConformidadesOrdenadas = naoConformidades.sort((a, b) => {
-            const criticidadeA = ordemCriticidade[a.criticidade] || 999;
-            const criticidadeB = ordemCriticidade[b.criticidade] || 999;
-            return criticidadeA - criticidadeB;
+            const criticidadeA = ordemCriticidade[a.criticidade] || 0;
+            const criticidadeB = ordemCriticidade[b.criticidade] || 0;
+
+            // Se alguma criticidade não foi encontrada no mapeamento, avisar
+            if (criticidadeA === 0) {
+                console.log(`⚠️  Criticidade não mapeada: "${a.criticidade}"`);
+            }
+            if (criticidadeB === 0) {
+                console.log(`⚠️  Criticidade não mapeada: "${b.criticidade}"`);
+            }
+
+            return criticidadeB - criticidadeA; // Maior criticidade primeiro
         });
 
-        // PASSO 3: Processar dados para o template
-        // Como o Laravel já processou, só precisamos ajustar alguns campos
+        console.log(`📋 Ordenação por criticidade aplicada:`);
+        naoConformidadesOrdenadas.slice(0, 5).forEach((item, index) => {
+            console.log(
+                `   ${index + 1}. ${item.criticidade} - ${item.topicos}`
+            );
+        });
+        if (naoConformidadesOrdenadas.length > 5) {
+            console.log(
+                `   ... e mais ${naoConformidadesOrdenadas.length - 5} itens`
+            );
+        }
+
+        // PASSO 3: RENUMERAR sequencialmente após ordenação
         const naoConformidadesProcessadas = naoConformidadesOrdenadas.map(
             (item, indice) => {
                 return {
@@ -94,18 +123,23 @@ class ListaPaginada {
                     recomendacao: item.recomendacao,
 
                     // === DADOS PROCESSADOS PARA O TEMPLATE ===
-                    nc: String(indice + 1).padStart(3, "0"), // Renumerar sequencial: 001, 002, 003...
-                    naoConformidadeTexto: `${item.topicos} - nível ${item.vulnerabilidade}`, // Formato para a tabela
+                    nc: String(indice + 1).padStart(3, "0"), // NC sequencial após ordenação: 001, 002, 003...
+                    naoConformidadeTexto: `${item.topicos} - nível ${item.vulnerabilidade}`,
 
-                    // Dados extras para debug
-                    ncOriginal: item.nc, // Manter o NC original do Laravel
+                    // === DADOS EXTRAS PARA DEBUG ===
+                    ncOriginal: item.nc, // NC original do Laravel
                     indiceOrdenado: indice,
+                    posicaoOriginal: respostas.findIndex(
+                        (r) =>
+                            r.topicos === item.topicos &&
+                            r.vulnerabilidade === item.vulnerabilidade
+                    ), // Para debug: onde estava originalmente
                 };
             }
         );
 
-        // Debug: mostrar estatísticas
-        console.log(`📋 Não conformidades processadas:`);
+        // Debug: mostrar estatísticas detalhadas
+        console.log(`📋 Não conformidades processadas e renumeradas:`);
         console.log(`   - Total: ${naoConformidadesProcessadas.length}`);
 
         const contagemCriticidade = {};
@@ -114,11 +148,29 @@ class ListaPaginada {
                 (contagemCriticidade[item.criticidade] || 0) + 1;
         });
 
-        Object.entries(contagemCriticidade).forEach(
-            ([criticidade, quantidade]) => {
-                console.log(`   - ${criticidade}: ${quantidade} itens`);
+        // Mostrar contagem na ordem de criticidade
+        const ordemExibicao = [
+            "Extremo",
+            "Alto",
+            "Médio",
+            "Baixo",
+            "Muito Baixo",
+        ];
+        ordemExibicao.forEach((criticidade) => {
+            if (contagemCriticidade[criticidade]) {
+                console.log(
+                    `   - ${criticidade}: ${contagemCriticidade[criticidade]} itens`
+                );
             }
-        );
+        });
+
+        // Debug: mostrar primeiros 3 NCs atribuídos
+        console.log(`📋 Exemplo de NCs atribuídos:`);
+        naoConformidadesProcessadas.slice(0, 3).forEach((item) => {
+            console.log(
+                `   NC ${item.nc}: ${item.criticidade} - ${item.topicos}`
+            );
+        });
 
         return naoConformidadesProcessadas;
     }
@@ -133,7 +185,7 @@ class ListaPaginada {
             numeroPaginas.objetivo || 3,
             numeroPaginas.metodologia || 4,
             numeroPaginas.panorama || 5,
-            numeroPaginas.resumoExecutivo || 6,
+            numeroPaginas.resumoExecutivo || 7,
         ];
 
         const ultimaPagina = Math.max(...paginas.filter((p) => p > 0));
@@ -161,7 +213,7 @@ class ListaPaginada {
             };
         }
 
-        // Processar não conformidades (filtrar + ordenar)
+        // Processar não conformidades (filtrar + ordenar + renumerar)
         const naoConformidades = this.processarNaoConformidades(respostas);
 
         if (naoConformidades.length === 0) {
@@ -191,6 +243,12 @@ class ListaPaginada {
         console.log(`   - ${naoConformidades.length} itens no total`);
         console.log(`   - ${paginasLista.length} páginas geradas`);
         console.log(`   - Começa na página ${paginaInicial}`);
+        console.log(
+            `   - Primeira página contém NCs: ${
+                paginasLista[0]?.itens.map((item) => item.nc).join(", ") ||
+                "nenhum"
+            }`
+        );
 
         return {
             paginasLista: paginasLista,
