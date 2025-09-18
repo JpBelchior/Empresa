@@ -14,6 +14,10 @@ const {
 } = require("./utils/paginacao");
 const { info } = require("console");
 
+const {
+    processarNaoConformidadesParaRelatorio,
+} = require("./utils/lista-paginada");
+
 // Middleware
 app.use(express.json({ limit: "50mb" }));
 app.use(express.static("assets"));
@@ -108,58 +112,63 @@ app.post("/generate-pdf", async (req, res) => {
 
         const dados = req.body;
 
-        // Log inicial dos dados
+        // Log inicial dos dados (manter igual)
         console.log("🔍 DADOS RECEBIDOS DO LARAVEL:");
         console.log("Empresa:", dados.dados?.nome_empresa);
         console.log("Cliente:", dados.dados?.nome_cliente);
         console.log("Objetivo:", dados.dados?.objetivo);
 
-        // CARREGAR TODAS AS IMAGENS ESTÁTICAS DE UMA VEZ
+        // CARREGAR IMAGENS (manter igual)
         carregarImagensEstaticas(dados);
 
-        // DEBUG: Listar todas as imagens carregadas
-        console.log("🔍 IMAGENS CARREGADAS:");
-        for (const [nome, status] of Object.entries(dados.imagens)) {
-            console.log(
-                `- ${nome}: ${status ? "✅ CARREGADA" : "❌ NÃO ENCONTRADA"}`
-            );
-        }
-
-        // Verificar pasta de imagens se alguma estiver faltando
-        const imagensFaltando = Object.entries(dados.imagens)
-            .filter(([nome, dados]) => !dados)
-            .map(([nome]) => nome);
-
-        if (imagensFaltando.length > 0) {
-            console.log("📁 Verificando conteúdo da pasta imagens...");
-            try {
-                const imagensDir = path.join(__dirname, "imagens");
-                if (fs.existsSync(imagensDir)) {
-                    const arquivos = fs.readdirSync(imagensDir);
-                    console.log("Arquivos disponíveis:", arquivos);
-                } else {
-                    console.log("❌ Pasta 'imagens' não existe!");
-                }
-            } catch (error) {
-                console.log("❌ Erro ao listar pasta imagens:", error.message);
-            }
-        }
-
+        // CALCULAR PÁGINAS (manter igual)
         const numeroPaginas = calcularPaginasSumario(
             dados.dados,
             dados.dados_modelo
         );
 
-        // Resto do código continua igual...
+        // === 🔥 NOVA LÓGICA: PROCESSAR NÃO CONFORMIDADES ===
+        console.log("📋 Processando não conformidades...");
+
+        // Verificar se existem respostas nos dados
+        const respostas = dados.dados_modelo?.respostas || [];
+        console.log(`📊 Total de respostas recebidas: ${respostas.length}`);
+
+        if (respostas.length > 0) {
+            // Log das primeiras respostas para debug
+            console.log("📋 Estrutura da primeira resposta:", {
+                pilar: respostas[0].pilar,
+                vulnerabilidade: respostas[0].vulnerabilidade,
+                topicos: respostas[0].topicos,
+                criticidade: respostas[0].criticidade,
+            });
+        }
+
+        // Processar não conformidades
+        const dadosLista = processarNaoConformidadesParaRelatorio({
+            ...dados,
+            numeroPaginas,
+        });
+
+        // Log do resultado
+        console.log(`📋 Resultado do processamento:`);
+        console.log(`   - Tem lista: ${dadosLista.temLista}`);
+        console.log(`   - Tipo: ${dadosLista.tipoLista}`);
+        console.log(`   - Total itens: ${dadosLista.totalItens}`);
+        console.log(`   - Total páginas: ${dadosLista.totalPaginas}`);
+
+        // PREPARAR DADOS COMPLETOS
         const dadosProcessados = {
             ...dados,
             numeroPaginas,
+            dadosLista, // Dados das não conformidades paginadas
             dataGeracao: moment().format("DD/MM/YYYY HH:mm:ss"),
             timestamp: Date.now(),
         };
 
         console.log("🎨 Renderizando template EJS...");
 
+        // RENDERIZAR TEMPLATE (igual)
         const html = await ejs.renderFile(
             path.join(__dirname, "templates", "relatorio.ejs"),
             dadosProcessados
@@ -167,6 +176,7 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("📄 Gerando PDF com Puppeteer...");
 
+        // GERAR PDF (igual)
         const browser = await puppeteer.launch({
             headless: "new",
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -194,6 +204,18 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("✅ PDF gerado com sucesso!");
 
+        // Log final
+        if (dadosLista.temLista) {
+            console.log(
+                `📋 Lista de não conformidades incluída: ${dadosLista.totalItens} itens em ${dadosLista.totalPaginas} páginas`
+            );
+        } else {
+            console.log(
+                "📋 Nenhuma não conformidade encontrada - relatório sem lista adicional"
+            );
+        }
+
+        // RESPOSTA (igual)
         res.set({
             "Content-Type": "application/pdf",
             "Content-Disposition": 'inline; filename="relatorio.pdf"',
@@ -213,7 +235,6 @@ app.post("/generate-pdf", async (req, res) => {
 // Iniciar servidor
 app.listen(PORT, () => {
     console.log(`🚀 PDF Generator rodando em http://localhost:${PORT}`);
-    console.log(`📄 Teste: http://localhost:${PORT}/test-pdf`);
 });
 
 module.exports = app;

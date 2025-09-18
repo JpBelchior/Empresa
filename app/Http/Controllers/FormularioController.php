@@ -339,6 +339,7 @@ class FormularioController extends Controller
                 'Informação' => 0,
                 'Gestão' => 0,
             ],
+             'respostas' => $dados_modelo['respostas'] ?? [],
             'analise_topicos' => $dados_modelo['analise_topicos'] ?? []
         ],
         

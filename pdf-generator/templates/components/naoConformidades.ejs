@@ -1,0 +1,156 @@
+<% if (dadosLista && dadosLista.temLista) { %> <%
+dadosLista.paginasLista.forEach((pagina, indicePagina) => { %>
+
+<!-- PÁGINA <%= pagina.numeroPagina %> DAS NÃO CONFORMIDADES -->
+<div class="min-h-screen page-break bg-white text-black flex flex-col relative">
+    <%- include('header', { numeroPagina: pagina.numeroPaginaExibicao + 1,
+    tituloSecao: 'NÃO CONFORMIDADES - NC' }) %>
+
+    <div class="flex-1 px-8 py-6 relative z-10">
+        <div
+            class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+        >
+            <!-- TABELA: usa border-collapse para bordas contínuas -->
+            <div class="p-0">
+                <table
+                    class="w-full table-fixed border-collapse"
+                    style="border-collapse: collapse"
+                >
+                    <!-- Colunas com largura aproximada  -->
+                    <colgroup>
+                        <col style="width: 27%" />
+                        <col style="width: 9%" />
+                        <col style="width: 46%" />
+                        <col style="width: 18%" />
+                    </colgroup>
+
+                    <!-- CABEÇALHO -->
+                    <thead>
+                        <tr>
+                            <th
+                                class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            >
+                                Pilar
+                            </th>
+                            <th
+                                class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            >
+                                NC
+                            </th>
+                            <th
+                                class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            >
+                                Não Conformidade
+                            </th>
+                            <th
+                                class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            >
+                                Criticidade
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <!-- CORPO -->
+                    <tbody>
+                        <% pagina.itens.forEach((item, indiceItem) => { const
+                        chavePilar = (item.pilar || '').trim(); const mapPilares
+                        = { "Pessoas": imagens.pessoas, "Tecnologia":
+                        imagens.tecnologia, "Gestão": imagens.gestao,
+                        "Informação": imagens.informacoes, "Processos":
+                        imagens.processos }; const imagemPilar =
+                        mapPilares[chavePilar] || null; %>
+                        <tr
+                            class="<%= indiceItem % 2 === 0 ? 'bg-gray-50' : 'bg-white' %> hover:bg-blue-50"
+                        >
+                            <!-- PILAR -->
+                            <td
+                                class="px-4 py-3 text-center align-middle border border-blue-500"
+                            >
+                                <div
+                                    class="flex items-center justify-center w-full h-full"
+                                >
+                                    <div
+                                        class="p-2 bg-blue-50 rounded-sm flex items-center justify-center"
+                                    >
+                                        <% if (imagemPilar) { %>
+                                        <img
+                                            src="<%= imagemPilar %>"
+                                            alt="<%= chavePilar %>"
+                                            class="w-6 h-6 object-contain"
+                                        />
+                                        <% } else { %>
+                                        <div
+                                            class="w-6 h-6 bg-blue-500 rounded-full"
+                                        ></div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- NC -->
+                            <td
+                                class="px-4 py-3 text-center align-middle border border-blue-500"
+                            >
+                                <span
+                                    class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs font-mono font-bold"
+                                >
+                                    <%= item.nc %>
+                                </span>
+                            </td>
+
+                            <!-- NÃO CONFORMIDADE -->
+                            <td
+                                class="px-4 py-3 border border-blue-500 text-center align-middle text-sm text-gray-900"
+                            >
+                                <%= item.naoConformidadeTexto %>
+                            </td>
+
+                            <!-- CRITICIDADE -->
+                            <td
+                                class="px-4 py-3 text-center align-middle border border-blue-500"
+                            >
+                                <% let corCriticidade = ''; if (item.criticidade
+                                === 'vermelho-escuro') corCriticidade =
+                                'bg-red-500'; else if (item.criticidade ===
+                                'laranja') corCriticidade = 'bg-orange-500';
+                                else if (item.criticidade === 'amarelo')
+                                corCriticidade = 'bg-yellow-500'; else if
+                                (item.criticidade === 'verde-escuro')
+                                corCriticidade = 'bg-green-700'; else if
+                                (item.criticidade === 'verde-claro')
+                                corCriticidade = 'bg-green-400'; else
+                                corCriticidade = 'bg-gray-500'; %>
+                                <div class="flex items-center justify-center">
+                                    <div
+                                        class="w-7 h-7 rounded-full <%= corCriticidade %>"
+                                    ></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- INFORMAÇÕES DA PÁGINA -->
+        <div
+            class="mt-4 flex justify-between items-center text-sm text-gray-600"
+        >
+            <span>
+                Página <%= pagina.numeroPagina %> de <%= pagina.totalPaginas %>
+                - Não Conformidades
+            </span>
+            <span>
+                Itens <%= pagina.indiceInicio %> - <%= pagina.indiceFim %> de
+                <%= pagina.totalItens %>
+            </span>
+        </div>
+    </div>
+
+    <%- include('footer', { dados: dados }) %>
+</div>
+
+<% }); %> <% } else { %>
+<!-- Se não houver não conformidades, não exibe nada -->
+<% } %>
