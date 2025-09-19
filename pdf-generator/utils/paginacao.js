@@ -20,7 +20,7 @@ class PaginacaoManager {
             espacoCabecalho: 3,
             espacoRodape: 2,
             espacoImagem: 8,
-            espacoTabela: 2, // por linha de tabela
+            espacoTabela: 2,
         };
     }
 

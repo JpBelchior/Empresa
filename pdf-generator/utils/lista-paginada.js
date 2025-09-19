@@ -38,6 +38,27 @@ class ListaPaginada {
     }
 
     /**
+     * @param {number|string} vulnerabilidade - Nível de vulnerabilidade
+     * @returns {string} Nome descritivo do nível de vulnerabilidade como está no formulario
+     */
+    nomearNivelVulnerabilidade(vulnerabilidade) {
+        const nivel = parseInt(vulnerabilidade);
+
+        switch (nivel) {
+            case 2:
+                return "Atende após ajustes";
+            case 3:
+                return "Atende após ajustes médios";
+            case 4:
+                return "Não atende";
+            case 5:
+                return "Não existe";
+            default:
+                return `nível ${vulnerabilidade}`;
+        }
+    }
+
+    /**
      * Processa não conformidades que JÁ VEM processadas do Laravel
      * Filtra, ordena por criticidade e renumera sequencialmente
      * @param {Array} respostas - Array de respostas do Laravel (já processadas)
@@ -75,13 +96,13 @@ class ListaPaginada {
             return [];
         }
 
-        // PASSO 2: Ordenar por criticidade (ordem correta: vermelho-escuro → verde-claro)
+        // PASSO 2: Ordenar por criticidade
         const ordemCriticidade = {
-            "vermelho-escuro": 5, // Mais crítico
-            laranja: 4, // Alto
-            amarelo: 3, // Médio
-            "verde-escuro": 2, // Baixo
-            "verde-claro": 1, // Menos crítico
+            "vermelho-escuro": 5,
+            laranja: 4,
+            amarelo: 3,
+            "verde-escuro": 2,
+            "verde-claro": 1,
         };
 
         const naoConformidadesOrdenadas = naoConformidades.sort((a, b) => {
@@ -124,7 +145,11 @@ class ListaPaginada {
 
                     // === DADOS PROCESSADOS PARA O TEMPLATE ===
                     nc: String(indice + 1).padStart(3, "0"), // NC sequencial após ordenação: 001, 002, 003...
-                    naoConformidadeTexto: `${item.topicos} - nível ${item.vulnerabilidade}`,
+                    naoConformidadeTexto: `${
+                        item.topicos
+                    } - ${this.nomearNivelVulnerabilidade(
+                        item.vulnerabilidade
+                    )}`,
 
                     // === DADOS EXTRAS PARA DEBUG ===
                     ncOriginal: item.nc, // NC original do Laravel

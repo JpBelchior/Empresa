@@ -23,22 +23,22 @@ dadosLista.paginasLista.forEach((pagina, indicePagina) => { %>
                 <thead>
                     <tr>
                         <th
-                            class="px-4 py-5 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            class="px-4 py-5 text-center text-sm font-semibold bg-sky-800 text-white border border-blue-500"
                         >
                             Pilar
                         </th>
                         <th
-                            class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            class="px-4 py-3 text-center text-sm font-semibold bg-sky-800 text-white border border-blue-500"
                         >
                             NC
                         </th>
                         <th
-                            class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            class="px-4 py-3 text-center text-sm font-semibold bg-sky-800 text-white border border-blue-500"
                         >
                             Não Conformidade
                         </th>
                         <th
-                            class="px-4 py-3 text-center text-sm font-semibold bg-blue-700 text-white border border-blue-500"
+                            class="px-4 py-3 text-center text-sm font-semibold bg-sky-800 text-white border border-blue-500"
                         >
                             Criticidade
                         </th>
@@ -166,8 +166,8 @@ dadosLista.paginasLista.forEach((pagina, indicePagina) => { %>
                     'Baixo' }, { cor: 'bg-green-400', corTexto:
                     'text-green-400', nome: 'Muito Baixo' } ]; %> <%
                     cores.forEach(c => { %>
-                    <div class="flex items-center gap-1 text-xs">
-                        <div class="w-4 h-4 rounded-full <%= c.cor %>"></div>
+                    <div class="flex items-center gap-3 text-xs">
+                        <div class="w-5 h-5 rounded-full <%= c.cor %>"></div>
                         <span class="<%= c.corTexto %> font-semibold"
                             ><%= c.nome %></span
                         >
