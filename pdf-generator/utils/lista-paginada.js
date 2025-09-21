@@ -308,11 +308,21 @@ class ListaPaginada {
         );
 
         // PASSO 1: Filtrar só itens com recomendação preenchida
-        const recomendacoes = naoConformidadesProcessadas.filter((item) => {
-            return (
-                typeof item.recomendacao === "string" &&
-                item.recomendacao.trim() !== ""
-            );
+        const recomendacoes = naoConformidadesProcessadas.map((item) => {
+            // Se não tem recomendação ou está vazia, usar texto padrão
+            if (
+                !item.recomendacao ||
+                typeof item.recomendacao !== "string" ||
+                item.recomendacao.trim() === ""
+            ) {
+                return {
+                    ...item,
+                    recomendacao: "Sem recomendação prevista",
+                    recomendacaoTexto: "Sem recomendação prevista",
+                };
+            }
+
+            return item;
         });
 
         console.log(
@@ -436,7 +446,18 @@ class ListaPaginada {
 
         // PASSO 3: Calcular paginação
         const numeroPaginas = dadosRecebidos.numeroPaginas || {};
-        const paginaInicial = this.calcularPaginaInicialLista(numeroPaginas);
+        const paginaInicialNaoConformidades =
+            this.calcularPaginaInicialLista(numeroPaginas);
+
+        // Calcular quantas páginas as não conformidades ocuparam
+        const totalPaginasNaoConformidades = Math.ceil(
+            naoConformidadesProcessadas.length / this.config.itensPorPagina
+        );
+
+        // Recomendações começam onde não conformidades terminaram
+        const paginaInicial =
+            paginaInicialNaoConformidades + totalPaginasNaoConformidades;
+
         const paginasLista = this.paginarVetor(
             recomendacoes,
             this.config.itensPorPagina,

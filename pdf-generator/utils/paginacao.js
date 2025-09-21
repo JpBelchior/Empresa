@@ -147,45 +147,34 @@ class PaginacaoManager {
     }
 
     /**
-     * Calcula páginas de Não Conformidades
+     * Calcula páginas de Não Conformidades - VERSÃO REAL
+     * Usa a mesma lógica da lista-paginada: 8 itens por página
      */
     calcularPaginasNaoConformidades(dados_modelo) {
         const respostas = dados_modelo?.respostas || [];
         const naoConformidades = respostas.filter(
-            (r) => r.vulnerabilidade !== 1
+            (r) => parseInt(r.vulnerabilidade) > 1
         );
 
-        // Cada não conformidade ocupa 1 linha na tabela + cabeçalho
-        const linhasTabela =
-            naoConformidades.length * this.config.espacoTabela + 3;
-        const totalLinhas = linhasTabela + this.config.espacoTitulo;
-
-        return Math.ceil(totalLinhas / this.config.linhasPorPagina);
+        // Usar a mesma lógica da lista-paginada: 8 itens por página
+        return Math.ceil(naoConformidades.length / 8);
     }
 
     /**
-     * Calcula páginas de Recomendações
+     * Calcula páginas de Recomendações - VERSÃO REAL
+     * Usa a mesma lógica da lista-paginada: 8 itens por página
      */
     calcularPaginasRecomendacoes(dados_modelo) {
         const respostas = dados_modelo?.respostas || [];
-        const recomendacoes = respostas.filter(
+        const naoConformidades = respostas.filter(
+            (r) => parseInt(r.vulnerabilidade) > 1
+        );
+        const recomendacoes = naoConformidades.filter(
             (r) => r.recomendacao && r.recomendacao.trim() !== ""
         );
 
-        // Calcular linhas baseado no texto das recomendações
-        let totalLinhasTexto = 0;
-        recomendacoes.forEach((rec) => {
-            totalLinhasTexto += this.calcularLinhasTexto(
-                rec.recomendacao || ""
-            );
-        });
-
-        const totalLinhas =
-            totalLinhasTexto +
-            recomendacoes.length * 2 + // espaçamento entre recomendações
-            this.config.espacoTitulo;
-
-        return Math.ceil(totalLinhas / this.config.linhasPorPagina);
+        // Usar a mesma lógica da lista-paginada: 8 itens por página
+        return Math.ceil(recomendacoes.length / 8);
     }
 
     /**
