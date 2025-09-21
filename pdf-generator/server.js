@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 const ejs = require("ejs");
 const path = require("path");
 const moment = require("moment");
-const fs = require("fs"); // ADICIONADO
+const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,6 +16,7 @@ const { info } = require("console");
 
 const {
     processarNaoConformidadesParaRelatorio,
+    processarRecomendacoesParaRelatorio,
 } = require("./utils/lista-paginada");
 
 // Middleware
@@ -105,18 +106,12 @@ function carregarImagensEstaticas(dados) {
     return dados;
 }
 
-// Na rota principal, substitua todo o código de carregamento de imagens por:
+// === FUNÇÃO ATUALIZADA ===
 app.post("/generate-pdf", async (req, res) => {
     try {
         console.log("📨 Recebendo dados para PDF...");
 
         const dados = req.body;
-
-        // Log inicial dos dados (manter igual)
-        console.log("🔍 DADOS RECEBIDOS DO LARAVEL:");
-        console.log("Empresa:", dados.dados?.nome_empresa);
-        console.log("Cliente:", dados.dados?.nome_cliente);
-        console.log("Objetivo:", dados.dados?.objetivo);
 
         // CARREGAR IMAGENS (manter igual)
         carregarImagensEstaticas(dados);
@@ -127,7 +122,7 @@ app.post("/generate-pdf", async (req, res) => {
             dados.dados_modelo
         );
 
-        // === 🔥 NOVA LÓGICA: PROCESSAR NÃO CONFORMIDADES ===
+        // === 🔥 PROCESSAR NÃO CONFORMIDADES ===
         console.log("📋 Processando não conformidades...");
 
         // Verificar se existem respostas nos dados
@@ -141,6 +136,10 @@ app.post("/generate-pdf", async (req, res) => {
                 vulnerabilidade: respostas[0].vulnerabilidade,
                 topicos: respostas[0].topicos,
                 criticidade: respostas[0].criticidade,
+                recomendacao: respostas[0].recomendacao
+                    ? "✅ Tem"
+                    : "❌ Não tem", // ← ADICIONADO
+                prioridade: respostas[0].prioridade, // ← ADICIONADO
             });
         }
 
@@ -150,23 +149,65 @@ app.post("/generate-pdf", async (req, res) => {
             numeroPaginas,
         });
 
-        // Log do resultado
-        console.log(`📋 Resultado do processamento:`);
+        // Log do resultado das não conformidades
+        console.log(`📋 Resultado das não conformidades:`);
         console.log(`   - Tem lista: ${dadosLista.temLista}`);
         console.log(`   - Tipo: ${dadosLista.tipoLista}`);
         console.log(`   - Total itens: ${dadosLista.totalItens}`);
         console.log(`   - Total páginas: ${dadosLista.totalPaginas}`);
+
+        console.log("💡 Processando recomendações...");
+
+        // Processar recomendações
+        const dadosListaRecomendacoes = processarRecomendacoesParaRelatorio({
+            ...dados,
+            numeroPaginas,
+        });
+
+        // Log do resultado das recomendações
+        console.log(`💡 Resultado das recomendações:`);
+        console.log(`   - Tem lista: ${dadosListaRecomendacoes.temLista}`);
+        console.log(`   - Tipo: ${dadosListaRecomendacoes.tipoLista}`);
+        console.log(`   - Total itens: ${dadosListaRecomendacoes.totalItens}`);
+        console.log(
+            `   - Total páginas: ${dadosListaRecomendacoes.totalPaginas}`
+        );
 
         // PREPARAR DADOS COMPLETOS
         const dadosProcessados = {
             ...dados,
             numeroPaginas,
             dadosLista, // Dados das não conformidades paginadas
+            dadosListaRecomendacoes, //  Dados das recomendações paginadas
             dataGeracao: moment().format("DD/MM/YYYY HH:mm:ss"),
             timestamp: Date.now(),
         };
 
         console.log("🎨 Renderizando template EJS...");
+
+        console.log("🔍 Verificando estrutura das variáveis:");
+        console.log("   dadosLista:", !!dadosProcessados.dadosLista);
+        console.log(
+            "   dadosListaRecomendacoes:",
+            !!dadosProcessados.dadosListaRecomendacoes
+        );
+        console.log(
+            "   imagens disponíveis:",
+            Object.keys(dadosProcessados.imagens || {})
+        );
+
+        if (
+            dadosProcessados.dadosListaRecomendacoes?.paginasLista?.[0]
+                ?.itens?.[0]
+        ) {
+            console.log(
+                "   Estrutura do primeiro item de recomendação:",
+                Object.keys(
+                    dadosProcessados.dadosListaRecomendacoes.paginasLista[0]
+                        .itens[0]
+                )
+            );
+        }
 
         // RENDERIZAR TEMPLATE (igual)
         const html = await ejs.renderFile(
@@ -176,17 +217,22 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("📄 Gerando PDF com Puppeteer...");
 
-        // GERAR PDF (igual)
+        // GERAR PDF
         const browser = await puppeteer.launch({
             headless: "new",
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            args: [
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-web-security",
+                "--disable-features=VizDisplayCompositor",
+            ],
         });
 
         const page = await browser.newPage();
 
         await page.setContent(html, {
-            waitUntil: "networkidle0",
-            timeout: 30000,
+            waitUntil: "domcontentloaded",
+            timeout: 40000,
         });
 
         const pdf = await page.pdf({
@@ -204,18 +250,24 @@ app.post("/generate-pdf", async (req, res) => {
 
         console.log("✅ PDF gerado com sucesso!");
 
-        // Log final
+        // ===  LOG FINAL ATUALIZADO ===
         if (dadosLista.temLista) {
             console.log(
-                `📋 Lista de não conformidades incluída: ${dadosLista.totalItens} itens em ${dadosLista.totalPaginas} páginas`
+                `📋 Não conformidades incluídas: ${dadosLista.totalItens} itens em ${dadosLista.totalPaginas} páginas`
             );
         } else {
-            console.log(
-                "📋 Nenhuma não conformidade encontrada - relatório sem lista adicional"
-            );
+            console.log("📋 Nenhuma não conformidade encontrada");
         }
 
-        // RESPOSTA (igual)
+        if (dadosListaRecomendacoes.temLista) {
+            console.log(
+                `💡 Recomendações incluídas: ${dadosListaRecomendacoes.totalItens} itens em ${dadosListaRecomendacoes.totalPaginas} páginas`
+            );
+        } else {
+            console.log("💡 Nenhuma recomendação encontrada");
+        }
+
+        // RESPOSTA
         res.set({
             "Content-Type": "application/pdf",
             "Content-Disposition": 'inline; filename="relatorio.pdf"',

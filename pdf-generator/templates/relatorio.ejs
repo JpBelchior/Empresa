@@ -7,7 +7,6 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
         <style>
-            /* === ESTILOS ORIGINAIS === */
             @page {
                 size: A4;
                 margin: 0;
@@ -41,8 +40,6 @@
                 page-break-inside: avoid;
                 break-inside: avoid;
             }
-
-            /* === ESTILOS ESPECÍFICOS PARA PDF  === */
 
             /* Garante que cada página seja independente */
             .page-break {
@@ -155,5 +152,8 @@
 
         <!-- PÁGINA 8 - ANÁLISE DE NÃO CONFORMIDADES-->
         <%- include('components/naoConformidades') %>
+
+        <!-- PÁGINA 9 - ANÁLISE DE RECOMENDAÇÕES-->
+        <%- include('components/recomendacoes') %>
     </body>
 </html>

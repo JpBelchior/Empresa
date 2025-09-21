@@ -142,6 +142,7 @@ class ListaPaginada {
                     topicos: item.topicos,
                     criticidade: item.criticidade,
                     recomendacao: item.recomendacao,
+                    prioridade: item.prioridade,
 
                     // === DADOS PROCESSADOS PARA O TEMPLATE ===
                     nc: String(indice + 1).padStart(3, "0"), // NC sequencial após ordenação: 001, 002, 003...
@@ -284,6 +285,184 @@ class ListaPaginada {
             tipoLista: "naoConformidades",
         };
     }
+
+    /**
+     * Processa recomendações usando a ordenação já estabelecida pelas não conformidades
+     * Filtra itens com recomendação preenchida e mantém a ordem dos NCs
+     * @param {Array} naoConformidadesProcessadas - Array já processado e ordenado por criticidade
+     * @returns {Array} Array de recomendações ordenadas pelos NCs
+     */
+    processarRecomendacoes(naoConformidadesProcessadas) {
+        if (
+            !Array.isArray(naoConformidadesProcessadas) ||
+            naoConformidadesProcessadas.length === 0
+        ) {
+            console.log(
+                "📋 Sem não conformidades processadas para extrair recomendações"
+            );
+            return [];
+        }
+
+        console.log(
+            `📋 Processando recomendações baseado em ${naoConformidadesProcessadas.length} não conformidades...`
+        );
+
+        // PASSO 1: Filtrar só itens com recomendação preenchida
+        const recomendacoes = naoConformidadesProcessadas.filter((item) => {
+            return (
+                typeof item.recomendacao === "string" &&
+                item.recomendacao.trim() !== ""
+            );
+        });
+
+        console.log(
+            `📋 Filtradas ${recomendacoes.length} recomendações (com texto preenchido)`
+        );
+
+        if (recomendacoes.length === 0) {
+            return [];
+        }
+
+        // PASSO 2: Processar recomendações mantendo ordem dos NCs
+        const recomendacoesProcessadas = recomendacoes.map((item) => {
+            return {
+                // === DADOS QUE O LARAVEL JÁ ENVIA ===
+                pilar: item.pilar,
+                vulnerabilidade: item.vulnerabilidade,
+                topicos: item.topicos,
+                recomendacao: item.recomendacao || "",
+                criticidade: item.criticidade,
+                prioridade: item.prioridade,
+
+                // === DADOS PROCESSADOS PARA O TEMPLATE ===
+                nc: item.nc,
+                recomendacaoTexto: (item.recomendacao || "").trim(),
+
+                // === DADOS EXTRAS PARA DEBUG ===
+                ncOriginal: item.ncOriginal,
+                indiceOrdenado: item.indiceOrdenado,
+                posicaoOriginal: item.posicaoOriginal,
+            };
+        });
+
+        // Debug: mostrar estatísticas detalhadas
+        console.log(`📋 Recomendações processadas:`);
+        console.log(`   - Total: ${recomendacoesProcessadas.length}`);
+
+        const contagemPrioridade = {};
+        recomendacoesProcessadas.forEach((item) => {
+            contagemPrioridade[item.prioridadeTexto] =
+                (contagemPrioridade[item.prioridadeTexto] || 0) + 1;
+        });
+
+        // Mostrar contagem na ordem de prioridade
+        const ordemExibicao = ["Curto Prazo", "Médio Prazo", "Longo Prazo"];
+        ordemExibicao.forEach((prioridade) => {
+            if (contagemPrioridade[prioridade]) {
+                console.log(
+                    `   - ${prioridade}: ${contagemPrioridade[prioridade]} itens`
+                );
+            }
+        });
+
+        // Debug: mostrar primeiros 3 NCs e suas prioridades
+        console.log(`📋 Exemplo de Recomendações com prioridades:`);
+        recomendacoesProcessadas.slice(0, 3).forEach((item) => {
+            console.log(
+                `   NC ${item.nc}: ${item.prioridadeBadge} (${item.prioridadeTexto}) - ${item.topicos}`
+            );
+        });
+
+        return recomendacoesProcessadas;
+    }
+
+    /**
+     * Função principal para processar recomendações do Laravel para o relatório
+     */
+    processarRecomendacoesParaRelatorio(dadosRecebidos) {
+        console.log("📋 Processando recomendações para relatório...");
+
+        // PASSO 1: Primeiro processar não conformidades (para ter a ordenação)
+        const respostas = dadosRecebidos.dados_modelo?.respostas || [];
+
+        if (respostas.length === 0) {
+            console.log("📋 Sem respostas encontradas nos dados recebidos");
+            return {
+                paginasLista: [],
+                totalItens: 0,
+                totalPaginas: 0,
+                paginaInicial: 0,
+                temLista: false,
+                tipoLista: "vazio",
+            };
+        }
+
+        // Processar não conformidades primeiro (para obter a ordenação)
+        const naoConformidadesProcessadas =
+            this.processarNaoConformidades(respostas);
+
+        if (naoConformidadesProcessadas.length === 0) {
+            console.log(
+                "📋 Nenhuma não conformidade encontrada para extrair recomendações"
+            );
+            return {
+                paginasLista: [],
+                totalItens: 0,
+                totalPaginas: 0,
+                paginaInicial: 0,
+                temLista: false,
+                tipoLista: "sem_nao_conformidades",
+            };
+        }
+
+        // PASSO 2: Processar recomendações baseado na ordenação das não conformidades
+        const recomendacoes = this.processarRecomendacoes(
+            naoConformidadesProcessadas
+        );
+
+        if (recomendacoes.length === 0) {
+            console.log(
+                "📋 Nenhuma recomendação encontrada (nenhum item tem recomendação preenchida)"
+            );
+            return {
+                paginasLista: [],
+                totalItens: 0,
+                totalPaginas: 0,
+                paginaInicial: 0,
+                temLista: false,
+                tipoLista: "sem_recomendacoes",
+            };
+        }
+
+        // PASSO 3: Calcular paginação
+        const numeroPaginas = dadosRecebidos.numeroPaginas || {};
+        const paginaInicial = this.calcularPaginaInicialLista(numeroPaginas);
+        const paginasLista = this.paginarVetor(
+            recomendacoes,
+            this.config.itensPorPagina,
+            paginaInicial
+        );
+
+        console.log(`📋 Recomendações paginadas:`);
+        console.log(`   - ${recomendacoes.length} itens no total`);
+        console.log(`   - ${paginasLista.length} páginas geradas`);
+        console.log(`   - Começa na página ${paginaInicial}`);
+        console.log(
+            `   - Primeira página contém NCs: ${
+                paginasLista[0]?.itens.map((item) => item.nc).join(", ") ||
+                "nenhum"
+            }`
+        );
+
+        return {
+            paginasLista: paginasLista,
+            totalItens: recomendacoes.length,
+            totalPaginas: paginasLista.length,
+            paginaInicial: paginaInicial,
+            temLista: true,
+            tipoLista: "recomendacoes",
+        };
+    }
 }
 
 // Exportar uma instância única
@@ -293,4 +472,6 @@ module.exports = {
     ListaPaginada,
     processarNaoConformidadesParaRelatorio: (dadosRecebidos) =>
         listaPaginada.processarNaoConformidadesParaRelatorio(dadosRecebidos),
+    processarRecomendacoesParaRelatorio: (dadosRecebidos) =>
+        listaPaginada.processarRecomendacoesParaRelatorio(dadosRecebidos),
 };
