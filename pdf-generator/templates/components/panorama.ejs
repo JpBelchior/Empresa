@@ -23,14 +23,16 @@
 
                 <!-- Imagem da área -->
                 <div
-                    class="relative border-4 border-blue-300 border-r-4 bg-gray-100 shadow-md flex items-center justify-center"
+                    class="relative border-4 border-blue-300 border-r-4 bg-gray-100 shadow-md flex items-center justify-center overflow-hidden"
                     style="width: 500px; height: 280px"
                 >
                     <% if (imagens && imagens.imagem_area) { %>
                     <img
                         src="<%= imagens.imagem_area %>"
                         alt="Imagem da Área"
-                        class="max-w-full max-h-full object-contain rounded-sm"
+                        class="rounded-sm"
+                        style="transition: all 0.3s ease"
+                        onload="adaptImageToContainer(this, 500, 280)"
                     />
                     <% } else { %>
                     <div class="w-full h-full flex items-center justify-center">
@@ -93,4 +95,22 @@
 
     <!-- Rodapé -->
     <%- include('footer') %>
+
+    <!-- Script para adaptar imagem -->
+    <script>
+        function adaptImageToContainer(img, containerWidth, containerHeight) {
+            if (img.complete && img.naturalWidth !== 0) {
+                processImage();
+            } else {
+                img.onload = processImage;
+            }
+
+            function processImage() {
+                // Força a imagem a ocupar exatamente as dimensões do container
+                img.style.width = containerWidth + "px";
+                img.style.height = containerHeight + "px";
+                img.style.objectFit = "fill";
+            }
+        }
+    </script>
 </div>
