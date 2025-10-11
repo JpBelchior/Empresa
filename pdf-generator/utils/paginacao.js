@@ -1,10 +1,3 @@
-/**
- * Sistema de Paginação Automática para PDFs
- *
- * Calcula automaticamente o número de páginas que cada seção ocupará
- * baseado no conteúdo e configurações de layout
- */
-
 class PaginacaoManager {
     constructor() {
         // Configurações base para cálculo de páginas
