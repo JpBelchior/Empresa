@@ -1,56 +1,107 @@
 const express = require("express");
 const PptxGenJS = require("pptxgenjs");
+const moment = require("moment");
+
+const { calcularPaginasSumario } = require("./utils/paginacao");
+const {
+    processarNaoConformidadesParaRelatorio,
+    processarRecomendacoesParaRelatorio,
+} = require("./utils/lista-paginada");
+
+// Importar slides
+const criarCapa = require("./slides/capa");
 
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3002;
+
+// Middleware para receber JSON
+app.use(express.json({ limit: "50mb" }));
 
 // Rota de teste
 app.get("/", (req, res) => {
-    res.send("Servidor PPTX funcionando! 🚀");
+    res.json({
+        status: "PPTX Generator Online ✅",
+        timestamp: moment().format("DD/MM/YYYY HH:mm:ss"),
+    });
 });
 
-// Rota para gerar PPTX simples
-app.post("/gerar", async (req, res) => {
+// Rota para gerar PPTX
+app.post("/generate-pptx", async (req, res) => {
     try {
-        const { titulo } = req.body;
+        console.log("📨 Recebendo dados para PPTX...");
+        console.log("📊 Dados recebidos:", JSON.stringify(req.body, null, 2));
 
-        // Cria a apresentação
-        const pptx = new PptxGenJS();
+        const dados = req.body;
 
-        // Adiciona um slide
-        const slide = pptx.addSlide();
+        // Calcular paginação
+        const numeroPaginas = calcularPaginasSumario(
+            dados.dados || {},
+            dados.dados_modelo || {}
+        );
+        console.log("📄 Páginas calculadas:", numeroPaginas);
 
-        slide.addText(titulo || "Minha Primeira Apresentação", {
-            x: 1,
-            y: 2.5,
-            w: 8,
-            h: 1,
-            fontSize: 44,
-            bold: true,
-            color: "0088CC",
-            align: "center",
+        // Processar não conformidades e recomendações
+        const dadosLista = processarNaoConformidadesParaRelatorio({
+            ...dados,
+            numeroPaginas,
         });
 
-        // Gera o arquivo
-        const buffer = await pptx.write("nodebuffer");
+        const dadosListaRecomendacoes = processarRecomendacoesParaRelatorio({
+            ...dados,
+            numeroPaginas,
+        });
 
-        // Envia para o cliente
-        res.setHeader(
-            "Content-Type",
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-        );
-        res.setHeader(
-            "Content-Disposition",
-            'attachment; filename="apresentacao.pptx"'
-        );
-        res.send(buffer);
+        // Preparar dados completos
+        const dadosProcessados = {
+            ...dados,
+            numeroPaginas,
+            dadosLista,
+            dadosListaRecomendacoes,
+            dataGeracao: moment().format("DD/MM/YYYY HH:mm:ss"),
+        };
+
+        console.log("📊 Criando apresentação PPTX...");
+
+        // Criar apresentação
+        const pptx = new PptxGenJS();
+
+        // Configurações
+        pptx.layout = "LAYOUT_WIDE"; // 16:9
+        pptx.author = dados.dados?.nome_empresa || "Análise de Risco";
+        pptx.title = "Relatório de Análise de Risco";
+
+        // Criar slides
+        console.log("🎨 Criando slide CAPA...");
+        criarCapa(pptx, dadosProcessados);
+
+        console.log("✅ PPTX criado com sucesso!");
+
+        // Gerar arquivo
+        const pptxBuffer = await pptx.write({ outputType: "nodebuffer" });
+
+        // Enviar resposta
+        res.set({
+            "Content-Type":
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "Content-Disposition": `attachment; filename="relatorio-${moment().format(
+                "YYYY-MM-DD-HH-mm-ss"
+            )}.pptx"`,
+            "Content-Length": pptxBuffer.length,
+        });
+
+        res.send(pptxBuffer);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error.message });
+        console.error("❌ Erro ao gerar PPTX:", error);
+        console.error("Stack:", error.stack);
+        res.status(500).json({
+            error: "Erro ao gerar PPTX",
+            details: error.message,
+            stack: error.stack,
+        });
     }
 });
 
-const PORT = 3002;
 app.listen(PORT, () => {
-    console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
+    console.log(`🚀 PPTX Generator rodando na porta ${PORT}`);
+    console.log(`📍 Acesse: http://localhost:${PORT}`);
 });
