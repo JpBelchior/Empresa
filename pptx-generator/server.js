@@ -70,12 +70,6 @@ app.post("/generate-pptx", async (req, res) => {
         pptx.author = dados.dados?.nome_empresa || "Análise de Risco";
         pptx.title = "Relatório de Análise de Risco";
 
-        // Criar slides
-        console.log("🎨 Criando slide CAPA...");
-        criarCapa(pptx, dadosProcessados);
-
-        console.log("✅ PPTX criado com sucesso!");
-
         // Gerar arquivo
         const pptxBuffer = await pptx.write({ outputType: "nodebuffer" });
 
