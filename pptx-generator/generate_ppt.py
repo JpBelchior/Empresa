@@ -6,6 +6,7 @@ from io import BytesIO
 from pptx import Presentation
 from pptx.util import Inches
 from slides.capa import gerar_capa
+from slides.sumario import gerar_sumario
 
 
 def main():
@@ -21,6 +22,9 @@ def main():
         
         print("Gerando capa...", file=sys.stderr, flush=True)
         gerar_capa(pres, dados)
+        
+        print("Gerando sumário...", file=sys.stderr, flush=True)
+        gerar_sumario(pres, dados)
         
         print("Salvando...", file=sys.stderr, flush=True)
         output = BytesIO()
