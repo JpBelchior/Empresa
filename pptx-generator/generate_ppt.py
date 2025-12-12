@@ -7,7 +7,8 @@ from pptx import Presentation
 from pptx.util import Inches
 from slides.capa import gerar_capa
 from slides.sumario import gerar_sumario
-from slides.objetivos import gerar_objetivos  # ADICIONAR ESTA LINHA
+from slides.objetivos import gerar_objetivos
+from slides.metodologia import gerar_metodologia
 
 
 def main():
@@ -28,6 +29,9 @@ def main():
         
         print("Gerando objetivos...", file=sys.stderr, flush=True) 
         gerar_objetivos(pres, dados)  
+
+        print("Gerando metodologia...", file=sys.stderr, flush=True)  
+        gerar_metodologia(pres, dados)      
         
         print("Salvando...", file=sys.stderr, flush=True)
         output = BytesIO()
