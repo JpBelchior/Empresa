@@ -9,6 +9,7 @@ from slides.capa import gerar_capa
 from slides.sumario import gerar_sumario
 from slides.objetivos import gerar_objetivos
 from slides.metodologia import gerar_metodologia
+from slides.panorama_situacional import gerar_panorama_situacional 
 
 
 def main():
@@ -30,8 +31,11 @@ def main():
         print("Gerando objetivos...", file=sys.stderr, flush=True) 
         gerar_objetivos(pres, dados)  
 
-        print("Gerando metodologia...", file=sys.stderr, flush=True)  
+        print("Gerando metodologia...", file=sys.stderr, flush=True) 
         gerar_metodologia(pres, dados)      
+
+        print("Gerando panorama situacional...", file=sys.stderr, flush=True)  # ← NOVO
+        gerar_panorama_situacional(pres, dados)  
         
         print("Salvando...", file=sys.stderr, flush=True)
         output = BytesIO()
