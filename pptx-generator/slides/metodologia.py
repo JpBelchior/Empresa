@@ -101,7 +101,7 @@ def gerar_metodologia(pres, dados):
     para_azul = slide.shapes.add_shape(
         MSO_SHAPE.PARALLELOGRAM,
         Inches(0.2),    # Posição à esquerda
-        Inches(0.45),   # Alinhado com o título
+        Inches(0.20),   # Alinhado com o título
         Inches(0.5),    # Largura
         Inches(0.5)     # Altura
     )
@@ -124,7 +124,7 @@ def gerar_metodologia(pres, dados):
     para_cinza = slide.shapes.add_shape(
         MSO_SHAPE.PARALLELOGRAM,
         Inches(0.85),   # Logo após o paralelogramo azul
-        Inches(0.45),   # Alinhado verticalmente
+        Inches(0.20),   # Alinhado verticalmente
         Inches(3.0),    # Largura para o texto
         Inches(0.5)     # Altura
     )
@@ -176,7 +176,7 @@ def gerar_metodologia(pres, dados):
     # === TEXTO DESCRITIVO (subido 1.5", com 0.5" de espaçamento) === #
     texto_box = slide.shapes.add_textbox(
         Inches(0.2),
-        Inches(3.1),  # 1.8 + 0.8 (altura subtítulo) + 0.5 (espaçamento) = 3.1
+        Inches(3.3),  # 1.8 + 0.8 (altura subtítulo) + 0.5 (espaçamento) = 3.1
         Inches(4.0),
         Inches(1.0)
     )
@@ -186,25 +186,23 @@ def gerar_metodologia(pres, dados):
     p.text = "Soluções avançadas em classificação de riscos para inteligência do seu negócio."
     p.font.name = "Arial"
     p.font.size = Pt(14)
-    p.font.color.rgb = RGBColor(80, 80, 80)  # Cinza escuro
+    p.font.color.rgb = RGBColor(0, 102, 204)  
     p.alignment = PP_ALIGN.CENTER
     tf.word_wrap = True
 
     # === IMAGEM DOS 5 PILARES (Arte_metodologia.png) === #
-    # Caminho relativo da imagem (pasta images está no diretório pai)
     current_dir = os.path.dirname(__file__)  # pptx-generator/slides/
     parent_dir = os.path.dirname(current_dir)  # pptx-generator/
     image_path = os.path.join(parent_dir, "images", "Arte_metodologia.png")
     
     # Adicionar imagem no centro-direita do slide (maior e mais acima)
-    # Posição: direita do slide, centralizada verticalmente
     add_local_image(
         slide, 
         image_path, 
         left=4.5,      # Posição à direita
-        top=0.2,       # Subido 1 inch
-        width=5.3,     # Largura aumentada
-        height=5.2     # Altura aumentada
+        top=0.2,       # posiçao à abaixo
+        width=5.3,     # Largura 
+        height=5.2     # Altura
     )
     
     # === TEXTOS DOS 5 PILARES === #

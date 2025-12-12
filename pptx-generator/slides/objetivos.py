@@ -239,7 +239,7 @@ def gerar_objetivos(pres, dados):
 
     texto_azul = slide.shapes.add_textbox(
         int(posicao_faixa) + Inches(1.0),
-        Inches(0.6),
+        Inches(0.45),
         Inches(3.0),
         Inches(5)
     )

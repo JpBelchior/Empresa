@@ -192,7 +192,7 @@ def gerar_panorama_situacional(pres, dados):
     if panorama_texto:
         texto_box = slide.shapes.add_textbox(
             Inches(1.0),  # Movido 0.4" para direita (era 0.6)
-            Inches(1.4),  # Subido de 1.8 para 1.4
+            Inches(1.3),  # Subido de 1.8 para 1.4
             Inches(3.5),  # Reduzido (era 3.9)
             Inches(0.7)  # Altura reduzida (era 1.0)
         )
@@ -204,7 +204,7 @@ def gerar_panorama_situacional(pres, dados):
         p_titulo = tf.paragraphs[0]
         p_titulo.text = "EXPOSIÇÃO AO RISCO"
         p_titulo.font.name = "Arial"
-        p_titulo.font.size = Pt(9)
+        p_titulo.font.size = Pt(12)
         p_titulo.font.bold = True
         p_titulo.font.color.rgb = RGBColor(0, 51, 102)
         p_titulo.alignment = PP_ALIGN.LEFT
@@ -213,7 +213,7 @@ def gerar_panorama_situacional(pres, dados):
         p_texto = tf.add_paragraph()
         p_texto.text = panorama_texto
         p_texto.font.name = "Arial"
-        p_texto.font.size = Pt(9)
+        p_texto.font.size = Pt(10)
         p_texto.font.color.rgb = RGBColor(80, 80, 80)
         p_texto.alignment = PP_ALIGN.LEFT
         p_texto.space_before = Pt(6)
@@ -339,6 +339,105 @@ def gerar_panorama_situacional(pres, dados):
     caixa_azul.line.fill.solid()
     caixa_azul.line.color.rgb = RGBColor(0, 102, 204)
     caixa_azul.line.width = Pt(2) 
+
+    icone_width = 0.45
+    icone_height = 0.45
+
+    texto_offset_x = 0.45
+    texto_largura = 1.2
+    texto_altura = 0.3
+
+    # Caminho da pasta de imagens
+    icones_path = os.path.join(parent_dir, "images")
+
+    # Ícones e textos
+    icones_superior = [
+        ("policia_militar.png",  "Polícia Militar"),
+        ("policia_civil.png",    "Polícia Civil"),
+        ("policia_federal.png",  "Polícia Federal")
+    ]
+
+    icones_inferior = [
+        ("bombeiro.png",  "Corpo de Bombeiros"),
+        ("ICON_PORTO.png", "Porto")
+    ]
+
+    base_top_superior = 4.38
+    base_top_inferior = 4.95
+
+    posicoes_superior = [0.45, 1.8, 3.15]
+    posicoes_inferior = [1.0, 2.8]
+
+    # === Linha Superior (3 ícones) === #
+    for i, (arquivo, titulo) in enumerate(icones_superior):
+        caminho = os.path.join(icones_path, arquivo)
+
+        add_local_image(
+            slide,
+            caminho,
+            left=posicoes_superior[i],
+            top=base_top_superior,
+            width=icone_width,
+            height=icone_height
+        )
+
+        # Texto ao lado
+        tb = slide.shapes.add_textbox(
+            Inches(posicoes_superior[i] + texto_offset_x),
+            Inches(base_top_superior + 0.05),
+            Inches(texto_largura),
+            Inches(texto_altura)
+        )
+        tf = tb.text_frame
+        tf.clear()
+
+        p1 = tf.paragraphs[0]
+        p1.text = titulo
+        p1.font.name = "Arial"
+        p1.font.size = Pt(8)
+        p1.font.bold = True
+        p1.font.color.rgb = RGBColor(0, 51, 102)
+
+        p2 = tf.add_paragraph()
+        p2.text = "_ Km"
+        p2.font.name = "Arial"
+        p2.font.size = Pt(8)
+        p2.font.color.rgb = RGBColor(80, 80, 80)
+
+    # === Linha Inferior (2 ícones) === #
+    for i, (arquivo, titulo) in enumerate(icones_inferior):
+        caminho = os.path.join(icones_path, arquivo)
+
+        add_local_image(
+            slide,
+            caminho,
+            left=posicoes_inferior[i],
+            top=base_top_inferior,
+            width=icone_width,
+            height=icone_height
+        )
+
+        tb = slide.shapes.add_textbox(
+            Inches(posicoes_inferior[i] + texto_offset_x),
+            Inches(base_top_inferior + 0.05),
+            Inches(texto_largura),
+            Inches(texto_altura)
+        )
+        tf = tb.text_frame
+        tf.clear()
+
+        p1 = tf.paragraphs[0]
+        p1.text = titulo
+        p1.font.name = "Arial"
+        p1.font.size = Pt(8)
+        p1.font.bold = True
+        p1.font.color.rgb = RGBColor(0, 51, 102)
+
+        p2 = tf.add_paragraph()
+        p2.text = "_ Km"
+        p2.font.name = "Arial"
+        p2.font.size = Pt(8)
+        p2.font.color.rgb = RGBColor(80, 80, 80)
     
     print("Slide de Panorama Situacional criado!", file=sys.stderr)
     return slide
