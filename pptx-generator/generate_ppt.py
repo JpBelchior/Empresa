@@ -7,11 +7,11 @@ from pptx import Presentation
 from pptx.util import Inches
 from slides.capa import gerar_capa
 from slides.sumario import gerar_sumario
+from slides.objetivos import gerar_objetivos  # ADICIONAR ESTA LINHA
 
 
 def main():
     try:
-        # TODOS os prints vao para stderr (nao stdout)
         print("Lendo dados...", file=sys.stderr, flush=True)
         dados = json.load(sys.stdin)
         
@@ -26,6 +26,9 @@ def main():
         print("Gerando sumário...", file=sys.stderr, flush=True)
         gerar_sumario(pres, dados)
         
+        print("Gerando objetivos...", file=sys.stderr, flush=True) 
+        gerar_objetivos(pres, dados)  
+        
         print("Salvando...", file=sys.stderr, flush=True)
         output = BytesIO()
         pres.save(output)
@@ -33,7 +36,6 @@ def main():
         
         print(f"Tamanho: {len(buffer_data)} bytes", file=sys.stderr, flush=True)
         
-        # APENAS o buffer puro vai para stdout (sem prints!)
         sys.stdout.buffer.write(buffer_data)
         sys.stdout.buffer.flush()
         

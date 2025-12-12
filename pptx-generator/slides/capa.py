@@ -116,16 +116,16 @@ def create_diagonal_strip(slide, pres):
     shape.width = width
     shape.height = height
     
-    # Aplicar cor azul clara com transparência
+    # === GRADIENTE AZUL (escuro embaixo, claro em cima) === #
     fill = shape.fill
     fill.gradient()
-    fill.gradient_angle = 90  # Vertical (de cima para baixo)
+    fill.gradient_angle = 90
     stop_dark = fill.gradient_stops[0]
     stop_dark.position = 0.0
-    stop_dark.color.rgb = RGBColor(10, 50, 100)  # Azul escuro embaixo
+    stop_dark.color.rgb = RGBColor(10, 50, 100)
     stop_light = fill.gradient_stops[1]
     stop_light.position = 1.0
-    stop_light.color.rgb = RGBColor(52, 152, 219)  # Azul claro em cima
+    stop_light.color.rgb = RGBColor(30, 115, 190)
     
     shape.line.fill.background()
     
@@ -156,7 +156,7 @@ def gerar_capa(pres, dados):
     # === LOGO DA EMPRESA === #
     logo = dados.get("imagens", {}).get("logo_empresa")
     if logo:
-        add_base64_image(slide, logo, 0.45, 0.45, 1.8, 1.1)
+        add_base64_image(slide, logo, 0.35, 0.35, 1.5, 0.92)
 
     # === TÍTULO PRINCIPAL (movido mais para esquerda) === #
     title_left = Inches(2.0)  # Era 2.8, agora 2.0 (mais à esquerda)
@@ -251,17 +251,36 @@ def gerar_capa(pres, dados):
 
     # === DATA (MÊS / ANO em duas linhas) === #
     agora = datetime.now()
-    mes = agora.strftime("%B").upper()  # DECEMBER
-    ano = agora.strftime("%Y")          # 2024
+    
+   
+    meses_pt = {
+        'January': 'JANEIRO',
+        'February': 'FEVEREIRO',
+        'March': 'MARÇO',
+        'April': 'ABRIL',
+        'May': 'MAIO',
+        'June': 'JUNHO',
+        'July': 'JULHO',
+        'August': 'AGOSTO',
+        'September': 'SETEMBRO',
+        'October': 'OUTUBRO',
+        'November': 'NOVEMBRO',
+        'December': 'DEZEMBRO'
+    }
+    
+    mes_ingles = agora.strftime("%B")
+    mes = meses_pt.get(mes_ingles, mes_ingles.upper())  # Mês em português
+    ano = agora.strftime("%Y")          # 2025
+    ano_espacado = " ".join(ano)        
     
     data_box = slide.shapes.add_textbox(
-        Inches(0.5), Inches(4.9),
+        Inches(0.5), Inches(4.7),  
         Inches(2.0), Inches(0.6)
     )
     tf_d = data_box.text_frame
     tf_d.clear()
     
-    # Primeira linha: MÊS
+    # Primeira linha: MÊS (em português)
     p_mes = tf_d.paragraphs[0]
     p_mes.text = mes
     p_mes.font.name = "Calibri"
@@ -269,11 +288,11 @@ def gerar_capa(pres, dados):
     p_mes.font.bold = True
     p_mes.font.color.rgb = RGBColor(255, 255, 255)
     
-    # Segunda linha: ANO
+    # Segunda linha: ANO (com espaçamento entre dígitos)
     p_ano = tf_d.add_paragraph()
-    p_ano.text = ano
-    p_ano.font.name = "Calibri"
-    p_ano.font.size = Pt(20)
+    p_ano.text = ano_espacado
+    p_ano.font.name = "Arial"
+    p_ano.font.size = Pt(24)
     p_ano.font.bold = True
     p_ano.font.color.rgb = RGBColor(255, 255, 255)
 
