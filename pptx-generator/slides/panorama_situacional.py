@@ -60,56 +60,51 @@ def criar_cabecalho_slide(slide, pres, numero, titulo):
     # === PARALELOGRAMO AZUL (número) === #
     para_azul = slide.shapes.add_shape(
         MSO_SHAPE.PARALLELOGRAM,
-        Inches(0.2),    # Posição à esquerda
-        Inches(0.45),   # Descido 0.2 inches
-        Inches(0.5),    # Largura menor
-        Inches(0.5)     # Altura menor
+        Inches(0.2),    # Left
+        Inches(0.20),   # Top (era 0.45)
+        Inches(0.5),    # Width
+        Inches(0.5)     # Height
     )
     
     para_azul.fill.solid()
-    para_azul.fill.fore_color.rgb = RGBColor(0, 102, 204)
+    para_azul.fill.fore_color.rgb = RGBColor(30, 115, 190)  # Azul (era 0, 102, 204)
     para_azul.line.fill.background()
-    para_azul.rotation = 0
     
     # Adicionar número
     tf = para_azul.text_frame
-    tf.clear()
+    tf.text = str(numero)
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
     p = tf.paragraphs[0]
-    p.text = str(numero)
+    p.alignment = PP_ALIGN.CENTER
     p.font.name = "Arial"
-    p.font.size = Pt(20)  # Reduzido de 32 para 20
+    p.font.size = Pt(20)
     p.font.bold = True
     p.font.color.rgb = RGBColor(255, 255, 255)
-    p.alignment = PP_ALIGN.CENTER
-    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
     
     # === PARALELOGRAMO CINZA (título) === #
     para_cinza = slide.shapes.add_shape(
         MSO_SHAPE.PARALLELOGRAM,
-        Inches(0.85),   # Logo após o paralelogramo azul
-        Inches(0.45),   # Alinhado verticalmente
-        Inches(3.5),    # Largura para o texto (um pouco maior para "PANORAMA SITUACIONAL")
-        Inches(0.5)     # Altura menor
+        Inches(0.85),   # Left (logo após o paralelogramo azul)
+        Inches(0.20),   # Top (era 0.45)
+        Inches(3.5),    # Width (era 3.5)
+        Inches(0.5)     # Height
     )
     
     para_cinza.fill.solid()
-    para_cinza.fill.fore_color.rgb = RGBColor(64, 64, 64)
+    para_cinza.fill.fore_color.rgb = RGBColor(70, 70, 70)  # Cinza (era 64, 64, 64)
     para_cinza.line.fill.background()
-    para_cinza.rotation = 0
     
     # Adicionar título
     tf = para_cinza.text_frame
-    tf.clear()
-    p = tf.paragraphs[0]
-    p.text = titulo
-    p.font.name = "Arial"
-    p.font.size = Pt(14)  # Reduzido de 20 para 14
-    p.font.bold = True
-    p.font.color.rgb = RGBColor(255, 255, 255)
-    p.alignment = PP_ALIGN.LEFT
+    tf.text = titulo
     tf.vertical_anchor = MSO_ANCHOR.MIDDLE
     tf.margin_left = Inches(0.2)
-
+    p = tf.paragraphs[0]
+    p.alignment = PP_ALIGN.LEFT
+    p.font.name = "Arial"
+    p.font.size = Pt(14)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(255, 255, 255)
 
 def gerar_panorama_situacional(pres, dados):
     """Gera o slide de Panorama Situacional"""

@@ -7,6 +7,7 @@ from .objetivos import gerar_objetivos
 from .metodologia import gerar_metodologia
 from .panorama_situacional import gerar_panorama_situacional 
 from .seguranca import gerar_seguranca
+from .resumo_exec import gerar_resumo_exec
 
 __all__ = [
     'gerar_capa', 
@@ -14,5 +15,6 @@ __all__ = [
     'gerar_objetivos', 
     'gerar_metodologia',
     'gerar_panorama_situacional',  
-    'gerar_seguranca'
+    'gerar_seguranca',
+    'gerar_resumo_exec'
 ]

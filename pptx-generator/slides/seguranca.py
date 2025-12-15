@@ -21,53 +21,51 @@ def gerar_seguranca(pres, dados):
     fill.fore_color.rgb = RGBColor(255, 255, 255)
 
     # === PARALELOGRAMO AZUL (número 4) === #
+   
     para_azul = slide.shapes.add_shape(
-        MSO_SHAPE.PARALLELOGRAM,
-        Inches(0.2),
-        Inches(0.45),
-        Inches(0.5),
-        Inches(0.5)
-    )
-
+    MSO_SHAPE.PARALLELOGRAM,
+    Inches(0.2),    # Left
+    Inches(0.20),   # Top
+    Inches(0.5),    # Width
+    Inches(0.5)     # Height
+)
     para_azul.fill.solid()
-    para_azul.fill.fore_color.rgb = RGBColor(0, 102, 204)
+    para_azul.fill.fore_color.rgb = RGBColor(30, 115, 190)  # Azul
     para_azul.line.fill.background()
 
-    tf = para_azul.text_frame
-    tf.clear()
-    p = tf.paragraphs[0]
-    p.text = "4"
-    p.font.name = "Arial"
-    p.font.size = Pt(20)
-    p.font.bold = True
-    p.font.color.rgb = RGBColor(255, 255, 255)
-    p.alignment = PP_ALIGN.CENTER
-    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf_azul = para_azul.text_frame
+    tf_azul.text = "4" 
+    p_azul = tf_azul.paragraphs[0]
+    p_azul.font.name = "Arial"
+    p_azul.font.size = Pt(20)
+    p_azul.font.bold = True
+    p_azul.font.color.rgb = RGBColor(255, 255, 255)
+    p_azul.alignment = PP_ALIGN.CENTER
+    tf_azul.vertical_anchor = MSO_ANCHOR.MIDDLE
 
     # === PARALELOGRAMO CINZA (SEGURANÇA PÚBLICA) === #
+    # === PARALELOGRAMO CINZA (título) === #
     para_cinza = slide.shapes.add_shape(
-        MSO_SHAPE.PARALLELOGRAM,
-        Inches(0.85),
-        Inches(0.45),
-        Inches(4.0),
-        Inches(0.5)
-    )
-
+    MSO_SHAPE.PARALLELOGRAM,
+    Inches(0.85),   # Left
+    Inches(0.20),   # Top
+    Inches(3.5),    # Width
+    Inches(0.5)     # Height
+)
     para_cinza.fill.solid()
-    para_cinza.fill.fore_color.rgb = RGBColor(64, 64, 64)
+    para_cinza.fill.fore_color.rgb = RGBColor(70, 70, 70)  # Cinza
     para_cinza.line.fill.background()
 
-    tf = para_cinza.text_frame
-    tf.clear()
-    p = tf.paragraphs[0]
-    p.text = "SEGURANÇA PÚBLICA"
-    p.font.name = "Arial"
-    p.font.size = Pt(14)
-    p.font.bold = True
-    p.font.color.rgb = RGBColor(255, 255, 255)
-    p.alignment = PP_ALIGN.LEFT
-    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
-    tf.margin_left = Inches(0.2)
+    tf_cinza = para_cinza.text_frame
+    tf_cinza.text = "SEGURANÇA PUBLICA"  
+    tf_cinza.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf_cinza.margin_left = Inches(0.2)
+    p_cinza = tf_cinza.paragraphs[0]
+    p_cinza.alignment = PP_ALIGN.LEFT
+    p_cinza.font.name = "Arial"
+    p_cinza.font.size = Pt(14)
+    p_cinza.font.bold = True
+    p_cinza.font.color.rgb = RGBColor(255, 255, 255)
 
     # === IMAGEM SEGURANÇA PÚBLICA === #
     current_dir = os.path.dirname(__file__)

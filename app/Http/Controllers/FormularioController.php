@@ -287,7 +287,7 @@ class FormularioController extends Controller
     }
 
    public function relatorio_personalizado(Request $request) {
-    // ✅ VALIDAÇÃO - MANTENHA COMO ESTÁ
+    //  VALIDAÇÃO - MANTENHA COMO ESTÁ
     $request->validate([
         'relatorio_formulario_id' => 'required',
         'nome_empresa' => 'required|max:255',
@@ -346,7 +346,7 @@ class FormularioController extends Controller
         ]
     ];
 
-    // 🔥 NOVO CÓDIGO COMEÇA AQUI
+    //  NOVO CÓDIGO COMEÇA AQUI
     try {
         // 1️⃣ GERAR APENAS O PDF
         Log::info('📄 Gerando PDF...');
@@ -596,15 +596,27 @@ private static function calcular_porcentagem_adequacao_por_pilar($formulario_id)
         'Pessoas' => 0,
         'Tecnologia' => 0,
         'Processos' => 0,
-        'Informação' => 0,
-        'Gestão' => 0,
+        'Informacao' => 0,
+        'Gestao' => 0,
+    ];
+    //mudando isso pois no python nao aceita acentos
+ $mapaTematicas = [
+        'Pessoas' => 'Pessoas',
+        'Tecnologia' => 'Tecnologia',
+        'Processos' => 'Processos',
+        'Informação' => 'Informacao',
+        'Gestão' => 'Gestao',
     ];
 
-    // Calcular porcentagem para cada pilar que tem dados
     foreach ($resultados as $resultado) {
         if ($resultado->total_respostas > 0) {
             $porcentagem = ($resultado->respostas_adequadas / $resultado->total_respostas) * 100;
-            $porcentagens[$resultado->tematica_nome] = round($porcentagem, 1);
+
+            $chave = $mapaTematicas[$resultado->tematica_nome] ?? null;
+
+            if ($chave) {
+                $porcentagens[$chave] = round($porcentagem, 1);
+            }
         }
     }
 

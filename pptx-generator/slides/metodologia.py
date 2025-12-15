@@ -125,7 +125,7 @@ def gerar_metodologia(pres, dados):
         MSO_SHAPE.PARALLELOGRAM,
         Inches(0.85),   # Logo após o paralelogramo azul
         Inches(0.20),   # Alinhado verticalmente
-        Inches(3.0),    # Largura para o texto
+        Inches(3.5),    # Largura para o texto
         Inches(0.5)     # Altura
     )
     para_cinza.fill.solid()
@@ -140,7 +140,7 @@ def gerar_metodologia(pres, dados):
     p_cinza = tf_cinza.paragraphs[0]
     p_cinza.alignment = PP_ALIGN.LEFT
     p_cinza.font.name = "Arial"
-    p_cinza.font.size = Pt(20)
+    p_cinza.font.size = Pt(14)
     p_cinza.font.bold = True
     p_cinza.font.color.rgb = RGBColor(255, 255, 255)  # Branco
 
