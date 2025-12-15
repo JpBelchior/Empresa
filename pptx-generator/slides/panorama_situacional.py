@@ -149,7 +149,24 @@ def gerar_panorama_situacional(pres, dados):
     
     # === IMAGEM DO LOCAL (metade direita do slide) === #
     if imagem_area:
-        # Adicionar imagem centralizada no lado direito
+
+         # === SOMBRA DA IMAGEM === #
+        sombra = slide.shapes.add_shape(
+        MSO_SHAPE.RECTANGLE,
+        Inches(5.25),   # Deslocado levemente para baixo e direita
+        Inches(1.7),
+        Inches(4.5),
+        Inches(3.7)
+    )
+
+        sombra.fill.solid()
+        sombra.fill.fore_color.rgb = RGBColor(255, 255, 255)  # Sem preenchimento
+        sombra.line.fill.solid()  # Ativa a borda
+
+        # Cor da borda (escura para dar a impressão de sombra)
+        sombra.line.width = Pt(1)  # Largura da borda
+        sombra.line.blur = Pt(5)  # Efeito de suavização da borda (ou difusão)
+            # Adicionar imagem centralizada no lado direito
         add_base64_image(
             slide,
             imagem_area,
@@ -311,7 +328,7 @@ def gerar_panorama_situacional(pres, dados):
     
     # Endereço (placeholder)
     p_endereco = tf.add_paragraph()
-    p_endereco.text = "ENDEREÇO"
+    p_endereco.text = " Adicione o Endereço"
     p_endereco.font.name = "Arial"
     p_endereco.font.size = Pt(9)
     p_endereco.font.color.rgb = RGBColor(80, 80, 80)

@@ -12,6 +12,7 @@ from slides.metodologia import gerar_metodologia
 from slides.panorama_situacional import gerar_panorama_situacional 
 from slides.seguranca import gerar_seguranca
 from slides.resumo_exec import gerar_resumo_exec
+from slides.resumo_exec_det import gerar_resumo_exec_det
 
 
 def main():
@@ -42,8 +43,11 @@ def main():
         print("Gerando segurança...", file=sys.stderr, flush=True) 
         gerar_seguranca(pres, dados)  
         
-        print("Gerando segurança...", file=sys.stderr, flush=True) 
+        print("Gerando resumo executivo...", file=sys.stderr, flush=True) 
         gerar_resumo_exec(pres, dados)  
+        
+        print("Gerando resumo executivo detalhado...", file=sys.stderr, flush=True) 
+        gerar_resumo_exec_det(pres, dados)  
         
         print("Salvando...", file=sys.stderr, flush=True)
         output = BytesIO()

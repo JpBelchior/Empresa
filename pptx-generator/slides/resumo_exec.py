@@ -190,7 +190,7 @@ def gerar_resumo_exec(pres, dados):
     tracar_linha_horizontal(slide, y=3.85, x_start=4.4, comprimento=2.1,texto_circulo= f"{percentuais.get('Gestao', 0)}%", titulo="GESTÃO",
     cor_titulo=(10, 50, 100) ,
     descricao="Governança de riscos impulsiona \ndecisões mais seguras.")
-    tracar_linha_horizontal(slide, y=4.7, x_start=3.8, comprimento=3.4, texto_circulo= f"{percentuais.get('Informacao', 0)}%", titulo="INFORMAÇÃO",
+    tracar_linha_horizontal(slide, y=4.77   , x_start=3.50, comprimento=3.5, texto_circulo= f"{percentuais.get('Informacao', 0)}%", titulo="INFORMAÇÃO",
     cor_titulo=(10, 50, 100) ,
     descricao="Políticas protegem dados \ne garante")
     # === FUNDO BRANCO === #
