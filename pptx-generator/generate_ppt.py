@@ -47,17 +47,6 @@ def main():
         gerar_resumo_exec(pres, dados)  
 
         print("Gerando resumo executivo detalhado...", file=sys.stderr, flush=True)
-        analise_topicos = dados.get("dados_modelo", {}).get("analise_topicos", {})
-        if not analise_topicos:
-            print("⚠️ Nenhum tópico encontrado em 'analise_topicos'", file=sys.stderr, flush=True)
-        else:
-            for pilar, topicos in analise_topicos.items():
-                print(f"📌 Pilar: {pilar} - {len(topicos)} tópicos recebidos", file=sys.stderr, flush=True)
-                for j, t in enumerate(topicos):
-                    nome = t.get("topico_nome") or t.get("topico", "")  # dependendo de como os dados chegam
-                    fracao = t.get("fracao", "")
-                    porcentagem = t.get("porcentagem", "")
-                    print(f"   → Topico {j+1}: {nome}, fracao: {fracao}, %: {porcentagem}", file=sys.stderr, flush=True)
         gerar_resumo_exec_det(pres, dados)
         print("Salvando...", file=sys.stderr, flush=True)
         output = BytesIO()
