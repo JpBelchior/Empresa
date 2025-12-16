@@ -648,12 +648,17 @@ private static function calcular_top_topicos_por_pilar($formulario_id, $pilar, $
             't.id as topico_id',
             DB::raw('COUNT(*) as total_respostas'),
             DB::raw('SUM(CASE WHEN r.nivel_adequacao = 1 THEN 1 ELSE 0 END) as adequadas'),
+            DB::raw('CONCAT(
+                SUM(CASE WHEN r.nivel_adequacao = 1 THEN 1 ELSE 0 END),
+                "/",
+                COUNT(*)
+            ) as fracao'),
             DB::raw('ROUND((SUM(CASE WHEN r.nivel_adequacao = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 1) as porcentagem')
         )
         ->groupBy('t.id', 't.nome')
         ->having('total_respostas', '>=', 1)
         ->orderBy('porcentagem', 'DESC')
-        ->orderBy('t.nome', 'ASC') // Critério de desempate
+        ->orderBy('t.nome', 'ASC') 
         ->limit($limit)
         ->get();
         
@@ -681,10 +686,25 @@ public function gerar_pptx_isolado(Request $request)
 
         Log::info('✅ Validação concluída');
 
-        // ✅ PREPARAR DADOS - EXATAMENTE IGUAL À FUNÇÃO relatorio_personalizado
+        // ✅ PREPARAR DADOS
         $dados_modelo = self::modelo1($request);
         $referencias_proximas_array = self::processarCampoTexto($request->referencias_proximas);
-        
+
+        // 🔹 NORMALIZAÇÃO DOS PILARES
+        $mapaPilares = [
+            'Pessoas' => 'Pessoas',
+            'Tecnologia' => 'Tecnologia',
+            'Processos' => 'Processos',
+            'Informação' => 'Informacao',
+            'Gestão' => 'Gestao',
+        ];
+
+        $analise_topicos_normalizado = [];
+        foreach (($dados_modelo['analise_topicos'] ?? []) as $pilar => $topicos) {
+            $chavePython = $mapaPilares[$pilar] ?? $pilar;
+            $analise_topicos_normalizado[$chavePython] = $topicos;
+        }
+
         $dados_para_nodejs = [
             'dados' => [
                 'nome_empresa' => $request->nome_empresa,
@@ -710,7 +730,7 @@ public function gerar_pptx_isolado(Request $request)
                     'Informação' => 0, 'Gestão' => 0,
                 ],
                 'respostas' => $dados_modelo['respostas'] ?? [],
-                'analise_topicos' => $dados_modelo['analise_topicos'] ?? []
+                'analise_topicos' => $analise_topicos_normalizado
             ],
             'imagens' => [
                 'logo_empresa' => Arquivo::converter_imagem_base_64($request, 'logo_empresa'),
@@ -737,8 +757,7 @@ public function gerar_pptx_isolado(Request $request)
         }
         
         Log::info('✅ PPTX gerado com sucesso!');
-        
-        
+
         $formularioId = $request->relatorio_formulario_id;
         $timestamp = now()->format('YmdHis');
         $filename = "relatorio-form-{$formularioId}-{$timestamp}.pptx";
@@ -766,4 +785,5 @@ public function gerar_pptx_isolado(Request $request)
         ], 500);
     }
 }
+
 }

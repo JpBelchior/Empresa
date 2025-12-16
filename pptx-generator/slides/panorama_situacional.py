@@ -153,10 +153,10 @@ def gerar_panorama_situacional(pres, dados):
          # === SOMBRA DA IMAGEM === #
         sombra = slide.shapes.add_shape(
         MSO_SHAPE.RECTANGLE,
-        Inches(5.25),   # Deslocado levemente para baixo e direita
-        Inches(1.7),
-        Inches(4.5),
-        Inches(3.7)
+        Inches(5.2),   
+        Inches(1.55),
+        Inches(4.6),
+        Inches(3.8)
     )
 
         sombra.fill.solid()

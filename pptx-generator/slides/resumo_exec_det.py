@@ -110,7 +110,7 @@ def gerar_resumo_exec_det(pres, dados):
     cores = [
         RGBColor(0, 51, 102),   
         RGBColor(0, 76, 153),    
-        RGBColor(0, 102, 204),    
+        RGBColor(35, 137, 239),    
         RGBColor(102, 178, 255),    
         RGBColor(0, 180, 170)    
     ]
@@ -122,6 +122,7 @@ def gerar_resumo_exec_det(pres, dados):
     "GESTÃO",
     "INFORMAÇÃO"
     ]
+    chaves_pilares = ["Tecnologia", "Processos", "Pessoas", "Gestao", "Informacao"]
 
     current_dir = os.path.dirname(__file__)      # pptx-generator/slides/
     parent_dir = os.path.dirname(current_dir)    # pptx-generator/
@@ -135,7 +136,17 @@ def gerar_resumo_exec_det(pres, dados):
     ]
 
     for i in range(5):
+
         left = margem_lateral + i * (largura_ret + espaco)
+
+        raio = 0.35
+        diametro = raio * 2
+        topo_circulo = 1.1
+        altura_titulo = 0.6
+        margem_vertical = 0.15
+
+        pilar = chaves_pilares[i]
+        topicos_pilar = dados.get("dados_modelo", {}).get("analise_topicos", {}).get(pilar, [])
 
         # === RETÂNGULO === #
         ret = slide.shapes.add_shape(
@@ -167,9 +178,11 @@ def gerar_resumo_exec_det(pres, dados):
 
         circulo.fill.solid()
         circulo.fill.fore_color.rgb = cores[i]
-        circulo.line.fill.background()
+        circulo.line.fill.solid()
+        circulo.line.fill.fore_color.rgb = RGBColor(255, 255, 255)
+        circulo.line.width = Pt(2)
 
-        icone_tamanho = 1.5  # tamanho do ícone (quadrado)
+        icone_tamanho = 1.5  # tamanho do ícone     
 
         icone_left = left + (largura_ret - icone_tamanho) / 2
         icone_top = topo - 0.75
@@ -204,6 +217,60 @@ def gerar_resumo_exec_det(pres, dados):
         p_titulo.font.bold = True
         p_titulo.font.color.rgb = RGBColor(255, 255, 255)
         p_titulo.alignment = PP_ALIGN.CENTER
+
+        margem_interna = 0.15
+        qtd_ret_internos = 4
+        altura_ret_interno = 0.55
+        espaco_vertical = 0.15
+
+        largura_interna = largura_ret - (margem_interna * 2)
+
+        titulo_top = topo_circulo + diametro + margem_vertical
+
+        topo_inicial_interno = (
+            titulo_top +
+            altura_titulo +
+            margem_vertical
+        )
+
+        for j in range(qtd_ret_internos):
+            top_interno = topo_inicial_interno + j * (altura_ret_interno + espaco_vertical) - 0.3
+
+            ret_interno = slide.shapes.add_shape(
+                MSO_SHAPE.ROUNDED_RECTANGLE,
+                Inches(left + margem_interna),
+                Inches(top_interno),
+                Inches(largura_interna),
+                Inches(altura_ret_interno)
+            )
+
+            ret_interno.fill.solid()
+            ret_interno.fill.fore_color.rgb = RGBColor(255, 255, 255)
+            ret_interno.line.fill.background()
+
+            # Se houver tópico para essa posição, adiciona o texto
+            if j < len(topicos_pilar):
+                topico = topicos_pilar[j]
+                nome_topico = topico.get("topico_nome", "")
+                fracao = topico.get("fracao", "0/0")
+               
+                nome_topico = nome_topico.encode('latin1').decode('utf-8')
+                tf = ret_interno.text_frame
+                tf.clear()
+                tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+
+                p = tf.paragraphs[0]
+                p.text = f"{nome_topico}\n{fracao}"
+                p.alignment = PP_ALIGN.CENTER
+
+                p.font.name = "Arial"
+                p.font.size = Pt(11)
+                p.font.bold = True
+                p.font.color.rgb = cores[i]
+
+            else:
+                tf = ret_interno.text_frame
+                tf.clear()
     print("✅ Slide de Resumo Executivo Detalhado criado!", file=sys.stderr)
     return slide 
 
