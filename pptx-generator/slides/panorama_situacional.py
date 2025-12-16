@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import io
 import sys
+import json
 import os
 import base64
 from io import BytesIO
@@ -8,6 +10,7 @@ from pptx.util import Inches, Pt
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
+
 
 
 def add_base64_image(slide, base64_str, left, top, width, height):

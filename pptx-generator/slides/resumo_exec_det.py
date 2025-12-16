@@ -182,10 +182,10 @@ def gerar_resumo_exec_det(pres, dados):
         circulo.line.fill.fore_color.rgb = RGBColor(255, 255, 255)
         circulo.line.width = Pt(2)
 
-        icone_tamanho = 1.5  # tamanho do ícone     
+        icone_tamanho = 0.6  # tamanho do ícone     
 
         icone_left = left + (largura_ret - icone_tamanho) / 2
-        icone_top = topo - 0.75
+        icone_top = topo - 0.3
 
         if os.path.exists(icons[i]):
             slide.shapes.add_picture(

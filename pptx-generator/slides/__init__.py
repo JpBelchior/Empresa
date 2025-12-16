@@ -9,6 +9,7 @@ from .panorama_situacional import gerar_panorama_situacional
 from .seguranca import gerar_seguranca
 from .resumo_exec import gerar_resumo_exec
 from .resumo_exec_det import gerar_resumo_exec_det
+from .vulnerabilidades import gerar_vulnerabilidades
 
 __all__ = [
     'gerar_capa', 
@@ -18,5 +19,6 @@ __all__ = [
     'gerar_panorama_situacional',  
     'gerar_seguranca',
     'gerar_resumo_exec',
-    'gerar_resumo_exec_det'
+    'gerar_resumo_exec_det',
+    'gerar_vulnerabilidades'
 ]
