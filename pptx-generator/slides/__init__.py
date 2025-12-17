@@ -10,6 +10,7 @@ from .seguranca import gerar_seguranca
 from .resumo_exec import gerar_resumo_exec
 from .resumo_exec_det import gerar_resumo_exec_det
 from .vulnerabilidades import gerar_vulnerabilidades
+from .recomendacoes import gerar_recomendacoes
 
 __all__ = [
     'gerar_capa', 
@@ -20,5 +21,6 @@ __all__ = [
     'gerar_seguranca',
     'gerar_resumo_exec',
     'gerar_resumo_exec_det',
-    'gerar_vulnerabilidades'
+    'gerar_vulnerabilidades',
+    'gerar_recomendacoes'
 ]

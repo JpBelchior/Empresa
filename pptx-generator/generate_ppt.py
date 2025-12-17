@@ -14,7 +14,7 @@ from slides.seguranca import gerar_seguranca
 from slides.resumo_exec import gerar_resumo_exec
 from slides.resumo_exec_det import gerar_resumo_exec_det
 from slides.vulnerabilidades import gerar_vulnerabilidades
-
+from slides.recomendacoes import gerar_recomendacoes
 
 def main():
     try:
@@ -52,6 +52,9 @@ def main():
 
         print("Gerando Vulnerabilidades tabela...", file=sys.stderr, flush=True)
         gerar_vulnerabilidades(pres, dados)
+
+        print("Gerando Recomendações...", file=sys.stderr, flush=True)  
+        gerar_recomendacoes(pres, dados) 
 
 
         print("Salvando...", file=sys.stderr, flush=True)

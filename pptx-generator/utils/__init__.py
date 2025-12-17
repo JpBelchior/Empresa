@@ -12,5 +12,8 @@ __all__ = [
     'reorganizar_por_criticidade',
     'mapear_cor_criticidade',
     'mapear_icone_pilar',
-    'nomear_nivel_vulnerabilidade'
+    'nomear_nivel_vulnerabilidade',
+    'reorganizar_por_prioridade',
+    'mapear_cor_prioridades'
+
 ]

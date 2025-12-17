@@ -11,7 +11,7 @@ from io import BytesIO
 
 # Importar funções de processamento
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from utils.processar_dados import reorganizar_por_criticidade, mapear_icone_pilar, mapear_cor_criticidade, nomear_nivel_vulnerabilidade
+from utils.processar_dados import reorganizar_por_prioridade, mapear_icone_pilar, mapear_cor_prioridade  # ← ADICIONAR nomear_nivel_vulnerabilidade se precisar
 
 
 def add_local_image(slide, image_path, left, top, width, height):
@@ -34,7 +34,7 @@ def add_local_image(slide, image_path, left, top, width, height):
         return False
 
 
-def criar_slide_vulnerabilidades(pres, dados, itens_slide):
+def criar_slide_recomendacoes(pres, dados, itens_slide):
 
     slide = pres.slides.add_slide(pres.slide_layouts[6])
 
@@ -53,7 +53,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     para_azul.line.fill.background()
 
     tf_azul = para_azul.text_frame
-    tf_azul.text = "7"
+    tf_azul.text = "9"  
     p = tf_azul.paragraphs[0]
     p.font.size = Pt(20)
     p.font.bold = True
@@ -71,7 +71,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     para_cinza.line.fill.background()
 
     tf_cinza = para_cinza.text_frame
-    tf_cinza.text = "VULNERABILIDADES"
+    tf_cinza.text = "RECOMENDAÇÕES"
     tf_cinza.margin_left = Inches(0.2)
     tf_cinza.vertical_anchor = MSO_ANCHOR.MIDDLE
     tf_cinza.paragraphs[0].font.bold = True
@@ -82,7 +82,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         Inches(2.5), Inches(0.75), Inches(5.0), Inches(0.35)
     )
     p = subtitulo.text_frame.paragraphs[0]
-    p.text = "Não Conformidades"
+    p.text = "Prioridades de Melhorias"
     p.font.size = Pt(14)
     p.font.bold = True
     p.font.color.rgb = RGBColor(0, 38, 77)
@@ -90,7 +90,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
 
     # ================= TABELA ================= #
     rows = 1 + len(itens_slide)
-    cols = 7
+    cols = 6  
 
     table = slide.shapes.add_table(
         rows, cols,
@@ -99,20 +99,20 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         Inches(0.2 + 0.6 * len(itens_slide))
     ).table
 
-    # Larguras
-    widths = [1.0, 0.5, 2.0, 2.0, 1.2, 1.3, 1.0]
+    # Larguras (6 colunas)
+    widths = [1.0, 0.9, 2.0, 2.1 , 1.8, 1.0]
     for i, w in enumerate(widths):
         table.columns[i].width = Inches(w)
 
     # Alturas
-    table.rows[0].height = Inches(0.3)
+    table.rows[0].height = Inches(0.3 / 2) 
     for i in range(1, rows):
         table.rows[i].height = Inches(0.6)
 
     # Cabeçalho
     headers = [
-        "Elementos", "NC", "Não Conformidade",
-        "Observação", "Risco", "Localização", "Criticidade"
+        "Elementos", "NC", "Classificação",
+        "Recomendação", "Riscos Mitigados", "Prioridade"  
     ]
 
     for col, header in enumerate(headers):
@@ -123,7 +123,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         p = cell.text_frame.paragraphs[0]
         p.text = header
         p.font.bold = True
-        p.font.size = Pt(11)
+        p.font.size = Pt(10)
         p.font.color.rgb = RGBColor(255, 255, 255)
         p.alignment = PP_ALIGN.CENTER
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
@@ -144,6 +144,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         # Calcular posição Y desta linha
         cell_top = table_top + header_height + (row_idx - 1) * row_height
 
+        # Alternar cores das linhas
         if row_idx % 2 == 0:
             cor_linha = RGBColor(91, 155, 213)  # azul
         else:
@@ -158,7 +159,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         cell = table.cell(row_idx, 0)
         
         # Carregar o ícone
-        icone_nome = item["elemento"]  # Já vem como "ICON_PESSOAS.png" etc
+        icone_nome = item["elemento"]
         image_path = os.path.join(images_dir, icone_nome)
         
         # Calcular posição X da coluna 0
@@ -169,13 +170,13 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
                 slide.shapes.add_picture(
                     image_path,
                     col_0_left + Inches(0.25),
-                    cell_top + Inches(0.10),
+                    cell_top + Inches(0.1),  
                     width=Inches(0.4)
                 )
         except Exception as e:
             print(f"Erro ao carregar ícone {icone_nome}: {e}", file=sys.stderr)
         
-        # Coluna 1: NC
+        # Coluna 1: NC Atendida
         cell = table.cell(row_idx, 1)
         p = cell.text_frame.paragraphs[0]
         p.text = item["nc"]
@@ -184,55 +185,50 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         p.alignment = PP_ALIGN.CENTER
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
         
-        # Coluna 2: NÃO CONFORMIDADE
+        # Coluna 2: Classificação
         cell = table.cell(row_idx, 2)
         p = cell.text_frame.paragraphs[0]
-        p.text = item["nao_conformidade"]
+        p.text = item["classificacao"]
+        p.font.size = Pt(9)
+        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.alignment = PP_ALIGN.LEFT
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        cell.text_frame.word_wrap = True
+        
+        # Coluna 3: Recomendação 
+        cell = table.cell(row_idx, 3)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["recomendacao"]  
+        p.font.size = Pt(9)
+        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.alignment = PP_ALIGN.LEFT
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        cell.text_frame.word_wrap = True
+        
+        # Coluna 4: Riscos Mitigados 
+        cell = table.cell(row_idx, 4)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["riscos_mitigados"]
         p.font.size = Pt(10)
         p.font.color.rgb = RGBColor(255, 255, 255)
         p.alignment = PP_ALIGN.CENTER
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-        cell.text_frame.word_wrap = True
         
-        # Coluna 3: OBSERVAÇÃO (vazia)
-        cell = table.cell(row_idx, 3)
-        p = cell.text_frame.paragraphs[0]
-        p.text = item["observacao"]
-        p.font.size = Pt(10)
-        p.alignment = PP_ALIGN.CENTER
-        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-        
-        # Coluna 4: RISCO (vazia)
-        cell = table.cell(row_idx, 4)
-        p = cell.text_frame.paragraphs[0]
-        p.text = item["risco"]
-        p.font.size = Pt(10)
-        p.alignment = PP_ALIGN.CENTER
-        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-        
-        # Coluna 5: LOCALIZAÇÃO (vazia)
+        # Coluna 5: Prioridade (círculo colorido)
         cell = table.cell(row_idx, 5)
-        p = cell.text_frame.paragraphs[0]
-        p.text = item["localizacao"]
-        p.font.size = Pt(10)
-        p.alignment = PP_ALIGN.CENTER
-        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-        
-        # Coluna 6: CRITICIDADE (círculo colorido)
-        cell = table.cell(row_idx, 6)
         
         # Adicionar círculo colorido
-        criticidade = item["criticidade"]
-        cor_rgb = mapear_cor_criticidade(criticidade)
+        prioridade = item["prioridade"]
+        cor_rgb = mapear_cor_prioridade(prioridade)
         
-        # Calcular posição X da coluna 6 (última coluna)
-        # Somar largura de todas as colunas anteriores: 1.0 + 0.5 + 2.0 + 1.7 + 1.2 + 1.3 = 7.7
-        col_6_left = table_left + Inches(7.7)
+        # Calcular posição X da coluna 5 (última coluna)
+        
+        col_5_left = table_left + Inches(7.8)
         
         circulo = slide.shapes.add_shape(
             MSO_SHAPE.OVAL,
-            col_6_left + Inches(0.35),
-            cell_top + Inches(0.17),
+            col_5_left + Inches(0.35),
+            cell_top + Inches(0.17), 
             Inches(0.25),
             Inches(0.25)
         )
@@ -244,26 +240,26 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     # -------- TÍTULO DA LEGENDA  -------- #
     titulo_legenda = slide.shapes.add_textbox(
         Inches(0.3),
-        Inches(4.55),   # um pouco acima da caixa
+        Inches(4.55),
         Inches(4.2),
         Inches(0.25)
     )
 
     p = titulo_legenda.text_frame.paragraphs[0]
-    p.text = "Criticidade Risco"
+    p.text = "Prioridade"
     p.font.size = Pt(10)
     p.font.bold = True
     p.font.color.rgb = RGBColor(0, 51, 102)
     p.alignment = PP_ALIGN.LEFT
 
     legenda = slide.shapes.add_textbox(
-        Inches(0.2),        # Left
-        Inches(4.8 ),        # Top
-        Inches(4.2 ),        # Width
-        Inches(0.4)         # Height 
+        Inches(0.2),
+        Inches(4.8),
+        Inches(4.2),
+        Inches(0.4)
     )
 
-    # Borda azul escura (mais fina)
+    # Borda azul escura
     legenda.line.color.rgb = RGBColor(0, 51, 102)
     legenda.line.width = Pt(0.9)
 
@@ -272,22 +268,19 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     tf_legenda.margin_left = Inches(0.15)
     tf_legenda.margin_top = Inches(0.05)
 
-
-    # -------- ITENS (HORIZONTAIS) -------- #
+    # -------- ITENS DA LEGENDA (HORIZONTAIS) -------- #
     legenda_itens = [
-        ("Muito Alto",  RGBColor(192, 0, 0)),
-        ("Alto",        RGBColor(237, 125, 49)),
-        ("Médio",       RGBColor(255, 192, 0)),
-        ("Baixo",       RGBColor(0, 97, 0)),
-        ("Muito Baixo", RGBColor(146, 208, 80)),
+        ("Longo Prazo",  RGBColor(192, 0, 0)),
+        ("Médio Prazo",  RGBColor(255, 192, 0)),
+        ("Curto Prazo", RGBColor(146, 208, 80)),
     ]
 
     start_x = Inches(0.3)
     y = Inches(4.9)
-    espacamento = Inches(0.8)
+    espacamento = Inches(1.2)
 
     for texto, cor in legenda_itens:
-        # Círculo grande
+        # Círculo
         circulo = slide.shapes.add_shape(
             MSO_SHAPE.OVAL,
             start_x, y,
@@ -299,9 +292,9 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
 
         # Texto ao lado do círculo
         label = slide.shapes.add_textbox(
-            start_x + Inches(0.12),
+            start_x + Inches(0.20),
             y - Inches(0.02),
-            Inches(0.6),
+            Inches(0.9),
             Inches(0.25)
         )
         p = label.text_frame.paragraphs[0]
@@ -313,7 +306,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         start_x += espacamento
       
     titulo_elementos = slide.shapes.add_textbox(
-        Inches(4.7),     # à direita da legenda anterior
+        Inches(4.7),
         Inches(4.55),
         Inches(4.8),
         Inches(0.25)
@@ -326,13 +319,12 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     p.font.color.rgb = RGBColor(0, 51, 102)
     p.alignment = PP_ALIGN.LEFT
 
-
     # ========= CAIXA DA LEGENDA ========= #
     legenda_elementos = slide.shapes.add_textbox(
-        Inches(4.5),     # Left
-        Inches(4.8),     # Top
-        Inches(4.6),     # Width
-        Inches(0.4)      # Height
+        Inches(4.5),
+        Inches(4.8),
+        Inches(4.6),
+        Inches(0.4)
     )
 
     # Fundo azul escuro
@@ -342,7 +334,6 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     # Borda
     legenda_elementos.line.color.rgb = RGBColor(0, 51, 102)
     legenda_elementos.line.width = Pt(0.9)
-
 
     # ========= ITENS DA LEGENDA ========= #
     elementos = [
@@ -401,11 +392,11 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     return slide
 
 
-def gerar_vulnerabilidades(pres, dados):
+def gerar_recomendacoes(pres, dados):
     """
-    Gera slides de vulnerabilidades com dados reais
+    Gera slides de recomendações com dados reais
     """
-    print("🔄 Processando vulnerabilidades...", file=sys.stderr, flush=True)
+    print("🔄 Processando recomendações...", file=sys.stderr, flush=True)
     
     # Puxar dados reais das respostas
     respostas = dados.get('dados_modelo', {}).get('respostas', [])
@@ -414,37 +405,38 @@ def gerar_vulnerabilidades(pres, dados):
         print("⚠️ Nenhuma resposta encontrada", file=sys.stderr, flush=True)
         return
     
-    # Reorganizar por criticidade e filtrar vulnerabilidades
-    vulnerabilidades = reorganizar_por_criticidade(respostas)
+    # Reorganizar por PRIORIDADE (não criticidade)
+    recomendacoes = reorganizar_por_prioridade(respostas)
     
-    if len(vulnerabilidades) == 0:
-        print("⚠️ Nenhuma vulnerabilidade encontrada (todas com nível 1)", file=sys.stderr, flush=True)
+    if len(recomendacoes) == 0:
+        print("⚠️ Nenhuma recomendação encontrada (todas com nível 1)", file=sys.stderr, flush=True)
         return
     
-    print(f"📊 {len(vulnerabilidades)} vulnerabilidades encontradas", file=sys.stderr, flush=True)
+    print(f"📊 {len(recomendacoes)} recomendações encontradas", file=sys.stderr, flush=True)
     
     # Converter para o formato esperado pela tabela
     itens = []
-    for vuln in vulnerabilidades:
+    for rec in recomendacoes:
         # Extrair nome do pilar para pegar o ícone correto
-        pilar_nome = vuln.get('pilar', '')
+        pilar_nome = rec.get('pilar', '')
         icone_nome = mapear_icone_pilar(pilar_nome)
         
-        # Montar texto da não conformidade: topicos + " - " + nivel_texto
-        topicos = vuln.get('topicos', 'Sem descrição')
-        vulnerabilidade_nivel = vuln.get('vulnerabilidade', 0)
-        nivel_texto = nomear_nivel_vulnerabilidade(vulnerabilidade_nivel)
-        nao_conformidade_texto = f"{topicos} - {nivel_texto}"
+        # Montar texto da classificação
+        topicos = rec.get('topicos', 'Sem descrição')
+        classificacao_texto = topicos
+        
+        # Pegar recomendacao e garantir que seja string
+        recomendacao_raw = rec.get('recomendacao', '')
+        recomendacao_texto = str(recomendacao_raw) if recomendacao_raw is not None else ''  # ← MUDOU
         
         # Montar o item no formato da tabela
         item = {
-            "elemento": icone_nome,  # Nome do ícone para carregar depois
-            "nc": f"NC-{vuln.get('nc_sequencial', '000')}",
-            "nao_conformidade": nao_conformidade_texto,
-            "observacao": "",  # Vazio por enquanto
-            "risco": "",  # Vazio por enquanto
-            "localizacao": "",  # Vazio por enquanto
-            "criticidade": vuln.get('criticidade', 'amarelo')  # Para mapear a cor do círculo
+            "elemento": icone_nome,
+            "nc": f"NC-{rec.get('nc_sequencial', '000')}",
+            "classificacao": classificacao_texto,
+            "recomendacao": recomendacao_texto,  # ← MUDOU: agora garante que é string
+            "riscos_mitigados": "",
+            "prioridade": rec.get('prioridade', 'amarelo')
         }
         itens.append(item)
     
@@ -453,6 +445,6 @@ def gerar_vulnerabilidades(pres, dados):
     
     for i in range(0, len(itens), itens_por_slide):
         lote = itens[i:i + itens_por_slide]
-        criar_slide_vulnerabilidades(pres, dados, lote)
+        criar_slide_recomendacoes(pres, dados, lote)
     
-    print(f"✅ {len(range(0, len(itens), itens_por_slide))} slides de Vulnerabilidades criados!", file=sys.stderr, flush=True)
+    print(f"✅ {len(range(0, len(itens), itens_por_slide))} slides de Recomendações criados!", file=sys.stderr, flush=True)

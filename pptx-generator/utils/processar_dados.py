@@ -95,3 +95,54 @@ def reorganizar_por_criticidade(respostas):
         item['nc_sequencial'] = str(indice + 1).zfill(3)  # 001, 002, 003...
     
     return vulnerabilidades_ordenadas
+
+
+def mapear_cor_prioridade(prioridade):
+    """
+    Mapeia a prioridade textual para RGB (para os círculos)
+    Prioridade: longo prazo (vermelho), médio prazo (amarelo), curto prazo (verde)
+    """
+    cores = {
+        'vermelho-escuro': (192, 0, 0),      # Longo Prazo
+        'amarelo': (255, 192, 0),             # Médio Prazo
+        'verde-claro': (146, 208, 80)         # Curto Prazo
+    }
+    return cores.get(prioridade, (128, 128, 128))  # Cinza se não encontrar
+
+
+def reorganizar_por_prioridade(respostas):
+    """
+    Reorganiza as respostas por ordem de prioridade (longo → médio → curto)
+    Filtra apenas vulnerabilidades (nivel > 1) e renumera sequencialmente
+    """
+    if not respostas or len(respostas) == 0:
+        return []
+    
+    # 1. Filtrar apenas vulnerabilidades (vulnerabilidade > 1)
+    vulnerabilidades = [
+        r for r in respostas 
+        if int(r.get('vulnerabilidade', 0)) > 1
+    ]
+    
+    if len(vulnerabilidades) == 0:
+        return []
+    
+    # 2. Ordem de prioridade (longo prazo = mais urgente)
+    ordem_prioridade = {
+        'vermelho-escuro': 3,  # Longo Prazo (mais urgente)
+        'amarelo': 2,           # Médio Prazo
+        'verde-claro': 1        # Curto Prazo
+    }
+    
+    # 3. Ordenar por prioridade (maior → menor)
+    prioridades_ordenadas = sorted(  # ← MUDOU AQUI
+        vulnerabilidades,
+        key=lambda x: ordem_prioridade.get(x.get('prioridade', ''), 0),
+        reverse=True
+    )
+    
+    # 4. Renumerar sequencialmente (NC-001, NC-002...)
+    for indice, item in enumerate(prioridades_ordenadas):  # ← MUDOU AQUI
+        item['nc_sequencial'] = str(indice + 1).zfill(3)  # 001, 002, 003...
+    
+    return prioridades_ordenadas 
