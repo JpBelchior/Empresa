@@ -9,6 +9,10 @@ from pptx.dml.color import RGBColor
 import base64
 from io import BytesIO
 
+# Importar funções de processamento
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from utils.processar_dados import reorganizar_por_criticidade, mapear_icone_pilar, mapear_cor_criticidade, nomear_nivel_vulnerabilidade
+
 
 def add_local_image(slide, image_path, left, top, width, height):
     """Adiciona imagem local ao slide"""
@@ -124,25 +128,119 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         p.alignment = PP_ALIGN.CENTER
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
 
+    # ================= RENDERIZAR LINHAS DA TABELA ================= #
+    # Caminho das imagens
+    current_dir = os.path.dirname(__file__)
+    parent_dir = os.path.dirname(current_dir)
+    images_dir = os.path.join(parent_dir, "images")
+    
+    # Guardar posição da tabela para calcular posições das células
+    table_left = Inches(0.3)
+    table_top = Inches(1.2)
+    row_height = Inches(0.6)
+    header_height = Inches(0.3)
     
     for row_idx, item in enumerate(itens_slide, start=1):
-        valores = [
-            item["elemento"],
-            item["nc"],
-            item["nao_conformidade"],
-            item["observacao"],
-            item["risco"],
-            item["localizacao"],
-            item["criticidade"],
-        ]
+        # Calcular posição Y desta linha
+        cell_top = table_top + header_height + (row_idx - 1) * row_height
 
-        for col_idx, valor in enumerate(valores):
-            cell = table.cell(row_idx, col_idx)
-            p = cell.text_frame.paragraphs[0]
-            p.text = valor
-            p.font.size = Pt(10)
-            p.alignment = PP_ALIGN.CENTER
-            cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        if row_idx % 2 == 0:
+            cor_linha = RGBColor(91, 155, 213)  # azul
+        else:
+            cor_linha = RGBColor(165, 165, 165)  # cinza
+
+        for col in range(cols):
+            cell = table.cell(row_idx, col)
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = cor_linha
+        
+        # Coluna 0: ÍCONE DO ELEMENTO (pilar)
+        cell = table.cell(row_idx, 0)
+        
+        # Carregar o ícone
+        icone_nome = item["elemento"]  # Já vem como "ICON_PESSOAS.png" etc
+        image_path = os.path.join(images_dir, icone_nome)
+        
+        # Calcular posição X da coluna 0
+        col_0_left = table_left
+        
+        try:
+            if os.path.exists(image_path):
+                slide.shapes.add_picture(
+                    image_path,
+                    col_0_left + Inches(0.25),
+                    cell_top + Inches(0.10),
+                    width=Inches(0.4)
+                )
+        except Exception as e:
+            print(f"Erro ao carregar ícone {icone_nome}: {e}", file=sys.stderr)
+        
+        # Coluna 1: NC
+        cell = table.cell(row_idx, 1)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["nc"]
+        p.font.size = Pt(10)
+        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.alignment = PP_ALIGN.CENTER
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        
+        # Coluna 2: NÃO CONFORMIDADE
+        cell = table.cell(row_idx, 2)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["nao_conformidade"]
+        p.font.size = Pt(10)
+        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.alignment = PP_ALIGN.CENTER
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        cell.text_frame.word_wrap = True
+        
+        # Coluna 3: OBSERVAÇÃO (vazia)
+        cell = table.cell(row_idx, 3)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["observacao"]
+        p.font.size = Pt(10)
+        p.alignment = PP_ALIGN.CENTER
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        
+        # Coluna 4: RISCO (vazia)
+        cell = table.cell(row_idx, 4)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["risco"]
+        p.font.size = Pt(10)
+        p.alignment = PP_ALIGN.CENTER
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        
+        # Coluna 5: LOCALIZAÇÃO (vazia)
+        cell = table.cell(row_idx, 5)
+        p = cell.text_frame.paragraphs[0]
+        p.text = item["localizacao"]
+        p.font.size = Pt(10)
+        p.alignment = PP_ALIGN.CENTER
+        cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        
+        # Coluna 6: CRITICIDADE (círculo colorido)
+        cell = table.cell(row_idx, 6)
+        
+        # Adicionar círculo colorido
+        criticidade = item["criticidade"]
+        cor_rgb = mapear_cor_criticidade(criticidade)
+        
+        # Calcular posição X da coluna 6 (última coluna)
+        # Somar largura de todas as colunas anteriores: 1.0 + 0.5 + 2.0 + 1.7 + 1.2 + 1.3 = 7.7
+        col_6_left = table_left + Inches(7.7)
+        
+        circulo = slide.shapes.add_shape(
+            MSO_SHAPE.OVAL,
+            col_6_left + Inches(0.35),
+            cell_top + Inches(0.17),
+            Inches(0.25),
+            Inches(0.25)
+        )
+        circulo.fill.solid()
+        circulo.fill.fore_color.rgb = RGBColor(*cor_rgb)
+        circulo.line.fill.background()
+
+    
     # -------- TÍTULO DA LEGENDA  -------- #
     titulo_legenda = slide.shapes.add_textbox(
         Inches(0.3),
@@ -246,12 +344,6 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     legenda_elementos.line.width = Pt(0.9)
 
 
-    # ========= CAMINHO DAS IMAGENS ========= #
-    current_dir = os.path.dirname(__file__)       # pptx-generator/slides/
-    parent_dir = os.path.dirname(current_dir)     # pptx-generator/
-    images_dir = os.path.join(parent_dir, "images")
-
-
     # ========= ITENS DA LEGENDA ========= #
     elementos = [
         ("ICON_TECNOLOGIA.png",   "Tecnologia"),
@@ -294,6 +386,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
         p.alignment = PP_ALIGN.LEFT
 
         start_x += espacamento
+    
     # === LOGO === #
     logo = dados.get("imagens", {}).get("logo_empresa")
     if logo:
@@ -307,29 +400,59 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
 
     return slide
 
+
 def gerar_vulnerabilidades(pres, dados):
-
-    if not dados.get("vulnerabilidades"):
-        itens = [
-            {
-                "elemento": f"Elemento {i}",
-                "nc": f"NC-{i}",
-                "nao_conformidade": f"Descrição da NC {i}",
-                "observacao": f"Obs {i}",
-                "risco": "Médio",
-                "localizacao": "Área X",
-                "criticidade": "Alta"
-            }
-            for i in range(1, 21)
-        ]
-    else:
-        itens = dados["vulnerabilidades"]
-
+    """
+    Gera slides de vulnerabilidades com dados reais
+    """
+    print("🔄 Processando vulnerabilidades...", file=sys.stderr, flush=True)
     
+    # Puxar dados reais das respostas
+    respostas = dados.get('dados_modelo', {}).get('respostas', [])
+    
+    if not respostas or len(respostas) == 0:
+        print("⚠️ Nenhuma resposta encontrada", file=sys.stderr, flush=True)
+        return
+    
+    # Reorganizar por criticidade e filtrar vulnerabilidades
+    vulnerabilidades = reorganizar_por_criticidade(respostas)
+    
+    if len(vulnerabilidades) == 0:
+        print("⚠️ Nenhuma vulnerabilidade encontrada (todas com nível 1)", file=sys.stderr, flush=True)
+        return
+    
+    print(f"📊 {len(vulnerabilidades)} vulnerabilidades encontradas", file=sys.stderr, flush=True)
+    
+    # Converter para o formato esperado pela tabela
+    itens = []
+    for vuln in vulnerabilidades:
+        # Extrair nome do pilar para pegar o ícone correto
+        pilar_nome = vuln.get('pilar', '')
+        icone_nome = mapear_icone_pilar(pilar_nome)
+        
+        # Montar texto da não conformidade: topicos + " - " + nivel_texto
+        topicos = vuln.get('topicos', 'Sem descrição')
+        vulnerabilidade_nivel = vuln.get('vulnerabilidade', 0)
+        nivel_texto = nomear_nivel_vulnerabilidade(vulnerabilidade_nivel)
+        nao_conformidade_texto = f"{topicos} - {nivel_texto}"
+        
+        # Montar o item no formato da tabela
+        item = {
+            "elemento": icone_nome,  # Nome do ícone para carregar depois
+            "nc": f"NC-{vuln.get('nc_sequencial', '000')}",
+            "nao_conformidade": nao_conformidade_texto,
+            "observacao": "",  # Vazio por enquanto
+            "risco": "",  # Vazio por enquanto
+            "localizacao": "",  # Vazio por enquanto
+            "criticidade": vuln.get('criticidade', 'amarelo')  # Para mapear a cor do círculo
+        }
+        itens.append(item)
+    
+    # Paginar em grupos de 5
     itens_por_slide = 5
-
+    
     for i in range(0, len(itens), itens_por_slide):
         lote = itens[i:i + itens_por_slide]
         criar_slide_vulnerabilidades(pres, dados, lote)
-
-    print("✅ Slides de Vulnerabilidades criados!", file=sys.stderr)
+    
+    print(f"✅ {len(range(0, len(itens), itens_por_slide))} slides de Vulnerabilidades criados!", file=sys.stderr, flush=True)

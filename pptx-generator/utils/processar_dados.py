@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Utilitários para processar dados de vulnerabilidades
+Contém apenas: análise de criticidade, mapeamento de pilar e reorganização
+"""
+
+def nomear_nivel_vulnerabilidade(vulnerabilidade):
+    """
+    Converte o nível numérico de vulnerabilidade em texto descritivo
+    Igual ao JavaScript nomearNivelVulnerabilidade()
+    """
+    nivel = int(vulnerabilidade)
+    
+    if nivel == 2:
+        return "Atende após ajustes"
+    elif nivel == 3:
+        return "Atende após ajustes médios"
+    elif nivel == 4:
+        return "Não atende"
+    elif nivel == 5:
+        return "Não existe"
+    else:
+        return f"nível {vulnerabilidade}"
+
+
+def mapear_icone_pilar(pilar):
+    """
+    Converte o nome/URL do pilar para o nome do arquivo de ícone
+    """
+    if 'pessoas' in pilar.lower():
+        return 'ICON_PESSOAS.png'
+    elif 'tecnologia' in pilar.lower():
+        return 'ICON_TECNOLOGIA.png'
+    elif 'processos' in pilar.lower():
+        return 'ICON_PROCESSOS.png'
+    elif 'informacao' in pilar.lower() or 'informação' in pilar.lower():
+        return 'ICON_INFORMACOES.png'
+    elif 'gestao' in pilar.lower() or 'gestão' in pilar.lower():
+        return 'ICON_GESTAO.png'
+    
+    # Fallback
+    return 'ICON_PESSOAS.png'
+
+
+def mapear_cor_criticidade(criticidade):
+    """
+    Mapeia a criticidade textual para RGB (para os círculos)
+    """
+    cores = {
+        'vermelho-escuro': (192, 0, 0),      # Muito Alto / Crítico
+        'laranja': (237, 125, 49),            # Alto  
+        'amarelo': (255, 192, 0),             # Médio
+        'verde-escuro': (0, 97, 0),           # Baixo
+        'verde-claro': (146, 208, 80)         # Muito Baixo
+    }
+    return cores.get(criticidade, (128, 128, 128))  # Cinza se não encontrar
+
+
+def reorganizar_por_criticidade(respostas):
+    """
+    Reorganiza as respostas por ordem de criticidade (maior → menor)
+    Filtra apenas vulnerabilidades (nivel > 1) e renumera sequencialmente
+    """
+    if not respostas or len(respostas) == 0:
+        return []
+    
+    # 1. Filtrar apenas vulnerabilidades (vulnerabilidade > 1)
+    vulnerabilidades = [
+        r for r in respostas 
+        if int(r.get('vulnerabilidade', 0)) > 1
+    ]
+    
+    if len(vulnerabilidades) == 0:
+        return []
+    
+    # 2. Ordem de criticidade (maior = mais crítico)
+    ordem_criticidade = {
+        'vermelho-escuro': 5,  # Crítico
+        'laranja': 4,           # Alto
+        'amarelo': 3,           # Médio
+        'verde-escuro': 2,      # Baixo
+        'verde-claro': 1        # Muito Baixo
+    }
+    
+    # 3. Ordenar por criticidade (maior → menor)
+    vulnerabilidades_ordenadas = sorted(
+        vulnerabilidades,
+        key=lambda x: ordem_criticidade.get(x.get('criticidade', ''), 0),
+        reverse=True
+    )
+    
+    # 4. Renumerar sequencialmente (NC-001, NC-002...)
+    for indice, item in enumerate(vulnerabilidades_ordenadas):
+        item['nc_sequencial'] = str(indice + 1).zfill(3)  # 001, 002, 003...
+    
+    return vulnerabilidades_ordenadas
