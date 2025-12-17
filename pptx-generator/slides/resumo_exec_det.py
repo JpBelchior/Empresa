@@ -96,7 +96,7 @@ def gerar_resumo_exec_det(pres, dados):
     p_sub.text = "Itens Aderentes Conforme Metodologia"
     p_sub.font.name = "Arial"
     p_sub.font.size = Pt(14)
-    p_sub.font.italic = True
+    p.font.bold = True
     p_sub.font.color.rgb = RGBColor(0, 38, 77)
     p_sub.alignment = PP_ALIGN.CENTER
 
