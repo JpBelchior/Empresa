@@ -456,16 +456,33 @@ class FormularioController extends Controller
         $posicao = 1;
         foreach($respostas as $resposta){
             $nome_pilar = self::escolher_imagem_pilar(array_search($resposta->tematica_id, $lista_pilares));
+
+            $pergunta = Models\Pergunta::find($resposta->pergunta_id);
+            $titulo_pergunta = $pergunta ? $pergunta->titulo : 'Sem título';
+
+              $foto_base64 = null;
+            if ($resposta->arquivo_id) {
+                $arquivo = Models\Arquivo::find($resposta->arquivo_id);
+            if ($arquivo && file_exists($arquivo->caminho)) {
+                // Converter imagem para base64
+                $imagem_conteudo = file_get_contents($arquivo->caminho);
+                $tipo_mime = mime_content_type($arquivo->caminho);
+                $foto_base64 = 'data:' . $tipo_mime . ';base64,' . base64_encode($imagem_conteudo);
+            }
+                }
             $l = [
                 'pilar' => $nome_pilar,
                 'nc' => $posicao,
                 'vulnerabilidade' => $resposta->nivel_adequacao,
                 'nao_conformidade' => self::classificar_vulnerabilidade($resposta->nivel_adequacao),
                 'topicos' => self::pegar_topicos_pergunta($resposta->pergunta_id),
+                'titulo_pergunta' => $titulo_pergunta,
                 'criticidade' => self::classificar_risco($resposta->nivel_probabilidade,$resposta->nivel_impacto),
                 'recomendacao' => $resposta->resposta,
                 'prioridade' => self::classificar_prioridade($resposta->nivel_esforco, $resposta->nivel_valor),
-                'risco' => $resposta->esta_em_risco_altissimo
+                'risco' => $resposta->esta_em_risco_altissimo,
+                'arquivo_id' => $resposta->arquivo_id,       
+                'foto_base64' => $foto_base64    
             ];
             $lista[] = $l;
             $posicao++;            

@@ -83,7 +83,7 @@ def criar_slide_vulnerabilidades(pres, dados, itens_slide):
     )
     p = subtitulo.text_frame.paragraphs[0]
     p.text = "Não Conformidades"
-    p.font.size = Pt(14)
+    p.font.size = Pt(15)
     p.font.bold = True
     p.font.color.rgb = RGBColor(0, 38, 77)
     p.alignment = PP_ALIGN.CENTER

@@ -15,6 +15,7 @@ from slides.seguranca import gerar_seguranca
 from slides.resumo_exec import gerar_resumo_exec
 from slides.resumo_exec_det import gerar_resumo_exec_det
 from slides.vulnerabilidades import gerar_vulnerabilidades
+from slides.vulnerabilidade_foto import gerar_vulnerabilidades_foto
 from slides.recomendacoes import gerar_recomendacoes
 from slides.contra_capa import gerar_contra_capa
 
@@ -54,6 +55,9 @@ def main():
 
         print("Gerando Vulnerabilidades tabela...", file=sys.stderr, flush=True)
         gerar_vulnerabilidades(pres, dados)
+
+        print("Gerando Vulnerabilidades Específicas tabela...", file=sys.stderr, flush=True)
+        gerar_vulnerabilidades_foto(pres, dados)
 
         print("Gerando Recomendações...", file=sys.stderr, flush=True)  
         gerar_recomendacoes(pres, dados) 

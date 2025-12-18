@@ -83,7 +83,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
     )
     p = subtitulo.text_frame.paragraphs[0]
     p.text = "Prioridades de Melhorias"
-    p.font.size = Pt(14)
+    p.font.size = Pt(15)
     p.font.bold = True
     p.font.color.rgb = RGBColor(0, 38, 77)
     p.alignment = PP_ALIGN.CENTER

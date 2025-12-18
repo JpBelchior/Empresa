@@ -37,17 +37,18 @@ def nomear_nivel_vulnerabilidade(vulnerabilidade):
     Igual ao JavaScript nomearNivelVulnerabilidade()
     """
     nivel = int(vulnerabilidade)
-    
+    if nivel ==1:
+        return "Atende Plenamente"
     if nivel == 2:
-        return "Atende após ajustes"
+        return "Atende Após Ajustes"
     elif nivel == 3:
-        return "Atende após ajustes médios"
+        return "Atende Após Ajustes Médios"
     elif nivel == 4:
-        return "Não atende"
+        return "Não Atende"
     elif nivel == 5:
-        return "Não existe"
+        return "Não Existe"
     else:
-        return f"nível {vulnerabilidade}"
+        return f"Nível {vulnerabilidade}"
 
 
 def mapear_icone_pilar(pilar):
