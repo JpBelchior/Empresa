@@ -14,6 +14,7 @@ __all__ = [
     'mapear_icone_pilar',
     'nomear_nivel_vulnerabilidade',
     'reorganizar_por_prioridade',
-    'mapear_cor_prioridades'
+    'mapear_cor_prioridades',
+    'fix_encoding'
 
 ]

@@ -202,7 +202,7 @@ def gerar_metodologia(pres, dados):
         left=4.5,      # Posição à direita
         top=0.2,       # posiçao à abaixo
         width=5.3,     # Largura 
-        height=5.2     # Altura
+        height=4.8     # Altura
     )
     
     # === TEXTOS DOS 5 PILARES === #
@@ -237,7 +237,7 @@ def gerar_metodologia(pres, dados):
         "GESTÃO",
         "Manutenção, Revisão e Atualização",
         left=7.5,    # Direita inferior
-        top=4.9,     # Parte inferior
+        top=4.5,     # Parte inferior
         width=1.5,
         align=PP_ALIGN.LEFT,
         cor_titulo=(102, 178, 255)
@@ -249,7 +249,7 @@ def gerar_metodologia(pres, dados):
         "PROCESSOS",
         "Documentação, Procedimentos, Supressão vegetal",
         left=5.2,    # Esquerda inferior
-        top=4.8,     # Parte inferior
+        top=4.4,     # Parte inferior
         width=1.8,
         align=PP_ALIGN.LEFT,
         cor_titulo=(0, 102, 204)
@@ -261,7 +261,7 @@ def gerar_metodologia(pres, dados):
         "PESSOAS",
         "Recursos Humanos, Efetivo de segurança e Treinamentos",
         left=4.3,    # À esquerda do círculo
-        top=2.3,     # Centralizado verticalmente
+        top=2.2,     # Centralizado verticalmente
         width=1.5,
         align=PP_ALIGN.LEFT,
         cor_titulo=(0, 76, 153)

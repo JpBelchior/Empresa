@@ -196,7 +196,7 @@ def gerar_resumo_exec(pres, dados):
     # === FUNDO BRANCO === #
     fill = slide.background.fill
     fill.solid()
-    fill.fore_color.rgb = RGBColor(220, 235, 255)
+    fill.fore_color.rgb = RGBColor(255, 255, 255)
 
    # === PARALELOGRAMO AZUL  === #
     para_azul = slide.shapes.add_shape(
@@ -247,7 +247,7 @@ def gerar_resumo_exec(pres, dados):
     # === IMAGEM ICON_5EIXOS.png (ocupar toda área disponível) === #
     current_dir = os.path.dirname(__file__)
     parent_dir = os.path.dirname(current_dir)
-    icon_path = os.path.join(parent_dir, "images", "ICON_5EIXOS.png")
+    icon_path = os.path.join(parent_dir, "images", "5EIXOS.png")
     
     # Área disponível: da direita da caixa até o fim do slide   
     # Largura disponível: começa em 2.7" e vai até quase o fim
@@ -255,7 +255,7 @@ def gerar_resumo_exec(pres, dados):
     add_local_image(
         slide,
         icon_path,
-        left=2.0,        # ← POSIÇÃO HORIZONTAL
+        left=1.05,        # ← POSIÇÃO HORIZONTAL
         top=0.7,         # ← POSIÇÃO VERTICAL
         width=5.5,       # ← LARGURA
         height=4.2     # ALTURA

@@ -4,6 +4,32 @@
 Utilitários para processar dados de vulnerabilidades
 Contém apenas: análise de criticidade, mapeamento de pilar e reorganização
 """
+import re
+
+_MOJIBAKE_PATTERN = re.compile(r'[ÃÂ][\x80-\xBF]')
+
+def fix_encoding(texto: str) -> str:
+    """
+    Corrige SOMENTE mojibake clássico.
+    Nunca altera texto correto digitado pelo usuário.
+    """
+    if not isinstance(texto, str) or not texto:
+        return texto
+
+    # Texto normal do usuário → não toca
+    if not _MOJIBAKE_PATTERN.search(texto):
+        return texto
+
+    try:
+        corrigido = texto.encode('latin1').decode('utf-8')
+
+        # Segurança máxima: só aceita se removeu mojibake
+        if _MOJIBAKE_PATTERN.search(corrigido):
+            return texto
+
+        return corrigido
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return texto
 
 def nomear_nivel_vulnerabilidade(vulnerabilidade):
     """
@@ -29,15 +55,15 @@ def mapear_icone_pilar(pilar):
     Converte o nome/URL do pilar para o nome do arquivo de ícone
     """
     if 'pessoas' in pilar.lower():
-        return 'ICON_PESSOAS.png'
+        return 'pessoas.png'
     elif 'tecnologia' in pilar.lower():
-        return 'ICON_TECNOLOGIA.png'
+        return 'tecnologia.png'
     elif 'processos' in pilar.lower():
-        return 'ICON_PROCESSOS.png'
+        return 'processos.png'
     elif 'informacao' in pilar.lower() or 'informação' in pilar.lower():
-        return 'ICON_INFORMACOES.png'
+        return 'informacoes.png'
     elif 'gestao' in pilar.lower() or 'gestão' in pilar.lower():
-        return 'ICON_GESTAO.png'
+        return 'gestao.png'
     
     # Fallback
     return 'ICON_PESSOAS.png'
@@ -146,3 +172,4 @@ def reorganizar_por_prioridade(respostas):
         item['nc_sequencial'] = str(indice + 1).zfill(3)  # 001, 002, 003...
     
     return prioridades_ordenadas 
+

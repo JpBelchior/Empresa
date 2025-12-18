@@ -745,8 +745,12 @@ public function gerar_pptx_isolado(Request $request)
         // 🔥 GERAR O PPTX VIA NODE.JS
         Log::info('📤 Enviando dados para servidor PPTX');
         
-        $responsePptx = Http::timeout(env('PPTX_TIMEOUT', 60))
-            ->post(env('PPTX_SERVER_URL'), $dados_para_nodejs);
+       $responsePptx = Http::timeout(env('PPTX_TIMEOUT', 60))
+    ->withHeaders([
+        'Content-Type' => 'application/json; charset=UTF-8',
+        'Accept' => 'application/json',
+    ])
+    ->post(env('PPTX_SERVER_URL'), $dados_para_nodejs);
         
         if (!$responsePptx->successful()) {
             Log::error('❌ Erro ao gerar PPTX', [

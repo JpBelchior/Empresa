@@ -146,9 +146,9 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
 
         # Alternar cores das linhas
         if row_idx % 2 == 0:
-            cor_linha = RGBColor(91, 155, 213)  # azul
+            cor_linha = RGBColor(230, 240, 250) # azul
         else:
-            cor_linha = RGBColor(165, 165, 165)  # cinza
+            cor_linha = RGBColor(220, 220, 220)  # cinza
 
         for col in range(cols):
             cell = table.cell(row_idx, col)
@@ -181,7 +181,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
         p = cell.text_frame.paragraphs[0]
         p.text = item["nc"]
         p.font.size = Pt(10)
-        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.font.color.rgb = RGBColor(30, 115, 190)
         p.alignment = PP_ALIGN.CENTER
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
         
@@ -190,7 +190,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
         p = cell.text_frame.paragraphs[0]
         p.text = item["classificacao"]
         p.font.size = Pt(9)
-        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.font.color.rgb = RGBColor(30, 115, 190)
         p.alignment = PP_ALIGN.LEFT
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
         cell.text_frame.word_wrap = True
@@ -200,7 +200,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
         p = cell.text_frame.paragraphs[0]
         p.text = item["recomendacao"]  
         p.font.size = Pt(9)
-        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.font.color.rgb = RGBColor(30, 115, 190)
         p.alignment = PP_ALIGN.LEFT
         cell.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
         cell.text_frame.word_wrap = True
@@ -300,7 +300,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
         p = label.text_frame.paragraphs[0]
         p.text = texto
         p.font.size = Pt(9)
-        p.font.color.rgb = RGBColor(0, 0, 0)
+        p.font.color.rgb = RGBColor(30, 115, 190)
         p.alignment = PP_ALIGN.LEFT
 
         start_x += espacamento
@@ -329,7 +329,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
 
     # Fundo azul escuro
     legenda_elementos.fill.solid()
-    legenda_elementos.fill.fore_color.rgb = RGBColor(30, 115, 190)
+    legenda_elementos.fill.fore_color.rgb = RGBColor(255, 255, 255)
 
     # Borda
     legenda_elementos.line.color.rgb = RGBColor(0, 51, 102)
@@ -337,15 +337,15 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
 
     # ========= ITENS DA LEGENDA ========= #
     elementos = [
-        ("ICON_TECNOLOGIA.png",   "Tecnologia"),
-        ("ICON_PROCESSOS.png",    "Processos"),
-        ("ICON_PESSOAS.png",      "Pessoas"),
-        ("ICON_INFORMACOES.png",  "Informação"),
-        ("ICON_GESTAO.png",       "Gestão"),
+        ("tecnologia.png",   "Tecnologia"),
+        ("processos.png",    "Processos"),
+        ("pessoas.png",      "Pessoas"),
+        ("informacoes.png",  "Informação"),
+        ("gestao.png",       "Gestão"),
     ]
 
     start_x = Inches(4.6)
-    y = Inches(4.9)
+    y = Inches(4.85)
     espacamento = Inches(0.95)
 
     for nome_icone, texto in elementos:
@@ -364,7 +364,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
 
         # Texto ao lado do ícone
         label = slide.shapes.add_textbox(
-            start_x + Inches(0.18),
+            start_x + Inches(0.22),
             y - Inches(0.02),
             Inches(0.8),
             Inches(0.3)
@@ -373,7 +373,7 @@ def criar_slide_recomendacoes(pres, dados, itens_slide):
         p = label.text_frame.paragraphs[0]
         p.text = texto
         p.font.size = Pt(9)
-        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.font.color.rgb = RGBColor(30, 115, 190)
         p.alignment = PP_ALIGN.LEFT
 
         start_x += espacamento
@@ -422,12 +422,16 @@ def gerar_recomendacoes(pres, dados):
         icone_nome = mapear_icone_pilar(pilar_nome)
         
         # Montar texto da classificação
-        topicos = rec.get('topicos', 'Sem descrição')
-        classificacao_texto = topicos
+        nome_topico = rec.get('topicos', 'Sem descrição')
+        #   nome_topico = nome_topico.encode('latin1').decode('utf-8')
+        classificacao_texto = nome_topico
         
         # Pegar recomendacao e garantir que seja string
         recomendacao_raw = rec.get('recomendacao', '')
-        recomendacao_texto = str(recomendacao_raw) if recomendacao_raw is not None else ''  # ← MUDOU
+        if recomendacao_raw is None or str(recomendacao_raw).strip() == "":
+            recomendacao_texto = "Não há recomendações para essa pergunta"
+        else:
+            recomendacao_texto = str(recomendacao_raw)
         
         # Montar o item no formato da tabela
         item = {

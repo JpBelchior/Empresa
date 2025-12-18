@@ -10,7 +10,7 @@ from pptx.util import Inches, Pt
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
-
+from utils.processar_dados import fix_encoding
 
 
 def add_base64_image(slide, base64_str, left, top, width, height):
@@ -126,11 +126,10 @@ def gerar_panorama_situacional(pres, dados):
     dados_info = dados.get("dados", {})
     imagens_info = dados.get("imagens", {})
     
-    empresa = dados.get("dados", {}).get("nome_empresa", "")
-    nome_local = dados_info.get("localizacao_analise", "NOME DO LOCAL")
-    panorama_texto = dados_info.get("panorama", "")
-    referencias_proximas = dados_info.get("referencias_proximas", "")
-    referencias_lista = dados_info.get("referencias_proximas_lista", [])
+    empresa = fix_encoding(dados.get("dados", {}).get("nome_empresa", ""))
+    nome_local = fix_encoding(dados.get("dados", {}).get("localizacao_analise", ""))
+    panorama_texto = fix_encoding(dados.get("dados",{}).get("panorama",""))
+   
     imagem_area = imagens_info.get("imagem_area", "")
     
     # === TÍTULO "NOME DO LOCAL" (centralizado, acima da imagem) === #
@@ -268,25 +267,15 @@ def gerar_panorama_situacional(pres, dados):
     p_titulo.alignment = PP_ALIGN.LEFT
     
     # Se tiver lista de referências
-    if referencias_lista and len(referencias_lista) > 0:
-        for ref in referencias_lista:
-            p = tf.add_paragraph()
-            p.text = f"• {ref}"
-            p.font.name = "Arial"
-            p.font.size = Pt(9)
-            p.font.color.rgb = RGBColor(80, 80, 80)
-            p.alignment = PP_ALIGN.LEFT
-            p.space_before = Pt(3)
-    elif referencias_proximas:
-        # Se tiver texto de referências
-        p = tf.add_paragraph()
-        p.text = referencias_proximas
-        p.font.name = "Arial"
-        p.font.size = Pt(9)
-        p.font.color.rgb = RGBColor(80, 80, 80)
-        p.alignment = PP_ALIGN.LEFT
-        p.space_before = Pt(6)
     
+    p = tf.add_paragraph()
+    p.text = "Altere esses dados"
+    p.font.name = "Arial"
+    p.font.size = Pt(9)
+    p.font.color.rgb = RGBColor(80, 80, 80)
+    p.alignment = PP_ALIGN.LEFT
+    p.space_before = Pt(3)
+   
     # 3. LOCALIZAÇÃO (NOME DO LOCAL + ENDEREÇO)
     loc_texto_box = slide.shapes.add_textbox(
         Inches(1.0),  # Movido 0.4" para direita (era 0.6)

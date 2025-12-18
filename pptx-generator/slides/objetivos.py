@@ -4,6 +4,7 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.dml.color import RGBColor
 from pptx.oxml.xmlchemy import OxmlElement  
+from utils.processar_dados import fix_encoding
 
 
 def add_triangle_top_right(slide, pres):
@@ -183,7 +184,7 @@ def add_triangle_center_isosceles(slide, pres):
     shape.height = height
 
     shape.fill.solid()
-    shape.fill.fore_color.rgb = RGBColor(70, 70, 70)
+    shape.fill.fore_color.rgb = RGBColor(220, 220, 220)
     shape.line.fill.background()
 
 
@@ -237,31 +238,41 @@ def gerar_objetivos(pres, dados):
     add_triangle_bottom_right(slide, pres)
     add_triangle_center_isosceles(slide, pres)
 
-    texto_azul = slide.shapes.add_textbox(
-        int(posicao_faixa) + Inches(1.0),
+    # === TEXTO 1: "Elevando o nível de segurança" (0.15 inches mais à esquerda) === #
+    texto1 = slide.shapes.add_textbox(
+        int(posicao_faixa) + Inches(1),  # 0.15 mais à esquerda (era 1.0)
         Inches(0.45),
-        Inches(3.0),
-        Inches(5)
+        Inches(3.15),  # Largura ajustada
+        Inches(0.6)
     )
-    tf_azul = texto_azul.text_frame
-    tf_azul.word_wrap = True
-    tf_azul.vertical_anchor = MSO_ANCHOR.TOP
+    tf1 = texto1.text_frame
+    tf1.word_wrap = True
+    tf1.vertical_anchor = MSO_ANCHOR.TOP
 
-    p1 = tf_azul.paragraphs[0]
+    p1 = tf1.paragraphs[0]
     p1.text = "Elevando o nível de segurança"
     p1.font.name = 'Aptos'
     p1.font.size = Pt(16)
     p1.font.bold = True
     p1.font.color.rgb = RGBColor(255, 255, 255)
     p1.alignment = PP_ALIGN.LEFT
-    p1.space_after = Pt(40)
-    p1.level = 0
-    tf_azul.margin_left = Inches(-0.2)  
 
-    nome_empresa = dados.get('dados', {}).get('nome_empresa', 'NOME DO LOCAL')
-    localizacao_analise = dados.get('dados', {}).get('localizacao_analise', nome_empresa)  
+    # === TEXTO 2 e 3: Parágrafos na posição original === #
 
-    p2 = tf_azul.add_paragraph()
+    nome_empresa = fix_encoding(dados.get("dados", {}).get("nome_empresa", ""))
+    localizacao_analise  = fix_encoding(dados.get("dados", {}).get("localizacao_analise", ""))
+
+    texto2 = slide.shapes.add_textbox(
+        int(posicao_faixa) + Inches(1.0),  # Posição original
+        Inches(1.15),  # Abaixo do texto1
+        Inches(3.0),
+        Inches(4.0)
+    )
+    tf2 = texto2.text_frame
+    tf2.word_wrap = True
+    tf2.vertical_anchor = MSO_ANCHOR.TOP
+
+    p2 = tf2.paragraphs[0]
     p2.text = f"Realizar análise de riscos em {localizacao_analise}, propondo soluções priorizadas para mitigar vulnerabilidades identificadas."
     p2.font.name = 'Aptos'
     p2.font.size = Pt(14)
@@ -269,7 +280,7 @@ def gerar_objetivos(pres, dados):
     p2.alignment = PP_ALIGN.LEFT
     p2.space_after = Pt(100)
 
-    p3 = tf_azul.add_paragraph()
+    p3 = tf2.add_paragraph()
     p3.text = f"Os resultados permitirão a {nome_empresa} planejar ações corretivas e prevenir incidentes que afetem pessoas, ativos e a operação de forma contínua e eficaz."
     p3.font.name = 'Aptos'
     p3.font.size = Pt(14)

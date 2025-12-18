@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
+sys.stdin.reconfigure(encoding="utf-8")
 import json
 from io import BytesIO
 from pptx import Presentation
@@ -15,6 +16,7 @@ from slides.resumo_exec import gerar_resumo_exec
 from slides.resumo_exec_det import gerar_resumo_exec_det
 from slides.vulnerabilidades import gerar_vulnerabilidades
 from slides.recomendacoes import gerar_recomendacoes
+from slides.contra_capa import gerar_contra_capa
 
 def main():
     try:
@@ -55,6 +57,9 @@ def main():
 
         print("Gerando Recomendações...", file=sys.stderr, flush=True)  
         gerar_recomendacoes(pres, dados) 
+
+        print("Gerando Contra Capa...", file=sys.stderr, flush=True)  
+        gerar_contra_capa(pres, dados) 
 
 
         print("Salvando...", file=sys.stderr, flush=True)

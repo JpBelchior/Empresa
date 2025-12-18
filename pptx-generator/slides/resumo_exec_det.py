@@ -33,7 +33,7 @@ def gerar_resumo_exec_det(pres, dados):
          # === FUNDO BRANCO === #
     fill = slide.background.fill
     fill.solid()
-    fill.fore_color.rgb = RGBColor(220, 235, 255)
+    fill.fore_color.rgb = RGBColor(255, 255, 255)
 
    # === PARALELOGRAMO AZUL  === #
     para_azul = slide.shapes.add_shape(
@@ -254,7 +254,7 @@ def gerar_resumo_exec_det(pres, dados):
                 nome_topico = topico.get("topico_nome", "")
                 fracao = topico.get("fracao", "0/0")
                
-                nome_topico = nome_topico.encode('latin1').decode('utf-8')
+                #nome_topico = nome_topico.encode('latin1').decode('utf-8')
                 tf = ret_interno.text_frame
                 tf.clear()
                 tf.vertical_anchor = MSO_ANCHOR.MIDDLE

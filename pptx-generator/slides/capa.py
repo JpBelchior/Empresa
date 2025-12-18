@@ -7,7 +7,7 @@ from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN
 from pptx.dml.color import RGBColor
-from pptx.oxml.xmlchemy import OxmlElement
+from utils.processar_dados import fix_encoding
 
 
 def add_base64_image(slide, base64_str, left, top, width, height):
@@ -27,139 +27,33 @@ def add_base64_image(slide, base64_str, left, top, width, height):
         return False
 
 
-def create_diagonal_strip(slide, pres):
-    """Cria faixa azul diagonal inclinada para esquerda"""
-    width = pres.slide_width
-    height = pres.slide_height
-    
-    # Criar shape
-    shapes = slide.shapes
-    shape = shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(1), Inches(1))
-    
-    # Ajustar para polígono customizado via XML
-    sp = shape._element
-    spPr = sp.spPr
-    
-    # Remover geometria padrão
-    for child in list(spPr):
-        if 'prstGeom' in child.tag:
-            spPr.remove(child)
-    
-    # Criar geometria customizada
-    custGeom = OxmlElement('a:custGeom')
-    
-    avLst = OxmlElement('a:avLst')
-    custGeom.append(avLst)
-    
-    gdLst = OxmlElement('a:gdLst')
-    custGeom.append(gdLst)
-    
-    ahLst = OxmlElement('a:ahLst')
-    custGeom.append(ahLst)
-    
-    cxnLst = OxmlElement('a:cxnLst')
-    custGeom.append(cxnLst)
-    
-    # Criar path com 4 vértices (paralelogramo inclinado)
-    pathLst = OxmlElement('a:pathLst')
-    path = OxmlElement('a:path')
-    path.set('w', str(width))
-    path.set('h', str(height))
-    
-    # Vértices do paralelogramo (faixa inclinada para esquerda)
-    # Vai do topo (mais à esquerda) até o final da página à direita
-    top_left_x = int(Inches(6.5))     # Topo começa mais à esquerda
-    bottom_left_x = int(Inches(7.5))  # Base começa mais à direita (inclinação)
-    
-    # Ponto 1: Topo esquerdo
-    moveTo = OxmlElement('a:moveTo')
-    pt = OxmlElement('a:pt')
-    pt.set('x', str(top_left_x))
-    pt.set('y', '0')
-    moveTo.append(pt)
-    path.append(moveTo)
-    
-    # Ponto 2: Topo direito (final da página)
-    lineTo1 = OxmlElement('a:lnTo')
-    pt1 = OxmlElement('a:pt')
-    pt1.set('x', str(int(width)))  # Vai até o final
-    pt1.set('y', '0')
-    lineTo1.append(pt1)
-    path.append(lineTo1)
-    
-    # Ponto 3: Base direita (final da página)
-    lineTo2 = OxmlElement('a:lnTo')
-    pt2 = OxmlElement('a:pt')
-    pt2.set('x', str(int(width)))  # Vai até o final
-    pt2.set('y', str(int(height)))
-    lineTo2.append(pt2)
-    path.append(lineTo2)
-    
-    # Ponto 4: Base esquerda
-    lineTo3 = OxmlElement('a:lnTo')
-    pt3 = OxmlElement('a:pt')
-    pt3.set('x', str(bottom_left_x))
-    pt3.set('y', str(int(height)))
-    lineTo3.append(pt3)
-    path.append(lineTo3)
-    
-    close = OxmlElement('a:close')
-    path.append(close)
-    
-    pathLst.append(path)
-    custGeom.append(pathLst)
-    spPr.append(custGeom)
-    
-    # Definir posição e tamanho
-    shape.left = 0
-    shape.top = 0
-    shape.width = width
-    shape.height = height
-    
-    # === GRADIENTE AZUL (escuro embaixo, claro em cima) === #
-    fill = shape.fill
-    fill.gradient()
-    fill.gradient_angle = 90
-    stop_dark = fill.gradient_stops[0]
-    stop_dark.position = 0.0
-    stop_dark.color.rgb = RGBColor(10, 50, 100)
-    stop_light = fill.gradient_stops[1]
-    stop_light.position = 1.0
-    stop_light.color.rgb = RGBColor(30, 115, 190)
-    
-    shape.line.fill.background()
-    
-    return shape
-
-
 def gerar_capa(pres, dados):
     print("Criando capa corporativa...", file=sys.stderr)
     slide = pres.slides.add_slide(pres.slide_layouts[6])
 
-    # === FUNDO COM GRADIENTE PROFISSIONAL === #
-    fill = slide.background.fill
-    fill.gradient()
-    grad = fill.gradient_stops
-
-    grad[0].position = 0.0
-    grad[0].color.rgb = RGBColor(10, 38, 85)
-
-    if len(grad) < 2:
-        grad.add_stop(1.0)
-
-    grad[1].position = 1.0
-    grad[1].color.rgb = RGBColor(4, 20, 48)
-
-    # === FAIXA LATERAL DIAGONAL (inclinada para esquerda) === #
-    create_diagonal_strip(slide, pres)
+    # === IMAGEM DE FUNDO (primeiro elemento, fica atrás de tudo) === #
+    try:
+        with open('images/CAPA.png', 'rb') as f:
+            img_data = f.read()
+            stream = BytesIO(img_data)
+            # Adiciona a imagem ocupando todo o slide
+            slide.shapes.add_picture(
+                stream, 
+                Inches(0), 
+                Inches(0),
+                width=pres.slide_width,
+                height=pres.slide_height
+            )
+    except Exception as e:
+        print(f"Erro ao carregar imagem de fundo: {e}", file=sys.stderr)
 
     # === LOGO DA EMPRESA === #
     logo = dados.get("imagens", {}).get("logo_empresa")
     if logo:
         add_base64_image(slide, logo, 0.35, 0.35, 1.5, 0.92)
 
-    # === TÍTULO PRINCIPAL (movido mais para esquerda) === #
-    title_left = Inches(2.0)  # Era 2.8, agora 2.0 (mais à esquerda)
+    # === TÍTULO PRINCIPAL === #
+    title_left = Inches(4.5)
     title_top = Inches(1.5)
     title_w = Inches(6.5)
     title_h = Inches(1.8)
@@ -184,7 +78,7 @@ def gerar_capa(pres, dados):
     p2.font.bold = True
     p2.font.color.rgb = RGBColor(255, 255, 255)
 
-    # === LINHA DECORATIVA DUPLA (mantidas retas) === #
+    # === LINHA DECORATIVA DUPLA === #
     # Linha superior (fina)
     linha1 = slide.shapes.add_shape(
         MSO_SHAPE.RECTANGLE,
@@ -195,7 +89,6 @@ def gerar_capa(pres, dados):
     )
     linha1.fill.solid()
     linha1.fill.fore_color.rgb = RGBColor(255, 255, 255)
-    linha1.fill.transparency = 0.3
     linha1.line.fill.background()
 
     # Linha inferior (grossa)
@@ -210,9 +103,10 @@ def gerar_capa(pres, dados):
     linha2.fill.fore_color.rgb = RGBColor(255, 255, 255)
     linha2.line.fill.background()
 
-    # === INFORMAÇÕES DA EMPRESA === #
-    empresa = dados.get("dados", {}).get("nome_empresa", "")
-    local = dados.get("dados", {}).get("localizacao_analise", "")
+    # === INFORMAÇÕES DA EMPRESA === # 
+    
+    empresa = fix_encoding(dados.get("dados", {}).get("nome_empresa", ""))
+    local = fix_encoding(dados.get("dados", {}).get("localizacao_analise", ""))
     
     info_top = title_top + Inches(2.05)
     
@@ -247,12 +141,11 @@ def gerar_capa(pres, dados):
         p_loc.text = local.upper()
         p_loc.font.name = "Calibri Light"
         p_loc.font.size = Pt(16)
-        p_loc.font.color.rgb = RGBColor(200, 200, 200)
+        p_loc.font.color.rgb = RGBColor(255, 255, 255)
 
     # === DATA (MÊS / ANO em duas linhas) === #
     agora = datetime.now()
     
-   
     meses_pt = {
         'January': 'JANEIRO',
         'February': 'FEVEREIRO',
@@ -269,12 +162,12 @@ def gerar_capa(pres, dados):
     }
     
     mes_ingles = agora.strftime("%B")
-    mes = meses_pt.get(mes_ingles, mes_ingles.upper())  # Mês em português
-    ano = agora.strftime("%Y")          # 2025
-    ano_espacado = " ".join(ano)        
+    mes = meses_pt.get(mes_ingles, mes_ingles.upper())
+    ano = agora.strftime("%Y")
+    ano_espacado = " ".join(ano)
     
     data_box = slide.shapes.add_textbox(
-        Inches(0.5), Inches(4.7),  
+        Inches(0.5), Inches(4.7),
         Inches(2.0), Inches(0.6)
     )
     tf_d = data_box.text_frame

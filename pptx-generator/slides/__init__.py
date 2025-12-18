@@ -11,6 +11,7 @@ from .resumo_exec import gerar_resumo_exec
 from .resumo_exec_det import gerar_resumo_exec_det
 from .vulnerabilidades import gerar_vulnerabilidades
 from .recomendacoes import gerar_recomendacoes
+from .contra_capa import gerar_contra_capa
 
 __all__ = [
     'gerar_capa', 
@@ -22,5 +23,6 @@ __all__ = [
     'gerar_resumo_exec',
     'gerar_resumo_exec_det',
     'gerar_vulnerabilidades',
-    'gerar_recomendacoes'
+    'gerar_recomendacoes',
+    'gerar_contra_capa'
 ]
