@@ -687,7 +687,7 @@ public function gerar_pptx_isolado(Request $request)
     Log::info('🎯 Iniciando geração do PPTX');
     
     try {
-        // ✅ VALIDAÇÃO - MESMA DA FUNÇÃO relatorio_personalizado
+        
         $request->validate([
             'relatorio_formulario_id' => 'required',
             'nome_empresa' => 'required|max:255',
@@ -703,11 +703,11 @@ public function gerar_pptx_isolado(Request $request)
 
         Log::info('✅ Validação concluída');
 
-        // ✅ PREPARAR DADOS
+        
         $dados_modelo = self::modelo1($request);
         $referencias_proximas_array = self::processarCampoTexto($request->referencias_proximas);
 
-        // 🔹 NORMALIZAÇÃO DOS PILARES
+        
         $mapaPilares = [
             'Pessoas' => 'Pessoas',
             'Tecnologia' => 'Tecnologia',
@@ -759,7 +759,6 @@ public function gerar_pptx_isolado(Request $request)
 
         Log::info('📊 Dados preparados para PPTX');
 
-        // 🔥 GERAR O PPTX VIA NODE.JS
         Log::info('📤 Enviando dados para servidor PPTX');
         
        $responsePptx = Http::timeout(env('PPTX_TIMEOUT', 60))
