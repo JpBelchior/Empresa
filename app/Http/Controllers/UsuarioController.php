@@ -176,31 +176,32 @@ class UsuarioController extends Controller
         ];
         //GRAFICO DE RISCO ALTISSIMO
         $quantidade_riscos_criados = [];
-        foreach($datas_do_mes_vigente as $data){
-            $quantidade_riscos_criados[] = DB::table('respostas')
-            ->join("formularios", "respostas.formulario_id", "=", "formularios.id")
-            ->where('formularios.empresa_id', session('empresa_id'))
-            ->where('esta_em_risco_altissimo', true)
-            ->whereDate('respostas.data_cadastro', $data)
-            ->count();
-        }
+            foreach($datas_do_mes_vigente as $data){
+                $quantidade_riscos_criados[] = Models\Projeto::where('empresa_id', session('empresa_id'))
+                    ->where('data_inicio', $data)
+                    ->sum('total_riscos_altissimos');  
+            }
         $dados_grafico_riscos = [
             'dias' => $dias_numericos_mes_vigente,
             'quantidade' => $quantidade_riscos_criados
         ];
-        //GRÁFICO PILARES
+       //GRÁFICO PILARES
         $pilares = [];
         $todos_pilares = Models\Tematica::get();
         $estatisticas_pilares = [];
         foreach($todos_pilares as $pilar){
             $pilares[] = $pilar->nome;
-            $estatisticas_pilares[] = DB::table('respostas')->join('perguntas', "respostas.pergunta_id", "=", "perguntas.id")
-            ->whereMonth('respostas.data_cadastro', $mes_atual)
-            ->whereYear('respostas.data_cadastro', $ano_atual)
-            ->where("perguntas.tematica_id", $pilar->id)
-            ->count();
+            $estatisticas_pilares[] = DB::table('respostas')
+                ->join('perguntas', "respostas.pergunta_id", "=", "perguntas.id")
+                ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
+                ->join('projetos', 'formularios.projeto_id', '=', 'projetos.id')
+                ->whereMonth('projetos.data_inicio', $mes_atual)
+                ->whereYear('projetos.data_inicio', $ano_atual)
+                ->where('projetos.empresa_id', session('empresa_id'))
+                ->where("perguntas.tematica_id", $pilar->id)
+                ->count();
         }
-        $dados_grafico_pilares = [
+                $dados_grafico_pilares = [
             'pilares' => $pilares,
             'estatisticas' => $estatisticas_pilares
         ];
@@ -210,12 +211,14 @@ class UsuarioController extends Controller
             //PEGAR TODAS AS RESPOSTAS DO MES
         $respostas_do_mes = DB::table('respostas')
         ->join('perguntas', "respostas.pergunta_id", "=", "perguntas.id")
-        ->whereMonth('respostas.data_cadastro', $mes_atual)
-        ->whereYear('respostas.data_cadastro', $ano_atual)  
-        ->where('esta_em_risco_altissimo', true)          
-        ->select("perguntas.id as pergunta_id")                       
+        ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
+        ->join('projetos', 'formularios.projeto_id', '=', 'projetos.id')
+        ->whereMonth('projetos.data_inicio', $mes_atual)
+        ->whereYear('projetos.data_inicio', $ano_atual)
+        ->where('projetos.empresa_id', session('empresa_id'))
+        ->where('esta_em_risco_altissimo', true)
+        ->select("perguntas.id as pergunta_id")
         ->get();
-            //VER O TOPICO DE CADA RESPOSTA E CONTAR QUANTAS RESPOSTAS FORAM RESPONDIDAS EM CADA UMA
         foreach($respostas_do_mes as $resposta){
             $topicos_da_resposta = DB::table('pergunta_topico')
             ->join("topicos", "pergunta_topico.topico_id", "=", "topicos.id")

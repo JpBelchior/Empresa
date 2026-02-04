@@ -33,7 +33,7 @@
         </div>
       <div class="bg-yellow-100 w-10 h-10 rounded-lg flex items-center justify-center">
         <i class="fas fa-exclamation-triangle text-yellow-600 text-lg"></i>
-    </div>
+        </div>
     </div>
     
    
@@ -55,7 +55,7 @@
             <div>
                 <p class="text-gray-500 font-medium">Total de Riscos</p>
             </div>
-            <div class="bg-red-100 p-2 rounded-lg">
+            <div class="bg-red-200 w-10 h-10 rounded-lg flex items-center justify-center">
                 <i class="fas fa-bell text-red-600 text-xl"></i>
             </div>
         </div>
@@ -79,7 +79,7 @@
             <div>
                 <p class="text-gray-500 font-medium">Total de Recomendações</p>
             </div>
-            <div class="bg-green-100 p-2 rounded-lg">
+            <div class="bg-green-100 w-10 h-10 rounded-lg flex items-center justify-center">
                 
                 <i class="fas fa-clipboard-check text-green-600 text-xl"></i>
                 

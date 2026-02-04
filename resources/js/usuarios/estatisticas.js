@@ -68,6 +68,7 @@ $(document).ready(function () {
             $("#grafico_projetos_spinner").hide();
             $("#grafico_projetos").removeClass('hidden');
             let dados_grafico_pilares = dados.grafico_pilares;
+            console.log('📊 Dados Pilares:', dados_grafico_pilares);
             renderizar_grafico_pilares(dados_grafico_pilares.pilares, dados_grafico_pilares.estatisticas);
             $("#grafico_pilares_spinner").hide();
             $("#grafico_pilares").removeClass('hidden');
@@ -159,16 +160,16 @@ function renderizar_grafico_projetos(dias, quantidade_projetos, quantidade_risco
     const grafico = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dias,
+            labels: dias, // Dias do mês (1, 2, 3... 31)
             datasets: [{
-                label: 'Projetos em ' + mesEAnoAtual(),
+                label: 'Projetos criados por dia em ' + mesEAnoAtual(), 
                 data: quantidade_projetos,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 fill: false,
                 tension: 0.3
             },
             {
-                label: 'Riscos mapeados em ' + mesEAnoAtual(),
+                label: 'Riscos dos projetos criados por dia em ' + mesEAnoAtual(), 
                 data: quantidade_riscos,
                 borderColor: 'red',
                 fill: false,
@@ -176,12 +177,28 @@ function renderizar_grafico_projetos(dias, quantidade_projetos, quantidade_risco
             }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: true }
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        y: { beginAtZero: true }
+    },
+    plugins: {
+        tooltip: {
+            callbacks: {
+                title: function(context) {
+                    const dia = context[0].label;
+                    return 'Dia ' + dia + ' de ' + mesEAnoAtual();
+                },
+                label: function(context) {
+                    const label = context.dataset.label.includes('Risco') 
+                        ? 'Riscos dos projetos criados: ' 
+                        : 'Projetos criados: ';
+                    return label + context.parsed.y;
+                }
             }
         }
+    }
+}
     });
 }
 
