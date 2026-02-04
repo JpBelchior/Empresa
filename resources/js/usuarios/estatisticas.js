@@ -5,6 +5,13 @@ $(".estatisticas_load").html(`<svg aria-hidden="true" class="inline w-4 h-4 text
         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
     </svg>`);
 $("#resultados_tabela_projetos").empty();
+
+// Variáveis globais para controle do gráfico de projetos/riscos
+let graficoProjetosInstance = null;
+let dadosGraficoProjetos = null;
+let dadosGraficoRiscos = null;
+let modoAtualGrafico = 'projetos'; // 'projetos' ou 'riscos'
+
 $(document).ready(function () {
     axios.get('usuarios/estatisticas')
         .then(response => {
@@ -62,11 +69,17 @@ $(document).ready(function () {
                             </tr>`;
                 $("#resultados_tabela_projetos").append(projeto);
             }
-            let dados_grafico_projetos = dados.grafico_projetos;
-            let dados_grafico_riscos = dados.grafico_riscos;
-            renderizar_grafico_projetos(dados_grafico_projetos.dias, dados_grafico_projetos.quantidade, dados_grafico_riscos.quantidade);
+            // Armazena dados dos gráficos globalmente
+            dadosGraficoProjetos = dados.grafico_projetos;
+            dadosGraficoRiscos = dados.grafico_riscos;
+
+            definirPeriodoGrafico();
+
+            // Renderiza gráfico inicial (modo Projetos)
+            renderizar_grafico_anual();
+            atualizarEstiloBotoes();
             $("#grafico_projetos_spinner").hide();
-            $("#grafico_projetos").removeClass('hidden');
+            $("#container_grafico_projetos").removeClass('hidden');
             let dados_grafico_pilares = dados.grafico_pilares;
             console.log('📊 Dados Pilares:', dados_grafico_pilares);
             renderizar_grafico_pilares(dados_grafico_pilares.pilares, dados_grafico_pilares.estatisticas);
@@ -84,6 +97,25 @@ $(document).ready(function () {
 
         })
 });
+
+// Event listener para o botão de toggle
+$(document).on('click', '#btn_projetos', function() {
+    if (modoAtualGrafico === 'projetos') return; // Já está selecionado
+    
+    modoAtualGrafico = 'projetos';
+    atualizarEstiloBotoes();
+    renderizar_grafico_anual();
+});
+
+$(document).on('click', '#btn_riscos', function() {
+    if (modoAtualGrafico === 'riscos') return; // Já está selecionado
+    
+    modoAtualGrafico = 'riscos';
+    atualizarEstiloBotoes();
+    renderizar_grafico_anual();
+});
+
+
 
 function badge_projeto(status) {
     let badge = "";
@@ -154,52 +186,248 @@ function apresentacao_porcentagem_vulnerabilidades(numero) {
         return `<span class="text-gray-500">Igual ao mês anterior</span>`;
     }
 }
+function atualizarEstiloBotoes() {
+    $('#btn_projetos').toggleClass('ativo', modoAtualGrafico === 'projetos');
+    $('#btn_riscos').toggleClass('ativo', modoAtualGrafico === 'riscos');
+}
 
-function renderizar_grafico_projetos(dias, quantidade_projetos, quantidade_riscos) {
-    const ctx = document.getElementById('grafico_projetos').getContext('2d');
-    const grafico = new Chart(ctx, {
+function renderizar_grafico_anual() {
+    console.log('🎨 Renderizando gráfico no modo:', modoAtualGrafico);
+    
+    const canvas = document.getElementById('grafico_projetos');
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior se existir
+    if (graficoProjetosInstance) {
+        graficoProjetosInstance.destroy();
+    }
+    
+    // Verificação de segurança
+    if (!dadosGraficoProjetos || !dadosGraficoRiscos) {
+        console.error('❌ Dados não disponíveis para renderização!');
+        return;
+    }
+    
+
+function criarGradienteAzul(context) {
+    const chart = context.chart;
+    const {ctx, chartArea, scales} = chart;
+    
+    if (!chartArea) {
+        return 'rgba(59, 130, 246, 0.3)';
+    }
+    
+    // ✅ Pega os dados DIRETAMENTE da variável global
+    const valores = dadosGraficoProjetos.quantidade;
+    const valorMaximo = Math.max(...valores);
+    
+    const yScale = scales.y;
+    const pixelMaximo = yScale.getPixelForValue(valorMaximo);
+    const pixelZero = yScale.getPixelForValue(0);
+    
+    const gradiente = ctx.createLinearGradient(0, pixelMaximo, 0, pixelZero);
+    gradiente.addColorStop(0, 'rgba(59, 130, 246, 0.7)');
+    gradiente.addColorStop(0.3, 'rgba(59, 130, 246, 0.5)');
+    gradiente.addColorStop(0.7, 'rgba(59, 130, 246, 0.25)');
+    gradiente.addColorStop(1, 'rgba(59, 130, 246, 0)');
+    
+    return gradiente;
+}
+
+function criarGradienteVermelho(context) {
+    const chart = context.chart;
+    const {ctx, chartArea, scales} = chart;
+    
+    if (!chartArea) {
+        return 'rgba(239, 68, 68, 0.3)';
+    }
+    
+   
+    const valores = dadosGraficoRiscos.quantidade;
+    const valorMaximo = Math.max(...valores);
+    
+    const yScale = scales.y;
+    const pixelMaximo = yScale.getPixelForValue(valorMaximo);
+    const pixelZero = yScale.getPixelForValue(0);
+    
+    const gradiente = ctx.createLinearGradient(0, pixelMaximo, 0, pixelZero);
+    gradiente.addColorStop(0, 'rgba(239, 68, 68, 0.7)');
+    gradiente.addColorStop(0.3, 'rgba(239, 68, 68, 0.5)');
+    gradiente.addColorStop(0.7, 'rgba(239, 68, 68, 0.25)');
+    gradiente.addColorStop(1, 'rgba(239, 68, 68, 0)');
+    
+    return gradiente;
+}
+    // Configurações dos datasets
+    const datasets = [];
+    
+   if (modoAtualGrafico === 'projetos') {
+    // LINHA ATIVA: PROJETOS
+    datasets.push({
+        label: 'Projetos',
+        data: dadosGraficoProjetos.quantidade,
+        borderColor: 'rgba(59, 130, 246, 0.9)',       
+        backgroundColor: criarGradienteAzul,
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,                                
+        pointRadius: 4,                                
+        pointBackgroundColor: 'rgba(59, 130, 246, 0.9)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointHoverRadius: 6,                           
+        pointHoverBackgroundColor: 'rgba(59, 130, 246, 1)',
+        pointHoverBorderWidth: 2,
+        borderDash: []
+    });
+    
+    // LINHA INATIVA: RISCOS
+    datasets.push({
+        label: 'Riscos Mapeados',
+        data: dadosGraficoRiscos.quantidade,
+        borderColor: 'rgba(239, 68, 68, 0.35)',       
+        backgroundColor: 'transparent',
+        fill: false,
+        tension: 0.4,
+        borderWidth: 1.5,                            
+        pointRadius: 2.5,                             
+        pointBackgroundColor: 'rgba(239, 68, 68, 0.35)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 4,                         
+        pointHoverBackgroundColor: 'rgba(239, 68, 68, 0.6)',
+        pointHoverBorderWidth: 2,
+        borderDash: [5, 5]
+    });
+} else {
+    // LINHA INATIVA: PROJETOS
+    datasets.push({
+        label: 'Projetos',
+        data: dadosGraficoProjetos.quantidade,
+        borderColor: 'rgba(59, 130, 246, 0.35)',     
+        backgroundColor: 'transparent',
+        fill: false,
+        tension: 0.4,
+        borderWidth: 1.5,                              
+        pointRadius: 2.5,                              
+        pointBackgroundColor: 'rgba(59, 130, 246, 0.35)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 4,                          
+        pointHoverBackgroundColor: 'rgba(59, 130, 246, 0.6)',
+        pointHoverBorderWidth: 2,
+        borderDash: [5, 5]
+    });
+    
+    // LINHA ATIVA: RISCOS
+    datasets.push({
+        label: 'Riscos Mapeados',
+        data: dadosGraficoRiscos.quantidade,
+        borderColor: 'rgba(239, 68, 68, 0.9)',       
+        backgroundColor: criarGradienteVermelho,
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,                               
+        pointRadius: 4,                              
+        pointBackgroundColor: 'rgba(239, 68, 68, 0.9)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointHoverRadius: 6,                          
+        pointHoverBackgroundColor: 'rgba(239, 68, 68, 1)',
+        pointHoverBorderWidth: 2,
+        borderDash: []
+    });
+}
+    
+    graficoProjetosInstance = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dias, // Dias do mês (1, 2, 3... 31)
-            datasets: [{
-                label: 'Projetos criados por dia em ' + mesEAnoAtual(), 
-                data: quantidade_projetos,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                fill: false,
-                tension: 0.3
-            },
-            {
-                label: 'Riscos dos projetos criados por dia em ' + mesEAnoAtual(), 
-                data: quantidade_riscos,
-                borderColor: 'red',
-                fill: false,
-                tension: 0.3
-            }]
+            labels: dadosGraficoProjetos.meses,
+            datasets: datasets
         },
         options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-        y: { beginAtZero: true }
-    },
-    plugins: {
-        tooltip: {
-            callbacks: {
-                title: function(context) {
-                    const dia = context[0].label;
-                    return 'Dia ' + dia + ' de ' + mesEAnoAtual();
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    display: false
                 },
-                label: function(context) {
-                    const label = context.dataset.label.includes('Risco') 
-                        ? 'Riscos dos projetos criados: ' 
-                        : 'Projetos criados: ';
-                    return label + context.parsed.y;
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    padding: 12,
+                    cornerRadius: 8,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            return ` ${context.dataset.label}: ${context.parsed.y}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 12,
+                            weight: '500',
+                            family: 'Archivo'
+                        },
+                        color: '#6B7280'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.06)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 12,
+                            family: 'Archivo'
+                        },
+                        padding: 10,
+                        precision: 0,
+                        color: '#6B7280'
+                    }
                 }
             }
         }
-    }
-}
     });
+    
+    console.log('✅ Gráfico renderizado com sucesso!');
+}
+
+function definirPeriodoGrafico() {
+    const hoje = new Date();
+    
+    // Calcula mês de início (atual - 5)
+    const dataInicio = new Date(hoje);
+    dataInicio.setMonth(dataInicio.getMonth() - 5);
+    const mesInicio = dataInicio.toLocaleString('pt-BR', { month: 'short' }).replace('.', '');
+    const anoInicio = dataInicio.getFullYear();
+    
+    // Calcula mês de fim (atual + 6)
+    const dataFim = new Date(hoje);
+    dataFim.setMonth(dataFim.getMonth() + 6);
+    const mesFim = dataFim.toLocaleString('pt-BR', { month: 'short' }).replace('.', '');
+    const anoFim = dataFim.getFullYear();
+    
+    // Exibe período no formato: Set/2025 – Ago/2026
+    $('#periodo_grafico').text(`${mesInicio.charAt(0).toUpperCase() + mesInicio.slice(1)}/${anoInicio} – ${mesFim.charAt(0).toUpperCase() + mesFim.slice(1)}/${anoFim}`);
 }
 
 function renderizar_grafico_pilares(pilares, estatisticas) {
@@ -287,10 +515,9 @@ function ajustarLarguraCanvas(canvasId) {
 window.addEventListener('resize', () => {
     ajustarLarguraCanvas('grafico_pilares');
     ajustarLarguraCanvas('grafico_topicos');
-    ajustarLarguraCanvas('grafico_projetos');
 });
 
 // executar após carregamento inicial
 ajustarLarguraCanvas('grafico_pilares');
 ajustarLarguraCanvas('grafico_topicos');
-ajustarLarguraCanvas('grafico_projetos');
+

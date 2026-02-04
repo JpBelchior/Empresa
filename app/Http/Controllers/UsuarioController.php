@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use PhpParser\Node\Stmt\Foreach_;
+use Carbon\Carbon;
 
 class UsuarioController extends Controller
 {
@@ -104,12 +105,12 @@ class UsuarioController extends Controller
 
     public function estatisticas(){
         $atribuicao = Auth::user()->atribuicao;        
-        $dataAtual = new \DateTime();        
+        $dataAtual = Carbon::now();
         // Mês e ano atual
         $mes_atual = $dataAtual->format('m');
         $ano_atual = $dataAtual->format('Y');
         // Mês e ano anterior
-        $dataAnterior = (clone $dataAtual)->sub(new \DateInterval('P1M'));        
+        $dataAnterior = Carbon::now()->subMonth();
         $mes_anterior = $dataAnterior->format('m');
         $ano_anterior = $dataAnterior->format('Y');
         //PROJETOS
@@ -165,25 +166,48 @@ class UsuarioController extends Controller
         //DADOS DO MOMENTO VIGENTE
         $datas_do_mes_vigente = datasDoMesVigente();        
         $dias_numericos_mes_vigente = diasNumericosDoMesVigente();                
-        //GRÁFICO DE PROJETOS        
-        $quantidade_projetos_criados = [];
-        foreach($datas_do_mes_vigente as $data){
-            $quantidade_projetos_criados[] = Models\Projeto::where('empresa_id', session('empresa_id'))->where('data_inicio', $data)->count();
+        $meses_labels = [];
+        $quantidade_projetos_por_mes = [];
+        $quantidade_riscos_por_mes = [];
+
+        // Array com nomes dos meses em português (abreviados)
+        $nomes_meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+        for ($i = -5; $i <= 6; $i++) {
+            // Cria uma nova instância Carbon para cada iteração
+            $data_referencia = Carbon::now()->addMonths($i);
+            $mes = $data_referencia->format('m');
+            $ano = $data_referencia->format('Y');
+            
+            // Nome do mês abreviado usando array
+            $mes_index = (int)$mes - 1; // -1 porque array começa em 0
+            $mes_nome = $nomes_meses[$mes_index];
+            $meses_labels[] = $mes_nome;
+            
+            // Contar projetos criados neste mês
+            $projetos_mes = Models\Projeto::whereYear('data_inicio', $ano)
+                ->whereMonth('data_inicio', $mes)
+                ->where('empresa_id', session('empresa_id'))
+                ->count();
+            $quantidade_projetos_por_mes[] = $projetos_mes;
+            
+            // Contar riscos mapeados neste mês
+            $riscos_mes = Models\Projeto::whereYear('data_inicio', $ano)
+                ->whereMonth('data_inicio', $mes)
+                ->where('empresa_id', session('empresa_id'))
+                ->sum('total_riscos_altissimos');
+            $quantidade_riscos_por_mes[] = $riscos_mes;
         }
+
         $dados_grafico_projetos = [
-            'dias' => $dias_numericos_mes_vigente,
-            'quantidade' => $quantidade_projetos_criados
+            'meses' => $meses_labels,
+            'quantidade' => $quantidade_projetos_por_mes
         ];
-        //GRAFICO DE RISCO ALTISSIMO
-        $quantidade_riscos_criados = [];
-            foreach($datas_do_mes_vigente as $data){
-                $quantidade_riscos_criados[] = Models\Projeto::where('empresa_id', session('empresa_id'))
-                    ->where('data_inicio', $data)
-                    ->sum('total_riscos_altissimos');  
-            }
+
+        //GRAFICO DE RISCOS - 12 MESES (JÁ CALCULADO ACIMA NO LOOP)
         $dados_grafico_riscos = [
-            'dias' => $dias_numericos_mes_vigente,
-            'quantidade' => $quantidade_riscos_criados
+            'meses' => $meses_labels,
+            'quantidade' => $quantidade_riscos_por_mes
         ];
        //GRÁFICO PILARES
         $pilares = [];

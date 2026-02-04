@@ -1,7 +1,8 @@
-import{g as i,e as o,b as n}from"./funcoes-vPaU6AKm.js";function p(){$("#formularios").empty(),axios("formularios/lista").then(s=>{let t=s.data;console.log(t);for(let a in t){let e=`  <a href="/formularios/formulario/${t[a].id}" class="mb-4 w-full block p-6 bg-white border border-black-800 rounded-lg shadow-sm hover:bg-gray-100">
+import{g as i,e as o,b as n}from"./funcoes-vPaU6AKm.js";function d(){$("#formularios").empty(),axios("formularios/lista").then(s=>{let t=s.data;console.log(t);for(let a in t){let e=`  <a href="/formularios/formulario/${t[a].id}" class="mb-4 w-full block p-6 bg-white border border-black-800 rounded-lg shadow-sm hover:bg-gray-100">
                                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${t[a].nome}</h5>
+                                        <p class="font-normal text-gray-700">Projeto: <span class="font-semibold text-gray-900">${t[a].projeto.nome}</span></p>
                                         <p class="font-normal text-gray-700">Data de início: ${i(t[a].data_cadastro)}</p>
-                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                                             <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${t[a].porcentagem_preenchimento}%"></div>
                                         </div>
                                         <div class="flex justify-between">
@@ -24,4 +25,4 @@ import{g as i,e as o,b as n}from"./funcoes-vPaU6AKm.js";function p(){$("#formula
                                     <i class="fas fa-times"></i>
                                 </button>
                             </td>                        
-                        </tr>`;$("#perguntas_respondidas").append(l)}}).catch(t=>{o(t)})}export{u as a,p as l};
+                        </tr>`;$("#perguntas_respondidas").append(l)}}).catch(t=>{o(t)})}export{u as a,d as l};
