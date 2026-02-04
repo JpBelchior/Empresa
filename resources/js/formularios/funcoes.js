@@ -9,8 +9,9 @@ export function lista_formularios() {
             for (let i in formularios) {
                 let formulario = `  <a href="/formularios/formulario/${formularios[i].id}" class="mb-4 w-full block p-6 bg-white border border-black-800 rounded-lg shadow-sm hover:bg-gray-100">
                                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${formularios[i].nome}</h5>
+                                        <p class="font-normal text-gray-700">Projeto: <span class="font-semibold text-gray-900">${formularios[i].projeto.nome}</span></p>
                                         <p class="font-normal text-gray-700">Data de início: ${formatar_data_simples(formularios[i].data_cadastro)}</p>
-                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                                             <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${formularios[i].porcentagem_preenchimento}%"></div>
                                         </div>
                                         <div class="flex justify-between">

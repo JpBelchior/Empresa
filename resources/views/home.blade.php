@@ -1,52 +1,102 @@
 @extends('estrutura_principal.estrutura')
 @section('conteudo')
-<div class="flex flex-wrap gap-4 justify-around">
-    <a class="w-full md:w-[22%] card-dashboard azul block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <div class="flex justify-between">
-            <div class="titulo">Projetos</div>
+<div class="flex flex-wrap gap-4 justify-around mt-4 ">
+   <a class="w-full md:w-[22%] card-dashboard-branco block p-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+         
+        <div class="flex justify-between items-start ">
             <div>
-                <i id="icone_card_projetos" class="estatisticas_load"></i>
+                <p class=" text-gray-500 font-medium ">Total de Projetos</p>
+            </div>
+            <div class="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                <i class="fa fa-map-pin text-blue-600 text-lg"></i>
             </div>
         </div>
-        <div class="mt-4 flex justify-between">
-            <div id="numero_absoluto_card_projetos" class="numero_absoluto estatisticas_load">0</div>
-            <div id="numero_relatorio_card_projetos" class="estatisticas_load">0</div>
+        
+       
+        <div id="numero_absoluto_card_projetos" class="text-4xl font-bold text-gray-900 mb-3 estatisticas_load">
+            0
+        </div>
+        
+        <!-- PORCENTAGEM COM SETA E TEXTO -->
+        <div class="flex items-center gap-2">
+            <i id="icone_card_projetos" class="estatisticas_load text-lg"></i>
+            <span id="numero_relatorio_card_projetos" class="text-sm font-medium  estatisticas_load">
+                0
+            </span>
         </div>
     </a>
-    <a class="w-full md:w-[22%] card-dashboard preto block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <div class="flex justify-between">
-            <div class="titulo">Vulnerabilidades</div>
+    <a class="w-full md:w-[22%] card-dashboard-branco block p-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+     
+    <div class="flex justify-between items-start">
+        <div>
+            <p class="text-gray-500 font-medium">Total de Vulnerabilidades</p>
+        </div>
+      <div class="bg-yellow-100 w-10 h-10 rounded-lg flex items-center justify-center">
+        <i class="fas fa-exclamation-triangle text-yellow-600 text-lg"></i>
+    </div>
+    </div>
+    
+   
+    <div id="numero_absoluto_card_vulnerabilidades" class="text-4xl font-bold text-gray-900 mb-3 estatisticas_load">
+        0
+    </div>
+    
+    <!-- PORCENTAGEM COM SETA E TEXTO -->
+    <div class="flex items-center gap-2">
+        <i id="icone_card_vulnerabilidades" class="estatisticas_load text-lg"></i>
+        <span id="numero_relatorio_card_vulnerabilidades" class="text-sm font-medium estatisticas_load">
+            0
+        </span>
+    </div>
+</a>
+    <a class="w-full md:w-[22%] card-dashboard-branco block p-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+     
+        <div class="flex justify-between items-start">
             <div>
-                <i id="icone_card_vulnerabilidades" class="estatisticas_load"></i>
+                <p class="text-gray-500 font-medium">Total de Riscos</p>
+            </div>
+            <div class="bg-red-100 p-2 rounded-lg">
+                <i class="fas fa-bell text-red-600 text-xl"></i>
             </div>
         </div>
-        <div class="mt-4 flex justify-between">
-            <div id="numero_absoluto_card_vulnerabilidades" class="numero_absoluto estatisticas_load">0</div>
-            <div id="numero_relatorio_card_vulnerabilidades" class="estatisticas_load">0</div>
+        
+    
+        <div id="numero_absoluto_card_riscos" class="text-4xl font-bold text-gray-900 mb-3 estatisticas_load">
+            0
+        </div>
+        
+        <!-- PORCENTAGEM COM SETA E TEXTO -->
+        <div class="flex items-center gap-2">
+            <i id="icone_card_riscos" class="estatisticas_load text-lg"></i>
+            <span id="numero_relatorio_card_riscos" class="text-sm font-medium estatisticas_load">
+                0
+            </span>
         </div>
     </a>
-    <a class="w-full md:w-[22%] card-dashboard azul block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <div class="flex justify-between">
-            <div class="titulo">Riscos</div>
+    <a class="w-full md:w-[22%] card-dashboard-branco block p-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+     
+        <div class="flex justify-between items-start">
             <div>
-                <i id="icone_card_riscos" class="estatisticas_load"></i>
+                <p class="text-gray-500 font-medium">Total de Recomendações</p>
+            </div>
+            <div class="bg-green-100 p-2 rounded-lg">
+                
+                <i class="fas fa-clipboard-check text-green-600 text-xl"></i>
+                
             </div>
         </div>
-        <div class="mt-4 flex justify-between">
-            <div id="numero_absoluto_card_riscos" class="numero_absoluto estatisticas_load">0</div>
-            <div id="numero_relatorio_card_riscos" class="estatisticas_load">0</div>
+        
+    
+        <div id="numero_absoluto_card_recomendacoes" class="text-4xl font-bold text-gray-900 mb-3 estatisticas_load">
+            0
         </div>
-    </a>
-    <a class="w-full md:w-[22%] card-dashboard preto block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <div class="flex justify-between">
-            <div class="titulo">Recomendações</div>
-            <div>
-                <i id="icone_card_recomendacoes" class="estatisticas_load"></i>
-            </div>
-        </div>
-        <div class="mt-4 flex justify-between">
-            <div id="numero_absoluto_card_recomendacoes" class="numero_absoluto estatisticas_load">0</div>
-            <div id="numero_relatorio_card_recomendacoes" class="estatisticas_load">0</div>
+        
+        <!-- PORCENTAGEM COM SETA E TEXTO -->
+        <div class="flex items-center gap-2">
+            <i id="icone_card_recomendacoes" class="estatisticas_load text-lg"></i>
+            <span id="numero_relatorio_card_recomendacoes" class="text-sm font-medium estatisticas_load">
+                0
+            </span>
         </div>
     </a>
 </div>

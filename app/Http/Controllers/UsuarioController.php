@@ -114,13 +114,16 @@ class UsuarioController extends Controller
         $ano_anterior = $dataAnterior->format('Y');
         //PROJETOS
         $quantidade_projetos_criados_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
-        ->whereMonth('data_inicio', $mes_atual)        
-        ->where('empresa_id', session('empresa_id'))
-        ->count();        
+            ->whereMonth('data_inicio', $mes_atual)        
+            ->where('empresa_id', session('empresa_id'))
+            ->count();        
+
         $quantidade_projetos_criados_mes_anterior = Models\Projeto::whereYear('data_inicio', $ano_anterior)
-        ->whereMonth('data_inicio', $mes_anterior)        
-        ->where('empresa_id', session('empresa_id'))
-        ->count();        
+            ->whereMonth('data_inicio', $mes_anterior)        
+            ->where('empresa_id', session('empresa_id'))
+            ->count();
+
+        $total_projetos_criados = Models\Projeto::where('empresa_id', session('empresa_id'))->count();
         //VULNERABILIDADES
         $quantidade_vulnerabilidades_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
         ->whereMonth('data_inicio', $mes_atual)        
@@ -130,7 +133,10 @@ class UsuarioController extends Controller
         ->whereMonth('data_inicio', $mes_anterior)
         ->whereYear('data_inicio', $ano_atual)
         ->where('empresa_id', session('empresa_id'))
-        ->sum('total_vulnerabilidades');        
+        ->sum('total_vulnerabilidades');    
+        $total_vulnerabilidades_geral = Models\Projeto::where('empresa_id', session('empresa_id'))
+        ->sum('total_vulnerabilidades');
+
         //RISCOS ALTÍSSIMOS
         $quantidade_riscos_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
         ->whereMonth('data_inicio', $mes_atual)
@@ -139,7 +145,10 @@ class UsuarioController extends Controller
         $quantidade_riscos_mes_anterior = Models\Projeto::whereYear('data_inicio', $ano_anterior)
         ->whereMonth('data_inicio', $mes_anterior)
         ->where('empresa_id', session('empresa_id'))
-        ->sum('total_riscos_altissimos');        
+        ->sum('total_riscos_altissimos');       
+        $total_riscos_geral = Models\Projeto::where('empresa_id', session('empresa_id'))
+        ->sum('total_riscos_altissimos');
+
         //RECOMENDAÇÕES
         $quantidade_recomendacoes_mes_vigente = Models\Projeto::whereYear('data_inicio', $ano_atual)
         ->whereMonth('data_inicio', $mes_atual)
@@ -149,6 +158,10 @@ class UsuarioController extends Controller
         ->whereMonth('data_inicio', $mes_anterior)
         ->where('empresa_id', session('empresa_id'))
         ->sum('total_recomendacoes');
+        // TOTAL GERAL DE RECOMENDAÇÕES 
+        $total_recomendacoes_geral = Models\Projeto::where('empresa_id', session('empresa_id'))
+        ->sum('total_recomendacoes');
+
         //DADOS DO MOMENTO VIGENTE
         $datas_do_mes_vigente = datasDoMesVigente();        
         $dias_numericos_mes_vigente = diasNumericosDoMesVigente();                
@@ -243,12 +256,16 @@ class UsuarioController extends Controller
         $dados = [
             'qtd_projetos_mes' => $quantidade_projetos_criados_mes_vigente,
             'percentual_projetos' => percentual($quantidade_projetos_criados_mes_anterior, $quantidade_projetos_criados_mes_vigente),
+            'total_projetos_criados' => $total_projetos_criados,
             'qtd_vulnerabilidades_mes' => $quantidade_vulnerabilidades_mes_vigente,
             'percentual_vulnerabilidades' => percentual($quantidade_vulnerabilidades_mes_anterior, $quantidade_vulnerabilidades_mes_vigente),
+            'total_vulnerabilidades_geral' => $total_vulnerabilidades_geral,
             'qtd_riscos_mes' => $quantidade_riscos_mes_vigente,
             'percentual_riscos' => percentual($quantidade_riscos_mes_anterior, $quantidade_riscos_mes_vigente),
+            'total_riscos_geral' => $total_riscos_geral,
             'qtd_recomendacoes_mes' => $quantidade_recomendacoes_mes_vigente,
             'percentual_recomendacoes' => percentual($quantidade_recomendacoes_mes_anterior, $quantidade_recomendacoes_mes_vigente),
+            'total_recomendacoes_geral' => $total_recomendacoes_geral,
             'lista_projetos' => $lista_projetos,
             'grafico_projetos' => $dados_grafico_projetos,
             'grafico_riscos' => $dados_grafico_riscos,

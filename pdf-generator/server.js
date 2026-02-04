@@ -87,13 +87,19 @@ function carregarImagensEstaticas(dados) {
     };
 
     for (const [nomeImagem, arquivos] of Object.entries(imagensEstaticas)) {
+        // ✅ SÓ CARREGA SE A IMAGEM NÃO EXISTIR (ou for null)
+        if (dados.imagens[nomeImagem]) {
+            console.log(`✅ ${nomeImagem} já existe (vinda do Laravel)`);
+            continue;
+        }
+
         let encontrado = false;
 
         for (const arquivo of arquivos) {
             const caminho = path.join(__dirname, "imagens", arquivo);
 
             if (fs.existsSync(caminho)) {
-                console.log(`✅ ${nomeImagem} carregada`);
+                console.log(`✅ ${nomeImagem} carregada da pasta local`);
                 dados.imagens[nomeImagem] = imageToBase64(caminho);
                 encontrado = true;
                 break;
@@ -101,7 +107,7 @@ function carregarImagensEstaticas(dados) {
         }
 
         if (!encontrado) {
-            console.warn(`⚠️ ${nomeImagem} não encontrada`);
+            console.warn(`⚠️ ${nomeImagem} não encontrada em lugar nenhum`);
             dados.imagens[nomeImagem] = null;
         }
     }

@@ -33,9 +33,16 @@
         <x-badge_risco_altissimo risco_altissimo="{{ $pergunta->risco_altissimo }}"></x-badge_risco_altissimo>
         <x-badge_prazo prazo="{{ $pergunta->prazo }}"></x-badge_prazo>
     </div>    
-    <!-- <div class="status-tecnico-pergunta flex justify-center">        
         
-    </div> -->
+    @if($pergunta->respondido && $pergunta->recomendacao)
+    <div class="mt-4 mb-4">
+        <p class=" font-semibold text-black">Recomendação:
+           <span class="text-sm text-gray-600 mt-1">{{ $pergunta->recomendacao }}</span> 
+        </p>
+       
+    </div>
+    @endif
+   
     @if($pergunta->foto)
     <div class="flex justify-center">        
         <img class="foto" src="{{ getenv('APP_URL')."/arquivos/exibir/".$pergunta->foto }}" alt="">
