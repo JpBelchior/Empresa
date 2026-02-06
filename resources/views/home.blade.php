@@ -176,7 +176,7 @@
                 <h3 class="text-xl font-bold text-gray-900">Grau de Conformidade dos Pilares</h3>
             </div>
             
-            <!-- Dropdown de Período -->
+            
             <div class="relative">
                 <select id="select_periodo_pilares" class="block w-48 px-4 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Carregando...</option>
@@ -200,11 +200,21 @@
         </div>
     </div>
 
+    <!--  CARD: Gráfico de Tópicos -->
     <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <!-- Cabeçalho -->
-        <div class="mb-4">
-            <p class="text-gray-500 text-sm mb-1">Maiores criticidades no Período</p>
-            <h3 class="text-xl font-bold text-gray-900">Top 5 Riscos por Tópico</h3>
+        <!-- Cabeçalho com Dropdown -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <p class="text-gray-500 text-sm mb-1">Maiores criticidades no Período</p>
+                <h3 class="text-xl font-bold text-gray-900">Top 5 Riscos por Tópico</h3>
+            </div>
+            
+            <!-- ✅ SELECT EXCLUSIVO PARA TÓPICOS -->
+            <div class="relative">
+                <select id="select_periodo_topicos" class="block w-48 px-4 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Carregando...</option>
+                </select>
+            </div>
         </div>
 
         <!-- Spinner -->

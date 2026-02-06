@@ -12,6 +12,35 @@ let dadosGraficoProjetos = null;
 let dadosGraficoRiscos = null;
 let modoAtualGrafico = 'projetos'; // 'projetos' ou 'riscos'
 
+function quebrarTextoEmLinhas(texto, maxCaracteres = 20) {
+    if (!texto || texto.length <= maxCaracteres) {
+        return [texto];
+    }
+    
+    const palavras = texto.split(' ');
+    const linhas = [];
+    let linhaAtual = '';
+    
+    palavras.forEach(palavra => {
+        const testaLinha = linhaAtual ? `${linhaAtual} ${palavra}` : palavra;
+        
+        if (testaLinha.length <= maxCaracteres) {
+            linhaAtual = testaLinha;
+        } else {
+            if (linhaAtual) {
+                linhas.push(linhaAtual);
+            }
+            linhaAtual = palavra;
+        }
+    });
+    
+    if (linhaAtual) {
+        linhas.push(linhaAtual);
+    }
+    
+    return linhas;
+}
+
 $(document).ready(function(){
     axios.get(app_url+'/usuarios/estatisticas')
         .then(response => {
@@ -78,6 +107,7 @@ $(document).ready(function(){
             dadosGraficoRiscos = dados.grafico_riscos;
             definirPeriodoGrafico();
             renderizar_grafico_anual();
+            atualizarEstiloBotoes();
             $("#grafico_projetos_spinner").hide();  
             $("#container_grafico_projetos").removeClass('hidden'); 
         })
@@ -431,19 +461,35 @@ function carregar_periodos_disponiveis() {
     axios.get(app_url + "/usuarios/periodos_disponiveis")
         .then(response => {
             const periodos = response.data;
-            const select = $("#select_periodo_pilares");
             
-            select.empty();
+            // ✅ POPULAR AMBOS OS SELECTS
+            const select_pilares = $("#select_periodo_pilares");
+            const select_topicos = $("#select_periodo_topicos");
             
+            select_pilares.empty();
+            select_topicos.empty();
+            
+            // Adicionar opções em ambos os selects
             periodos.forEach((periodo, index) => {
                 const option = `<option value="${periodo.valor}" ${index === 0 ? 'selected' : ''}>${periodo.label}</option>`;
-                select.append(option);
+                select_pilares.append(option);
+                select_topicos.append(option);
             });
             
-            // Carregar dados do primeiro período (mês atual)
+            // ✅ CARREGAR DADOS INICIAIS DE AMBOS OS GRÁFICOS
             if (periodos.length > 0) {
-                const periodo_atual = periodos[0].valor.split('-');
-                carregar_graficos_periodo(periodo_atual[1], periodo_atual[0]); // [ano, mes]
+                const primeiro_periodo = periodos[0].valor;
+                
+                if (primeiro_periodo === 'todos') {
+                    // Carregar "Todos" para ambos
+                    carregar_grafico_pilares('todos', 'todos');
+                    carregar_grafico_topicos('todos', 'todos');
+                } else {
+                    // Carregar primeiro mês para ambos
+                    const [ano, mes] = primeiro_periodo.split('-');
+                    carregar_grafico_pilares(mes, ano);
+                    carregar_grafico_topicos(mes, ano);
+                }
             }
         })
         .catch(error => {
@@ -455,23 +501,40 @@ function carregar_periodos_disponiveis() {
 // 2. EVENTO: MUDANÇA DE PERÍODO
 // ===========================================
 $(document).on('change', '#select_periodo_pilares', function() {
-    const valor = $(this).val(); // formato: "2026-01"
-    const [ano, mes] = valor.split('-');
+    const valor = $(this).val();
     
-    // Mostrar spinners
+    // Mostrar spinner
     $("#grafico_pilares_spinner").show();
     $("#container_grafico_pilares").addClass('hidden');
+    
+    if (valor === 'todos') {
+        carregar_grafico_pilares('todos', 'todos');
+    } else {
+        const [ano, mes] = valor.split('-');
+        carregar_grafico_pilares(mes, ano);
+    }
+});
+
+// Evento para o SELECT DE TÓPICOS
+$(document).on('change', '#select_periodo_topicos', function() {
+    const valor = $(this).val();
+    
+    // Mostrar spinner
     $("#grafico_topicos_spinner").show();
     $("#container_grafico_topicos").addClass('hidden');
     
-    // Carregar novos dados
-    carregar_graficos_periodo(mes, ano);
+    if (valor === 'todos') {
+        carregar_grafico_topicos('todos', 'todos');
+    } else {
+        const [ano, mes] = valor.split('-');
+        carregar_grafico_topicos(mes, ano);
+    }
 });
-
 // ===========================================
 // 3. CARREGAR DADOS DOS GRÁFICOS
 // ===========================================
-function carregar_graficos_periodo(mes, ano) {
+// Função para carregar APENAS o gráfico de PILARES
+function carregar_grafico_pilares(mes, ano) {
     axios.post(app_url + "/usuarios/estatisticas_por_periodo", {
         mes: mes,
         ano: ano
@@ -479,30 +542,48 @@ function carregar_graficos_periodo(mes, ano) {
     .then(response => {
         const dados = response.data;
         
-        // RENDERIZAR GRÁFICO DE PILARES
+        // Renderizar APENAS gráfico de pilares
         renderizar_grafico_pilares_moderno(
             dados.grafico_pilares.pilares,
             dados.grafico_pilares.conformidade
         );
         
-        // RENDERIZAR GRÁFICO DE TÓPICOS
+        // Ocultar spinner e mostrar gráfico
+        $("#grafico_pilares_spinner").hide();
+        $("#container_grafico_pilares").removeClass('hidden');
+    })
+    .catch(error => {
+        console.error("Erro ao carregar gráfico de pilares:", error);
+        erro(error);
+        $("#grafico_pilares_spinner").hide();
+    });
+}
+
+// Função para carregar APENAS o gráfico de TÓPICOS
+function carregar_grafico_topicos(mes, ano) {
+    axios.post(app_url + "/usuarios/estatisticas_por_periodo", {
+        mes: mes,
+        ano: ano
+    })
+    .then(response => {
+        const dados = response.data;
+        
+        // Renderizar APENAS gráfico de tópicos
         renderizar_grafico_topicos_moderno(
             dados.grafico_topicos.topicos,
             dados.grafico_topicos.quantidade
         );
         
-        // Ocultar spinners e mostrar gráficos
-        $("#grafico_pilares_spinner").hide();
-        $("#container_grafico_pilares").removeClass('hidden');
+        // Ocultar spinner e mostrar gráfico
         $("#grafico_topicos_spinner").hide();
         $("#container_grafico_topicos").removeClass('hidden');
     })
     .catch(error => {
-        console.error("Erro ao carregar gráficos:", error);
+        console.error("Erro ao carregar gráfico de tópicos:", error);
         erro(error);
+        $("#grafico_topicos_spinner").hide();
     });
 }
-
 // ===========================================
 // 4. RENDERIZAR GRÁFICO DE PILARES (HORIZONTAL)
 // ===========================================
@@ -659,23 +740,25 @@ const cores = [
                         }
                     }
                 },
-               x: {
+              x: {
                     grid: {
                         display: false
                     },
-
                     ticks: {
                         autoSkip: false,   
                         maxRotation: 0,
                         minRotation: 0,
-
                         font: {
                             size: 11
                         },
                         color: '#6b7280',
-
                         align: 'center',   
-                        padding: 6
+                        padding: 6,
+                        
+                        callback: function(value, index) {
+                            const label = this.getLabelForValue(value);
+                            return quebrarTextoEmLinhas(label, 12);  
+                        }
                     }
                 }
             }

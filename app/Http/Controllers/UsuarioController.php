@@ -302,133 +302,150 @@ class UsuarioController extends Controller
         return response()->json($dados,200);
     }
      public function periodos_disponiveis() {
-        $meses = [];
-        $nomes_meses = [
-            '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', 
-            '04' => 'Abril', '05' => 'Maio', '06' => 'Junho',
-            '07' => 'Julho', '08' => 'Agosto', '09' => 'Setembro', 
-            '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro'
+    $meses = [];
+    $nomes_meses = [
+        '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', 
+        '04' => 'Abril', '05' => 'Maio', '06' => 'Junho',
+        '07' => 'Julho', '08' => 'Agosto', '09' => 'Setembro', 
+        '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro'
+    ];
+    
+    $meses[] = [
+        'mes' => 'todos',
+        'ano' => 'todos',
+        'label' => 'Todos os Períodos',
+        'valor' => 'todos'
+    ];
+    
+    // Adicionar últimos 6 meses
+    for ($i = 0; $i >= -5; $i--) {
+        $data = new \DateTime();
+        $data->modify("$i months");
+        $mes = $data->format('m');
+        $ano = $data->format('Y');
+        
+        $meses[] = [
+            'mes' => $mes,
+            'ano' => $ano,
+            'label' => $nomes_meses[$mes] . '/' . $ano,
+            'valor' => $ano . '-' . $mes
         ];
-        
-        for ($i = 0; $i >= -5; $i--) {
-            $data = new \DateTime();
-            $data->modify("$i months");
-            $mes = $data->format('m');
-            $ano = $data->format('Y');
-            
-            $meses[] = [
-                'mes' => $mes,
-                'ano' => $ano,
-                'label' => $nomes_meses[$mes] . '/' . $ano,
-                'valor' => $ano . '-' . $mes
-            ];
-        }
-        
-        return response()->json($meses, 200);
     }
+    
+    return response()->json($meses, 200);
+}
 
     /**
      * Retorna estatísticas de um período específico
      * @param Request $request - deve conter 'mes' e 'ano'
      */
     public function estatisticas_por_periodo(Request $request) {
-        $mes_selecionado = $request->input('mes', Carbon::now()->format('m'));
-        $ano_selecionado = $request->input('ano', Carbon::now()->format('Y'));
-        
-        // BUSCAR PROJETOS DO PERÍODO SELECIONADO
+    $mes_selecionado = $request->input('mes', Carbon::now()->format('m'));
+    $ano_selecionado = $request->input('ano', Carbon::now()->format('Y'));
+    
+   
+    $buscar_todos_periodos = ($mes_selecionado === 'todos' && $ano_selecionado === 'todos');
+    
+   
+    if ($buscar_todos_periodos) {
+        $projetos_do_periodo = Models\Projeto::where('empresa_id', session('empresa_id'))
+            ->pluck('id');
+    } else {
+        // 🔵 BUSCAR PROJETOS DO MÊS/ANO ESPECÍFICO
         $projetos_do_periodo = Models\Projeto::where('empresa_id', session('empresa_id'))
             ->whereMonth('data_inicio', $mes_selecionado)
             ->whereYear('data_inicio', $ano_selecionado)
             ->pluck('id');
-
-        // ===================================
-        // GRÁFICO DE PILARES - GRAU DE CONFORMIDADE
-        // ===================================
-        $pilares = [];
-        $todos_pilares = Models\Tematica::orderBy('nome', 'asc')->get();
-        $conformidade_pilares = [];
-        
-        foreach($todos_pilares as $pilar){
-            $pilares[] = $pilar->nome;
-            
-            // TOTAL de respostas daquele pilar nos projetos do período
-            $total_respostas = DB::table('respostas')
-                ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
-                ->join('perguntas', 'respostas.pergunta_id', '=', 'perguntas.id')
-                ->whereIn('formularios.projeto_id', $projetos_do_periodo)
-                ->where('perguntas.tematica_id', $pilar->id)
-                ->count();
-            
-            // CONFORMES (nivel_adequacao = 1)
-            $conformes = DB::table('respostas')
-                ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
-                ->join('perguntas', 'respostas.pergunta_id', '=', 'perguntas.id')
-                ->whereIn('formularios.projeto_id', $projetos_do_periodo)
-                ->where('perguntas.tematica_id', $pilar->id)
-                ->where('respostas.nivel_adequacao', 1)
-                ->count();
-            
-            // Calcular porcentagem de conformidade
-            $porcentagem = $total_respostas > 0 ? round(($conformes / $total_respostas) * 100, 1) : 0;
-            $conformidade_pilares[] = $porcentagem;
-        }
-        
-        $dados_grafico_pilares = [
-            'pilares' => $pilares,
-            'conformidade' => $conformidade_pilares
-        ];
-
-        // ===================================
-        // GRÁFICO DE TÓPICOS - TOP 5 RISCOS
-        // ===================================
-        $estatisticas_topicos = [];
-        
-        // PEGAR TODAS AS RESPOSTAS EM RISCO ALTÍSSIMO DOS PROJETOS DO PERÍODO
-        $respostas_risco = DB::table('respostas')
-            ->join('perguntas', "respostas.pergunta_id", "=", "perguntas.id")
-            ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
-            ->whereIn('formularios.projeto_id', $projetos_do_periodo)
-            ->where('respostas.esta_em_risco_altissimo', true)
-            ->select("perguntas.id as pergunta_id")
-            ->get();
-        
-        // CONTAR TÓPICOS
-        foreach($respostas_risco as $resposta){
-            $topicos_da_resposta = DB::table('pergunta_topico')
-                ->join("topicos", "pergunta_topico.topico_id", "=", "topicos.id")
-                ->where("pergunta_topico.pergunta_id", $resposta->pergunta_id)
-                ->pluck("nome")
-                ->toArray();
-            
-            foreach($topicos_da_resposta as $topico){
-                if(isset($estatisticas_topicos[$topico])){
-                    $estatisticas_topicos[$topico]++;
-                }else{
-                    $estatisticas_topicos[$topico] = 1;
-                }
-            }            
-        }
-        
-        // ORDENAR E PEGAR TOP 5
-        arsort($estatisticas_topicos);
-        $estatisticas_topicos = array_slice($estatisticas_topicos, 0, 5, true);
-        
-        $topicos = array_keys($estatisticas_topicos);
-        $quantidade_topicos = array_values($estatisticas_topicos);
-        
-        $dados_grafico_topicos = [
-            'topicos' => $topicos,
-            'quantidade' => $quantidade_topicos
-        ];
-
-        // RETORNAR DADOS
-        return response()->json([
-            'grafico_pilares' => $dados_grafico_pilares,
-            'grafico_topicos' => $dados_grafico_topicos,
-            'periodo_selecionado' => [
-                'mes' => $mes_selecionado,
-                'ano' => $ano_selecionado
-            ]
-        ], 200);
     }
+
+    // ===================================
+    // GRÁFICO DE PILARES - GRAU DE CONFORMIDADE
+    // ===================================
+    $pilares = [];
+    $todos_pilares = Models\Tematica::orderBy('nome', 'asc')->get();
+    $conformidade_pilares = [];
+    
+    foreach($todos_pilares as $pilar){
+        $pilares[] = $pilar->nome;
+        
+        // TOTAL de respostas daquele pilar nos projetos do período
+        $total_respostas = DB::table('respostas')
+            ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
+            ->join('perguntas', 'respostas.pergunta_id', '=', 'perguntas.id')
+            ->whereIn('formularios.projeto_id', $projetos_do_periodo)
+            ->where('perguntas.tematica_id', $pilar->id)
+            ->count();
+        
+        // CONFORMES (nivel_adequacao = 1)
+        $conformes = DB::table('respostas')
+            ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
+            ->join('perguntas', 'respostas.pergunta_id', '=', 'perguntas.id')
+            ->whereIn('formularios.projeto_id', $projetos_do_periodo)
+            ->where('perguntas.tematica_id', $pilar->id)
+            ->where('respostas.nivel_adequacao', 1)
+            ->count();
+        
+        // Calcular porcentagem de conformidade
+        $porcentagem = $total_respostas > 0 ? 
+            round(($conformes / $total_respostas) * 100, 1) : 0;
+        $conformidade_pilares[] = $porcentagem;
+    }
+    
+    $dados_grafico_pilares = [
+        'pilares' => $pilares,
+        'conformidade' => $conformidade_pilares
+    ];
+
+    // ===================================
+    // GRÁFICO DE TÓPICOS - TOP 5 RISCOS
+    // ===================================
+    $estatisticas_topicos = [];
+    
+    // PEGAR TODAS AS RESPOSTAS EM RISCO ALTÍSSIMO DOS PROJETOS DO PERÍODO
+    $respostas_risco = DB::table('respostas')
+        ->join('perguntas', "respostas.pergunta_id", "=", "perguntas.id")
+        ->join('formularios', 'respostas.formulario_id', '=', 'formularios.id')
+        ->whereIn('formularios.projeto_id', $projetos_do_periodo)
+        ->where('respostas.esta_em_risco_altissimo', true)
+        ->select("perguntas.id as pergunta_id")
+        ->get();
+    
+    // CONTAR TÓPICOS
+    foreach($respostas_risco as $resposta){
+        $topicos_da_resposta = DB::table('pergunta_topico')
+            ->join("topicos", "pergunta_topico.topico_id", "=", "topicos.id")
+            ->where("pergunta_topico.pergunta_id", $resposta->pergunta_id)
+            ->pluck("nome")
+            ->toArray();
+        
+        foreach($topicos_da_resposta as $topico){
+            if(isset($estatisticas_topicos[$topico])){
+                $estatisticas_topicos[$topico]++;
+            }else{
+                $estatisticas_topicos[$topico] = 1;
+            }
+        }            
+    }
+    
+    arsort($estatisticas_topicos);
+    $estatisticas_topicos = array_slice($estatisticas_topicos, 0, 5, true);
+    
+    $topicos = array_keys($estatisticas_topicos);
+    $quantidade_topicos = array_values($estatisticas_topicos);
+    
+    $dados_grafico_topicos = [
+        'topicos' => $topicos,
+        'quantidade' => $quantidade_topicos
+    ];
+
+    return response()->json([
+        'grafico_pilares' => $dados_grafico_pilares,
+        'grafico_topicos' => $dados_grafico_topicos,
+        'periodo_selecionado' => [
+            'mes' => $mes_selecionado,
+            'ano' => $ano_selecionado,
+            'todos' => $buscar_todos_periodos 
+        ]
+    ], 200);
+}
 }
