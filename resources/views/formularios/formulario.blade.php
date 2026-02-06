@@ -28,10 +28,12 @@
 @foreach($perguntas as $pergunta)
 <a class="card-pergunta @if($pergunta->respondido) respondido @endif mb-3 w-full block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
     <p class="titulo">{{ $pergunta->titulo }}</p>    
-    <div class="flex flex-row">
+    <div class="flex flex-wrap gap-2">
         <x-badge_adequacao nivel_adequacao="{{ $pergunta->nivel_adequacao }}"></x-badge_adequacao>
         <x-badge_risco_altissimo risco_altissimo="{{ $pergunta->risco_altissimo }}"></x-badge_risco_altissimo>
-        <x-badge_prazo prazo="{{ $pergunta->prazo }}"></x-badge_prazo>
+        <div class="w-full md:w-auto">
+            <x-badge_prazo prazo="{{ $pergunta->prazo }}"></x-badge_prazo>
+        </div>
     </div>    
         
     @if($pergunta->respondido && $pergunta->recomendacao)

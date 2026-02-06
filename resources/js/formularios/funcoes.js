@@ -18,10 +18,28 @@ export function lista_formularios() {
                                             <p><span>${formularios[i].total_perguntas_respondidas}/${formularios[i].total_perguntas} </span> Perguntas</p>
                                             <p>${formularios[i].porcentagem_preenchimento.toFixed(2)}%</p>
                                         </div>
-                                        <div class="flex justify-between">
-                                            <p class="text-yellow-500">${formularios[i].total_vulnerabilidades} vulnerabilidades</p>
-                                            <p class="text-red-500">${formularios[i].total_riscos_altissimos} riscos altíssimos</p>
-                                            <p class="text-green-500">${formularios[i].total_recomendacoes} recomendações</p>
+                                        
+                                        <!-- MOBILE: -->
+                                        <div class="flex md:hidden justify-between gap-2">
+                                            <div class="flex flex-col items-center">
+                                                <p class="text-xl  text-yellow-500">${formularios[i].total_vulnerabilidades}</p>
+                                                <p class="text-xs text-yellow-600 text-center">Vulnerabilidades</p>
+                                            </div>
+                                            <div class="flex flex-col items-center">
+                                                <p class="text-xl  text-red-500">${formularios[i].total_riscos_altissimos}</p>
+                                                <p class="text-xs text-red-600 text-center">Riscos Altíssimos</p>
+                                            </div>
+                                            <div class="flex flex-col items-center">
+                                                <p class="text-xl  text-green-500">${formularios[i].total_recomendacoes}</p>
+                                                <p class="text-xs text-green-600 text-center">Recomendações</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- DESKTOP: -->
+                                        <div class="hidden md:flex justify-between">
+                                            <p class="text-yellow-500 text-xl ">${formularios[i].total_vulnerabilidades} vulnerabilidades</p>
+                                            <p class="text-red-500 text-xl ">${formularios[i].total_riscos_altissimos} riscos altíssimos</p>
+                                            <p class="text-green-500 text-xl ">${formularios[i].total_recomendacoes} recomendações</p>
                                         </div>
                                     </a>`;                
                 $("#formularios").append(formulario);
