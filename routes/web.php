@@ -5,12 +5,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 
+// Rota raiz 
 Route::get('/', function(){
     if(Auth::check()){        
-        return view('home');
+        return view('home'); 
     }else{        
-        return view('login.login');
+        return view('landing'); 
     }
+})->name('home');
+
+// Rota de login 
+Route::get('/login', function(){
+    if(Auth::check()){
+        return redirect('/'); 
+    }
+    return view('login.login');
 })->name('login');
 
 Route::post('verificar_login', [Controllers\LoginController::class, 'verificar_login']);
