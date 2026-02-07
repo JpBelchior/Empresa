@@ -1,4 +1,13 @@
-/* Landing Page - Estilos Adicionais */
+
+
+body {
+    font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Garantir que todos os elementos usem Archivo */
+* {
+    font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif !important;
+}
 
 /* Smooth scrolling global */
 html {

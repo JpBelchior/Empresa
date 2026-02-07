@@ -1,7 +1,7 @@
 @extends('landing-estrutura')
 @section('conteudo')
  <!-- NAVBAR -->
-    <nav class="w-[calc(100%+48px)] -ml-6 -mr-6   bg-white relative ">
+    <nav class="  bg-white relative ">
 
         <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
 
@@ -17,7 +17,7 @@
             <!-- LINKS -->
             <div class="hidden lg:flex items-center gap-10 text-gray-700 font-medium">
                 <a href="#segmentos" class="hover:text-sky-500 transition-colors">Segmentos</a>
-                <a href="#plataforma" class="hover:text-sky-500 transition-colors">Plataforma</a>
+                <a href="#como-funciona" class="hover:text-sky-500 transition-colors">Plataforma</a> 
                 <a href="#institucional" class="hover:text-sky-500 transition-colors">Institucional</a>
             </div>
 
@@ -52,7 +52,7 @@
             <div id="mobile-menu" class="hidden lg:hidden bg-white rounded-xl shadow-xl p-6 mb-8">
                 <div class="flex flex-col gap-4">
                     <a href="#segmentos" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Segmentos</a>
-                    <a href="#plataforma" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Plataforma</a>
+                    <a href="#como-funciona" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Plataforma</a>
                     <a href="#institucional" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Institucional</a>
                     <a href="#contato" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Solicitar acesso</a>
                     <a href="{{ route('login') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-semibold text-center mt-2">
@@ -74,7 +74,7 @@
                     </div>
 
                     <!-- Título -->
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight max-w-4xl mx-auto">
+                    <h1 class="text-5xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight max-w-4xl mx-auto">
                         A ferramenta mais ágil para inspeções e relatórios de segurança.
                     </h1>
                     
@@ -203,19 +203,21 @@
 
 
 <!-- FORTALECENDO DECISÕES TÉCNICAS -->
-<section class="relative flex justify-center py-8 bg-gray-200">
+<section id="segmentos" class="relative flex justify-center py-8 bg-gray-200">
     <!-- FUNDO GRADIENTE (quase do tamanho do card) -->
     <div class="w-full max-w-[1280px] px-[6px] bg-white rounded-3xl">
         <!-- CONTEÚDO -->
         <div class="rounded-3xl px-10 py-16">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-14">
-                <h2 class="text-4xl md:text-5xl lg:text-5xl font-bold text-gray-900 max-w-xl leading-tight text-center lg:text-left">
+                <h2 class="text-5xl md:text-5xl lg:text-5xl font-bold text-gray-900 max-w-xl leading-tight text-center lg:text-left">
                     Fortalecendo Decisões Técnicas em Ambientes Críticos
                 </h2>
                 <div class="flex flex-col items-center gap-10 text-gray-900 font-semibold">
                     <div class="flex items-center gap-14">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-user-shield text-sky-500 text-2xl w-8 h-8 flex items-center justify-center"></i>
+                            <img 
+                                src="/imagesHomePage/PNG/Landing/IconeConsultoriasdeSegurança.png"
+                                class="w-8 h-8 object-contain" >
                             <span class="text-2xl">Consultorias de Segurança</span>
                         </div>
                         <div class="flex items-center gap-3">
@@ -226,7 +228,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="fas fa-anchor text-sky-500 text-2xl w-8 h-8 flex items-center justify-center"></i>
+                        <img 
+                                src="/imagesHomePage/PNG/Landing/IconePortoseLogística.png"
+                                class="w-8 h-8 object-contain" >
                         <span class="text-2xl">Portos e Logística</span>
                     </div>
                 </div>
@@ -314,20 +318,20 @@
                     vulnerabilidades, níveis de risco e prioridades, oferecendo uma 
                     visão clara para tomada de decisão e planejamento das ações.
                 </p>
-                <div class="w-full h-px bg-gray-200 mb-10"></div>
-    
+                <div class="w-full h-px bg-sky-400 mb-10"></div>
+
                 <!-- MÉTRICAS -->
                 <div class="grid grid-cols-2 gap-6">
 
-                    <div class="bg-blue-100 rounded-xl p-6">
-                        <p class="text-4xl font-bold text-sky-500 mb-2">–40%</p>
+                    <div class="bg-white rounded-xl p-6">
+                        <p class="text-4xl font-bold text-sky-400 mb-2">–40%</p>
                         <p class="text-gray-700 font-medium md:text-xl">
                             Tempo gasto na consolidação das análises
                         </p>
                     </div>
 
-                    <div class="bg-blue-100 rounded-xl p-6">
-                        <p class="text-4xl font-bold text-sky-500 mb-2">+55%</p>
+                    <div class="bg-white rounded-xl p-6">
+                        <p class="text-4xl font-bold text-sky-400 mb-2">+55%</p>
                         <p class="text-gray-700 font-medium md:text-xl">
                             Clareza na priorização dos riscos
                         </p>
@@ -362,7 +366,7 @@
 <section id="plataforma" class="w-full bg-white py-20">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-900 mb-6">
+            <h2 class="text-5xl font-bold text-gray-900 mb-6">
                 Principais Recursos da Plataforma
             </h2>
             <p class="text-lg  md:text-2xl text-gray-600 max-w-4xl mx-auto">
@@ -404,7 +408,7 @@
             </p>
 
             <div class="space-y-3 text-sm">
-                <div class="bg-white border border-green-200 rounded-lg p-3 flex items-start g-3">
+                <div class="bg-white border border-gray-200 rounded-lg p-3 flex items-start g-3">
                 <img 
                 src="/imagesHomePage/PNG/Landing/IconeInspeçãoConcluída.png"
                 class="w-5 h-5 mt-1 mr-2 object-contain">
@@ -413,7 +417,7 @@
                     <p class="text-gray-600">Finalizada em 30 Dez • <span class="text-green-600">Concluída</span></p>
                     </div>
                 </div>
-                <div class="bg-white border border-yellow-200 rounded-lg p-3 flex items-start gap-3">
+                <div class="bg-white border border-gray-200 rounded-lg p-3 flex items-start gap-3">
                 <img 
                 src="/imagesHomePage/PNG/Landing/IconeInspeçãoemAnálise.png"
                 class="w-5 h-5 mt-1 object-contain">
@@ -586,54 +590,94 @@
 </section>
 
 <!-- PRINCÍPIOS -->
-<section id="institucional" class="w-full bg-white py-20">
+<section id="institucional" class="w-full bg-gray-200 py-20">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-900 mb-6">
+            <h2 class="text-5xl font-bold text-gray-900 mb-6">
                 Princípios que Orientam a Plataforma
             </h2>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
             <!-- Princípio 1 -->
-            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-8 hover:shadow-2xl transition-all">
-                <div class="mb-6">
-                    <p class="text-sm font-semibold uppercase tracking-wider mb-2 opacity-90">Princípio</p>
-                    <h3 class="text-2xl font-bold mb-4">
+            <div class="flex flex-col">
+                <!-- Imagem -->
+                <div class="mb-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                    <img 
+                        src="/imagesHomePage/PNG/Landing/decisionmaking.png"
+                        alt="Decisão Técnica"
+                        class="w-full h-auto object-cover"
+                    >
+                </div>
+                
+                <!-- Título pequeno -->
+                <div class="bg-sky-400 text-white rounded-lg px-6 py-1 w-35 mb-6 text-center ">
+                    <p class="text-lg font-semibold  tracking-wider">Princípio</p>
+                </div>
+                
+
+                <!-- Conteúdo -->
+                <div class="text-left">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">
                         Decisão técnica como base para escolhas seguras em ambientes críticos
                     </h3>
-                </div>
-                <div class="border-t border-white/20 pt-4">
-                    <p class="text-sm font-semibold uppercase tracking-wider opacity-90">Resultado</p>
-                    <p class="text-xl font-bold mt-2">Impacta decisões</p>
+                    <div class="border-t border-sky-400 pt-4 mt-4">
+                        <p class="text-xl text-gray-400">Impacta decisões</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Princípio 2 -->
-            <div class="bg-gradient-to-br from-gray-700 to-gray-800 text-white rounded-2xl p-8 hover:shadow-2xl transition-all">
-                <div class="mb-6">
-                    <p class="text-sm font-semibold uppercase tracking-wider mb-2 opacity-90">Método</p>
-                    <h3 class="text-2xl font-bold mb-4">
+            <div class="flex flex-col">
+                <!-- Imagem -->
+                <div class="mb-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                    <img 
+                        src="/imagesHomePage/PNG/Landing/analyticalframework.png"
+                        alt="Estruturas Analíticas"
+                        class="w-full h-auto object-cover"
+                    >
+                </div>
+                
+                <!-- Título pequeno -->
+                <div class="bg-sky-400 text-white rounded-lg px-6 py-1 mb-6 w-35 text-center">
+                    <p class=" font-semibold text-lg tracking-wider">Método</p>
+                </div>
+
+                <!-- Conteúdo -->
+                <div class="text-left">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">
                         Estruturas analíticas reduzem vieses e elevam a confiabilidade técnica
                     </h3>
-                </div>
-                <div class="border-t border-white/20 pt-4">
-                    <p class="text-sm font-semibold uppercase tracking-wider opacity-90">Resultado</p>
-                    <p class="text-xl font-bold mt-2">Reduz incertezas</p>
+                    <div class="border-t border-sky-400 pt-4 mt-4">
+                        <p class="text-xl text-gray-400">Reduz incertezas</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Princípio 3 -->
-            <div class="bg-gradient-to-br from-cyan-600 to-cyan-700 text-white rounded-2xl p-8 hover:shadow-2xl transition-all">
-                <div class="mb-6">
-                    <p class="text-sm font-semibold uppercase tracking-wider mb-2 opacity-90">Clareza</p>
-                    <h3 class="text-2xl font-bold mb-4">
+            <div class="flex flex-col">
+                <!-- Imagem -->
+                <div class="mb-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                    <img 
+                        src="/imagesHomePage/PNG/Landing/focusclarity.png"
+                        alt="Clareza Informacional"
+                        class="w-full h-auto object-cover"
+                    >
+                </div>
+                
+                <!-- Título pequeno -->
+                <div class="bg-sky-400 text-white rounded-lg px-6 py-1 mb-6 w-35 text-center    ">
+                    <p class="font-semibold text-lg tracking-wider">Clareza</p>
+                </div>
+
+                <!-- Conteúdo -->
+                <div class="text-left">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">
                         Informações organizadas convertem dados técnicos em prioridades claras
                     </h3>
-                </div>
-                <div class="border-t border-white/20 pt-4">
-                    <p class="text-sm font-semibold uppercase tracking-wider opacity-90">Resultado</p>
-                    <p class="text-xl font-bold mt-2">Orienta prioridades</p>
+                    <div class="border-t border-sky-400 pt-4 mt-4">
+                        <p class="text-xl  text-gray-400">Orienta prioridades</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -641,76 +685,82 @@
         <!-- Descrição final -->
         <div class="text-center mt-16">
             <p class="text-xl text-gray-700 max-w-3xl mx-auto">
-                Plataforma desenvolvida para apoiar decisões técnicas com 
+                Plataforma desenvolvida para apoiar as suas decisões técnicas com 
                 método, rastreabilidade e consistência analítica.
             </p>
         </div>
     </div>
+    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400"></div>    
 </section>
 
 <!-- FOOTER -->
-<footer id="contato" class="w-full bg-gray-900 text-white py-16">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-4 gap-12 mb-12">
-            <!-- Coluna 1 - Logo e Contato -->
-            <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-blue-600 w-10 h-10 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-shield-alt text-white text-xl"></i>
-                    </div>
-                    <span class="text-xl font-bold">Secure Scope</span>
-                </div>
-                <div class="space-y-4">
-                    <div>
-                        <p class="text-gray-400 text-sm mb-2">Fale conosco</p>
-                        <a href="mailto:contato@securescope.com.br" class="text-white hover:text-blue-400 transition-colors">
-                            contato@securescope.com.br
-                        </a>
-                    </div>
-                </div>
+<footer id="contato" class="w-full bg-slate-900 text-white py-10">
+    <div class=" w-full px-12">
+        <!-- Grid Principal -->
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mb-5">
+            
+            <!-- Coluna 1 - Logo e Descrição -->
+            <div class="md:col-span-2 pt-1">
+                <img 
+                    src="/imagesHomePage/PNG/Landing/SecureScopeLogoBranca.png"
+                    alt="Secure Scope"
+                    class="h-10 w-auto mb-4"
+                >
+                <p class="text-white text-xl">
+                    Plataforma desenvolvida para apoiar decisões técnicas com 
+                    método, rastreabilidade e consistência analítica.
+                </p>
+                
+                <!-- Linha abaixo da descrição -->
+                <div class="border-t border-white mt-4"></div>
             </div>
 
-            <!-- Coluna 2 - Segmentos -->
-            <div>
-                <h4 class="text-lg font-bold mb-6">Segmentos</h4>
-                <ul class="space-y-3">
-                    <li><a href="#segmentos" class="text-gray-400 hover:text-white transition-colors">Consultorias de Segurança</a></li>
-                    <li><a href="#segmentos" class="text-gray-400 hover:text-white transition-colors">Indústrias e Infraestrutura</a></li>
-                    <li><a href="#segmentos" class="text-gray-400 hover:text-white transition-colors">Portos, Logística</a></li>
+            <!-- Coluna 2 - Fale Conosco -->
+            <div class="pt-6">
+                <h4 class="text-2xl font-bold mb-3 text-white">Fale conosco</h4>
+                <p class="text-white">contato@securescope.com.br</p>
+            </div>
+
+            <!-- Coluna 3 - Segmentos -->
+            <div class="pt-6">
+                <h4 class="text-2xl font-bold mb-3 text-white">Segmentos</h4>
+                <ul class="space-y-2">
+                    <li><p class="text-white">Consultorias de Segurança</p></li>
+                    <li><p class="text-white">Indústrias e Infraestrutura</p></li>
+                    <li><p class="text-white">Portos, Logística</p></li>
                 </ul>
             </div>
 
-            <!-- Coluna 3 - Plataforma -->
-            <div>
-                <h4 class="text-lg font-bold mb-6">Plataforma</h4>
-                <ul class="space-y-3">
-                    <li><a href="#como-funciona" class="text-gray-400 hover:text-white transition-colors">Como Funciona</a></li>
-                    <li><a href="#plataforma" class="text-gray-400 hover:text-white transition-colors">Metodologia de Análise</a></li>
-                    <li><a href="#plataforma" class="text-gray-400 hover:text-white transition-colors">Recursos da Plataforma</a></li>
+            <!-- Coluna 4 - Plataforma -->
+            <div class="pt-6">
+                <h4 class="text-2xl font-bold mb-3 text-white">Plataforma</h4>
+                <ul class="space-y-2">
+                    <li><p class="text-white">Como Funciona</p></li>
+                    <li><p class="text-white">Metodologia de Análise</p></li>
+                    <li><p class="text-white">Recursos da Plataforma</p></li>
                 </ul>
             </div>
 
-            <!-- Coluna 4 - Institucional -->
-            <div>
-                <h4 class="text-lg font-bold mb-6">Institucional</h4>
-                <ul class="space-y-3">
-                    <li><a href="#institucional" class="text-gray-400 hover:text-white transition-colors">Sobre a Plataforma</a></li>
-                    <li><a href="#institucional" class="text-gray-400 hover:text-white transition-colors">Diferenciais e Princípios</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Segurança da informação</a></li>
+            <!-- Coluna 5 - Institucional -->
+            <div class="pt-6">
+                <h4 class="text-2xl font-bold mb-3 text-white">Institucional</h4>
+                <ul class="space-y-2">
+                    <li><p class="text-white">Sobre a Plataforma</p></li>
+                    <li><p class="text-white">Diferenciais e Princípios</p></li>
+                    <li><p class="text-white">Segurança da informação</p></li>
                 </ul>
             </div>
         </div>
 
         <!-- Copyright -->
-        <div class="border-t border-gray-800 pt-8 text-center">
-            <p class="text-gray-400">
+        <div class=" text-left">
+            <p class="text-gray-300 ">
                 © 2026 Secure Scope. Todos os direitos reservados.
             </p>
         </div>
     </div>
 </footer>
 
-{{-- JavaScript modular via Vite --}}
 @vite('resources/js/landing/landing.js')
 
 @endsection

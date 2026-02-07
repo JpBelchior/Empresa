@@ -9,7 +9,7 @@
     
     @vite(['resources/css/app.css', 'resources/css/landing.css'])
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-x-hidden">
     @yield('conteudo')
     
     @vite('resources/js/app.js')
