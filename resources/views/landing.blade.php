@@ -1,66 +1,66 @@
 @extends('landing-estrutura')
 @section('conteudo')
  <!-- NAVBAR -->
-    <nav class="  bg-white relative ">
-
-        <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-
-            <!-- LOGO -->
-            <div class="flex items-center">
-                <img 
-                    src="/imagesHomePage/PNG/Landing/SecureScopeLogo.png"
-                    alt="Secure Scope"
-                    class="h-10 w-auto"
-                >
-            </div>
-
-            <!-- LINKS -->
-            <div class="hidden lg:flex items-center gap-10 text-gray-700 font-medium">
-                <a href="#segmentos" class="hover:text-sky-500 transition-colors">Segmentos</a>
-                <a href="#como-funciona" class="hover:text-sky-500 transition-colors">Plataforma</a> 
-                <a href="#institucional" class="hover:text-sky-500 transition-colors">Institucional</a>
-            </div>
-
-            <!-- BOTÕES -->
-            <div class="hidden lg:flex items-center gap-4">
-                <a href="#contato"
-                class="px-5 py-2 rounded-full bg-sky-500 text-white font-semibold hover:bg-sky-600 transition shadow">
-                    Solicitar acesso
-                </a>
-                
-                <a href="{{ route('login') }}"
-                class="px-5 py-2 rounded-full border border-sky-500 text-sky-500 font-semibold hover:bg-blue-50 transition">
-                    Acessar plataforma
-                </a>
-            </div>
-
-            <!-- MOBILE -->
-            <button id="mobile-menu-btn" class="lg:hidden text-gray-700">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
+<nav class="bg-white relative">
+    <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+        <!-- LOGO -->
+        <div class="flex items-center">
+            <img 
+                src="/imagesHomePage/PNG/Landing/SecureScopeLogo.png"
+                alt="Secure Scope"
+                class="h-10 w-auto"
+            >
         </div>
-        <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400"></div>
 
-    </nav>
+        <!-- LINKS -->
+        <div class="hidden lg:flex items-center gap-10 text-gray-700 font-medium">
+            <a href="#segmentos" class="hover:text-sky-500 transition-colors">Segmentos</a>
+            <a href="#como-funciona" class="hover:text-sky-500 transition-colors">Plataforma</a> 
+            <a href="#institucional" class="hover:text-sky-500 transition-colors">Institucional</a>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="hidden lg:flex items-center gap-4">
+           <a href="{{ route('fale-conosco') }}"
+            class="px-5 py-2 rounded-full bg-sky-500 text-white font-semibold hover:bg-sky-600 transition shadow">
+                Solicitar acesso
+            </a>
+            <a href="{{ route('login') }}"
+            class="px-5 py-2 rounded-full border border-sky-500 text-sky-500 font-semibold hover:bg-blue-50 transition">
+                Acessar plataforma
+            </a>
+        </div>
+
+        <!-- MOBILE -->
+        <button id="mobile-menu-btn" class="lg:hidden text-gray-700">
+            <img 
+                src="/imagesHomePage/PNG/Landing/IconeEditar.png"
+                class="w-8 h-8 object-contain">
+        </button>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400"></div>
+    
+    <!-- MOBILE MENU - AGORA AQUI DENTRO DA NAV -->
+    <div id="mobile-menu" class="hidden lg:hidden fixed top-20 left-0 right-0 bg-white rounded-b-xl shadow-2xl p-6 mx-4 z-50 ">
+        <div class="flex flex-col gap-4">
+            <a href="#segmentos" class="text-gray-700 hover:text-sky-400 font-medium py-2 border-b border-gray-100">Segmentos</a>
+            <a href="#como-funciona" class="text-gray-700 hover:text-sky-400 font-medium py-2 border-b border-gray-100">Plataforma</a>
+            <a href="#institucional" class="text-gray-700 hover:text-sky-400 font-medium py-2 border-b border-gray-100">Institucional</a>
+            <a href="{{ route('fale-conosco') }}" class="bg-sky-500 text-white px-6 py-3 rounded-lg hover:bg-sky-600 font-semibold text-center mt-2">
+                Solicitar acesso
+            </a>
+            <a href="{{ route('login') }}" class="border-2 border-sky-500 text-sky-500 px-6 py-3 rounded-lg hover:bg-blue-50 font-semibold text-center">
+                Acessar plataforma
+            </a>
+        </div>
+    </div>
+</nav>
 
 <!-- HERO SECTION -->
 <section class="w-full min-h-screen bg-white px-6 py-8">
 
    
     <div class="max-w-7xl mx-auto">
-        <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden lg:hidden bg-white rounded-xl shadow-xl p-6 mb-8">
-                <div class="flex flex-col gap-4">
-                    <a href="#segmentos" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Segmentos</a>
-                    <a href="#como-funciona" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Plataforma</a>
-                    <a href="#institucional" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Institucional</a>
-                    <a href="#contato" class="text-gray-700 hover:text-blue-600 font-medium py-2 border-b border-gray-100">Solicitar acesso</a>
-                    <a href="{{ route('login') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-semibold text-center mt-2">
-                        Acessar plataforma
-                    </a>
-                </div>
-            </div>
-
             <!-- DIV AZUL -->
             <div class="bg-blue-100 rounded-3xl overflow-hidden relative px-6 py-12 md:px-12 md:py-16" style="min-height: 850px;">
                 
@@ -106,43 +106,46 @@
                 <!-- CARDS E LINHAS -->
                 <div class="relative" style="min-height: 500px;"> 
                     <!-- Linha Top Left Card1 -->
-                    <svg class="absolute pointer-events-none" style="top: -40px; left: 400px; width: 310px; height: 200px; z-index: 10;">
-                        <line x1="600" y1="180" x2="20" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-                    <!-- Linha Top Right Card2-->
-                    <svg class="absolute pointer-events-none" style="top: -40px; right: 250px; width: 280px; height: 200px; z-index: 10;">
-                        <line x1="80" y1="180" x2="260" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-                    <!-- Linha Middle Left -->
-                    <svg class="absolute pointer-events-none" style="top: 65%; left: 230px; width: 280px; height: 100px; z-index: 10; transform: translateY(-50%);">
-                        <line x1="330" y1="50" x2="-50" y2="50" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-                    <!-- Linha Middle Left Vertical Baixo-->
-                    <svg class="absolute pointer-events-none" style="top: 70%; left: -50px; width: 280px; height: 100px; z-index: 10; transform: translateY(-50%);">
-                        <line x1="280" y1="90" x2="280" y2="20" stroke="#6b7280" stroke-width="4" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-                    <!-- Linha Middle Left Vertical Cima-->
-                    <svg class="absolute pointer-events-none" style="top: 52%; left: 50px; width: 280px; height: 120px; z-index: 10; transform: translateY(-50%);">
-                        <line x1="280" y1="290" x2="280" y2="-20" stroke="#6b7280" stroke-width="4" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-                    <!-- Linha Middle Right -->
-                    <svg class="absolute pointer-events-none" style="top: 110%; right: 100px; width: 280px; height: 150px; z-index: 10; transform: translateY(-50%);">
-                        <line x1="70" y1="50" x2="260" y2="50" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-                    <!-- Linha Middle Right Veritcal Card-->
-                    <svg class="absolute pointer-events-none" style="top: 110%; right: 100px; width: 280px; height: 150px; z-index: 10; transform: translateY(-50%);">
-                        <line x1="260" y1="50" x2="260" y2="-10" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-                    </svg>
-            <svg
-            class="absolute pointer-events-none"
-            style="top: 65%; left: 230px; width: 700px; height: 450px; z-index: 10; transform: translateY(-50%);"
-            >
-                <!-- horizontal -->
-                <line x1="320" y1="224" x2="645" y2="224" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-                <!-- vertical -->
-                <line x1="645" y1="427" x2="645" y2="218" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
-
-            </svg>
+                    < <svg class="hidden lg:block absolute pointer-events-none" style="top: -40px; left: 400px; width: 310px; height: 200px; z-index: 10;">
+                    <line x1="600" y1="180" x2="20" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <!-- Linha Top Right Card2-->
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: -40px; right: 250px; width: 280px; height: 200px; z-index: 10;">
+                    <line x1="80" y1="180" x2="260" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <!-- Linha Middle Left -->
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: 65%; left: 230px; width: 280px; height: 100px; z-index: 10; transform: translateY(-50%);">
+                    <line x1="330" y1="50" x2="-50" y2="50" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <!-- Linha Middle Left Vertical Baixo-->
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: 70%; left: -50px; width: 280px; height: 100px; z-index: 10; transform: translateY(-50%);">
+                    <line x1="280" y1="90" x2="280" y2="20" stroke="#6b7280" stroke-width="4" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <!-- Linha Middle Left Vertical Cima-->
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: 52%; left: 50px; width: 280px; height: 120px; z-index: 10; transform: translateY(-50%);">
+                    <line x1="280" y1="290" x2="280" y2="-20" stroke="#6b7280" stroke-width="4" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <!-- Linha Middle Right -->
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: 110%; right: 100px; width: 280px; height: 150px; z-index: 10; transform: translateY(-50%);">
+                    <line x1="70" y1="50" x2="260" y2="50" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <!-- Linha Middle Right Veritcal Card-->
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: 110%; right: 100px; width: 280px; height: 150px; z-index: 10; transform: translateY(-50%);">
+                    <line x1="260" y1="50" x2="260" y2="-10" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
+                
+                <svg class="hidden lg:block absolute pointer-events-none" style="top: 65%; left: 230px; width: 700px; height: 450px; z-index: 10; transform: translateY(-50%);">
+                    <!-- horizontal -->
+                    <line x1="320" y1="224" x2="645" y2="224" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                    <!-- vertical -->
+                    <line x1="645" y1="427" x2="645" y2="218" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                </svg>
                 <!-- Card Top Left: Vulnerabilidades e Riscos -->
                 <div class="hidden lg:block absolute" style="top: 40px; left: 250px; z-index: 20;">
                     <img 

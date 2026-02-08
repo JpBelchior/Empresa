@@ -14,6 +14,10 @@ Route::get('/', function(){
     }
 })->name('home');
 
+Route::get('/fale-conosco', function(){
+    return view('fale-conosco');
+})->name('fale-conosco');
+
 // Rota de login 
 Route::get('/login', function(){
     if(Auth::check()){
