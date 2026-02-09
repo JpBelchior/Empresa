@@ -42,7 +42,7 @@ export function lista_projetos(){
                                         <p>Data de conclusão: ${formatar_data(projetos[i].data_conclusao, false)}</p>
                                     </div>                                                                                
                                     <div class="flex flex-wrap gap-2 text-gray-500 text-sm my-2 mb-3">
-                                       <span class="text-gray-700 text-base"> Clientes Envolvidos:</span> ${funcionarios.map(f => `<span class="px-2 py-1 bg-gray-100 rounded">${f.usuario.nome}</span>`).join("")}
+                                       <span class="text-gray-700 text-base"> Funcionários Envolvidos:</span> ${funcionarios.map(f => `<span class="px-2 py-1 bg-gray-100 rounded">${f.usuario.nome}</span>`).join("")}
                                     </div>
                                     <div class="flex flex-wrap gap-2 mb-7">
                                        <span class="text-gray-700"> Tipo de Empreendimento:</span> ${tp}

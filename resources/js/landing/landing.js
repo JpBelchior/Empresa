@@ -1,6 +1,3 @@
-// resources/js/landing/landing.js
-// JavaScript modular para a Landing Page do Secure Scope
-
 // ==========================================
 // 1. SMOOTH SCROLL PARA ÂNCORAS
 // ==========================================
@@ -91,7 +88,3 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// ==========================================
-// 5. LOG DE INICIALIZAÇÃO (DESENVOLVIMENTO)
-// ==========================================
-console.log('✅ Landing Page JavaScript carregado com sucesso!');

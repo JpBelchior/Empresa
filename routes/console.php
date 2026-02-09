@@ -9,7 +9,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// ✅ ADICIONAR ESTE COMANDO AQUI
 Artisan::command('projetos:recalcular-estatisticas', function () {
     $this->info('🔄 Iniciando recálculo das estatísticas dos projetos...');
     

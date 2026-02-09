@@ -10,7 +10,7 @@ $("#resultados_tabela_projetos").empty();
 let graficoProjetosInstance = null;
 let dadosGraficoProjetos = null;
 let dadosGraficoRiscos = null;
-let modoAtualGrafico = 'projetos'; // 'projetos' ou 'riscos'
+let modoAtualGrafico = 'projetos'; 
 
 function quebrarTextoEmLinhas(texto, maxCaracteres = 20) {
     if (!texto || texto.length <= maxCaracteres) {
@@ -148,16 +148,6 @@ function badge_projeto(status) {
     return badge;
 }
 
-function apresentacao_porcentagem(numero) {
-    let elemento = "";
-    if (numero > 0) {
-        elemento = `+ ${numero.toFixed(2)} %`;
-    } else if (numero < 0) {
-        elemento = `- ${numero.toFixed(2)} %`;
-    }
-    return elemento;
-}
-
 function direcao_seta(numero) {
     let icone = "";
     if (numero > 0) {
@@ -228,7 +218,6 @@ function renderizar_grafico_anual() {
         return;
     }
     
-
 function criarGradienteAzul(context) {
     const chart = context.chart;
     const {ctx, chartArea, scales} = chart;
@@ -260,8 +249,7 @@ function criarGradienteVermelho(context) {
     if (!chartArea) {
         return 'rgba(239, 68, 68, 0.3)';
     }
-    
-   
+     
     const valores = dadosGraficoRiscos.quantidade;
     const valorMaximo = Math.max(...valores);
     
@@ -448,7 +436,7 @@ function definirPeriodoGrafico() {
 }
 
 // ===========================================
-// GRÁFICOS MODERNIZADOS - DASHBOARD
+// GRÁFICOS DASHBOARD
 // ===========================================
 
 let grafico_pilares_instance = null;
@@ -476,7 +464,6 @@ function carregar_periodos_disponiveis() {
                 select_topicos.append(option);
             });
             
-            // ✅ CARREGAR DADOS INICIAIS DE AMBOS OS GRÁFICOS
             if (periodos.length > 0) {
                 const primeiro_periodo = periodos[0].valor;
                 
@@ -533,7 +520,6 @@ $(document).on('change', '#select_periodo_topicos', function() {
 // ===========================================
 // 3. CARREGAR DADOS DOS GRÁFICOS
 // ===========================================
-// Função para carregar APENAS o gráfico de PILARES
 function carregar_grafico_pilares(mes, ano) {
     axios.post(app_url + "/usuarios/estatisticas_por_periodo", {
         mes: mes,
@@ -542,7 +528,6 @@ function carregar_grafico_pilares(mes, ano) {
     .then(response => {
         const dados = response.data;
         
-        // Renderizar APENAS gráfico de pilares
         renderizar_grafico_pilares_moderno(
             dados.grafico_pilares.pilares,
             dados.grafico_pilares.conformidade
@@ -585,7 +570,7 @@ function carregar_grafico_topicos(mes, ano) {
     });
 }
 // ===========================================
-// 4. RENDERIZAR GRÁFICO DE PILARES (HORIZONTAL)
+// 4. RENDERIZAR GRÁFICO DE PILARES 
 // ===========================================
 function renderizar_grafico_pilares_moderno(pilares, conformidade) {
     const ctx = document.getElementById('grafico_pilares').getContext('2d');
@@ -594,9 +579,6 @@ function renderizar_grafico_pilares_moderno(pilares, conformidade) {
         grafico_pilares_instance.destroy();
     }
 
-    // =============================
-    // 🔥 ORDENA DO MAIOR → MENOR
-    // =============================
     const dadosOrdenados = pilares.map((nome, i) => ({
         nome,
         valor: conformidade[i]
@@ -606,9 +588,6 @@ function renderizar_grafico_pilares_moderno(pilares, conformidade) {
     const pilaresOrdenados = dadosOrdenados.map(d => d.nome);
     const conformidadeOrdenada = dadosOrdenados.map(d => d.valor);
 
-    // =============================
-    // 🎨 COR POR FAIXA
-    // =============================
     function corPorConformidade(valor) {
         if (valor <= 25) return '#191970';
         if (valor <= 50) return '#0404e2';
@@ -618,9 +597,8 @@ function renderizar_grafico_pilares_moderno(pilares, conformidade) {
     }
 
     const coresDinamicas = conformidadeOrdenada.map(v => corPorConformidade(v));
-
     // =============================
-    // 📊 CHART
+    // CHART
     // =============================
     grafico_pilares_instance = new Chart(ctx, {
         type: 'bar',
@@ -676,9 +654,6 @@ function renderizar_grafico_pilares_moderno(pilares, conformidade) {
     });
 }
 
-
-
-
 function renderizar_grafico_topicos_moderno(topicos, quantidade) {
     const ctx = document.getElementById('grafico_topicos').getContext('2d');
     
@@ -686,9 +661,6 @@ function renderizar_grafico_topicos_moderno(topicos, quantidade) {
     if (grafico_topicos_instance) {
         grafico_topicos_instance.destroy();
     }
-    
-    // Cores modernas baseadas no PDF
-    
     
 const cores = [
     '#191970', 
@@ -770,7 +742,6 @@ const cores = [
 // 6. INICIALIZAR AO CARREGAR PÁGINA
 // ===========================================
 $(document).ready(function() {
-    // Só carregar se existir o select de períodos na página
     if ($("#select_periodo_pilares").length > 0) {
         carregar_periodos_disponiveis();
     }
@@ -804,4 +775,3 @@ window.addEventListener('resize', () => {
 // executar após carregamento inicial
 ajustarLarguraCanvas('grafico_pilares');
 ajustarLarguraCanvas('grafico_topicos');
-

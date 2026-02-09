@@ -6,7 +6,7 @@
 /* Garantir que a fonte Archivo está declarada */
 @font-face {
     font-family: 'Archivo';
-    src: url('../fonts/Archivo.ttf');
+    src: url('../fonts/archivoV.ttf');
     font-weight: normal;
     font-style: normal;
 }

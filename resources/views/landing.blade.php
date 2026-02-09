@@ -1,74 +1,15 @@
 @extends('landing-estrutura')
 @section('conteudo')
- <!-- NAVBAR -->
-<nav class="bg-white relative">
-    <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-        <!-- LOGO -->
-        <div class="flex items-center">
-            <img 
-                src="/imagesHomePage/PNG/Landing/SecureScopeLogo.png"
-                alt="Secure Scope"
-                class="h-10 w-auto"
-            >
-        </div>
 
-        <!-- LINKS -->
-        <div class="hidden lg:flex items-center gap-10 text-gray-700 font-medium">
-            <a href="#segmentos" class="hover:text-sky-500 transition-colors">Segmentos</a>
-            <a href="#como-funciona" class="hover:text-sky-500 transition-colors">Plataforma</a> 
-            <a href="#institucional" class="hover:text-sky-500 transition-colors">Institucional</a>
-        </div>
-
-        <!-- BOTÕES -->
-        <div class="hidden lg:flex items-center gap-4">
-           <a href="{{ route('fale-conosco') }}"
-            class="px-5 py-2 rounded-full bg-sky-500 text-white font-semibold hover:bg-sky-600 transition shadow">
-                Solicitar acesso
-            </a>
-            <a href="{{ route('login') }}"
-            class="px-5 py-2 rounded-full border border-sky-500 text-sky-500 font-semibold hover:bg-blue-50 transition">
-                Acessar plataforma
-            </a>
-        </div>
-
-        <!-- MOBILE -->
-        <button id="mobile-menu-btn" class="lg:hidden text-gray-700">
-            <img 
-                src="/imagesHomePage/PNG/Landing/IconeEditar.png"
-                class="w-8 h-8 object-contain">
-        </button>
-    </div>
-    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400"></div>
-    
-    <!-- MOBILE MENU - AGORA AQUI DENTRO DA NAV -->
-    <div id="mobile-menu" class="hidden lg:hidden fixed top-20 left-0 right-0 bg-white rounded-b-xl shadow-2xl p-6 mx-4 z-50 ">
-        <div class="flex flex-col gap-4">
-            <a href="#segmentos" class="text-gray-700 hover:text-sky-400 font-medium py-2 border-b border-gray-100">Segmentos</a>
-            <a href="#como-funciona" class="text-gray-700 hover:text-sky-400 font-medium py-2 border-b border-gray-100">Plataforma</a>
-            <a href="#institucional" class="text-gray-700 hover:text-sky-400 font-medium py-2 border-b border-gray-100">Institucional</a>
-            <a href="{{ route('fale-conosco') }}" class="bg-sky-500 text-white px-6 py-3 rounded-lg hover:bg-sky-600 font-semibold text-center mt-2">
-                Solicitar acesso
-            </a>
-            <a href="{{ route('login') }}" class="border-2 border-sky-500 text-sky-500 px-6 py-3 rounded-lg hover:bg-blue-50 font-semibold text-center">
-                Acessar plataforma
-            </a>
-        </div>
-    </div>
-</nav>
-
-<!-- HERO SECTION -->
 <section class="w-full min-h-screen bg-white px-6 py-8">
-
-   
     <div class="max-w-7xl mx-auto">
-            <!-- DIV AZUL -->
             <div class="bg-blue-100 rounded-3xl overflow-hidden relative px-6 py-12 md:px-12 md:py-16" style="min-height: 850px;">
                 
-                <!-- CONTEÚDO HERO -->
                 <div class="text-center mb-12 relative z-30">
                     
                     <!-- Tag -->
-                    <div class="inline-flex items-center gap-3 bg-white px-35 py-1 rounded-full shadow-md mb-8 border border-gray-200">
+                    <div class="inline-flex items-center gap-3 bg-white px-4 md:px-10
+            py-2 rounded-full shadow-md mb-8 border border-gray-200 max-w-full text-center">
                         <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
                         <span class="text-base md:text-lg  text-black">Plataforma integrada de inspeções e riscos</span>
                     </div>
@@ -106,7 +47,7 @@
                 <!-- CARDS E LINHAS -->
                 <div class="relative" style="min-height: 500px;"> 
                     <!-- Linha Top Left Card1 -->
-                    < <svg class="hidden lg:block absolute pointer-events-none" style="top: -40px; left: 400px; width: 310px; height: 200px; z-index: 10;">
+                     <svg class="hidden lg:block absolute pointer-events-none" style="top: -40px; left: 400px; width: 310px; height: 200px; z-index: 10;">
                     <line x1="600" y1="180" x2="20" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
                 </svg>
                 
@@ -142,9 +83,9 @@
                 
                 <svg class="hidden lg:block absolute pointer-events-none" style="top: 65%; left: 230px; width: 700px; height: 450px; z-index: 10; transform: translateY(-50%);">
                     <!-- horizontal -->
-                    <line x1="320" y1="224" x2="645" y2="224" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                    <line x1="320" y1="223" x2="645" y2="223" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
                     <!-- vertical -->
-                    <line x1="645" y1="427" x2="645" y2="218" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
+                    <line x1="645" y1="426" x2="645" y2="220" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,6" opacity="0.8"/>
                 </svg>
                 <!-- Card Top Left: Vulnerabilidades e Riscos -->
                 <div class="hidden lg:block absolute" style="top: 40px; left: 250px; z-index: 20;">
@@ -206,7 +147,7 @@
 
 
 <!-- FORTALECENDO DECISÕES TÉCNICAS -->
-<section id="segmentos" class="relative flex justify-center py-8 bg-gray-200">
+<section id="segmentos" class="relative flex justify-center py-8 bg-white">
     <!-- FUNDO GRADIENTE (quase do tamanho do card) -->
     <div class="w-full max-w-[1280px] px-[6px] bg-white rounded-3xl">
         <!-- CONTEÚDO -->
@@ -308,7 +249,7 @@
 </section>
 
 
-<section class="w-full bg-gray-200 py-20">
+<section class="w-full bg-white py-20">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -321,20 +262,38 @@
                     vulnerabilidades, níveis de risco e prioridades, oferecendo uma 
                     visão clara para tomada de decisão e planejamento das ações.
                 </p>
-                <div class="w-full h-px bg-sky-400 mb-10"></div>
+                <div class="w-full h-px border-gray-300 mb-10 border-1  "></div>
 
                 <!-- MÉTRICAS -->
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-2 gap-10 ">
 
-                    <div class="bg-white rounded-xl p-6">
-                        <p class="text-4xl font-bold text-sky-400 mb-2">–40%</p>
+                    <div class="rounded-xl p-6">
+                    <div class="relative w-28 h-28 rounded-full 
+                                    bg-[conic-gradient(theme(colors.sky.400)_40%,theme(colors.gray.200)_0)] 
+                                    flex items-center justify-center mb-4">
+
+                            <div class="w-22 h-22 bg-white rounded-full flex items-center justify-center">
+                                <span class="text-3xl font-bold text-sky-400">
+                                    -40%
+                                </span>
+                            </div>
+                        </div>
                         <p class="text-gray-700 font-medium md:text-xl">
                             Tempo gasto na consolidação das análises
                         </p>
                     </div>
 
-                    <div class="bg-white rounded-xl p-6">
-                        <p class="text-4xl font-bold text-sky-400 mb-2">+55%</p>
+                    <div class="bg-white rounded-xl p-6 ">
+                       <div class="relative w-28 h-28 rounded-full 
+                                    bg-[conic-gradient(theme(colors.sky.400)_55%,theme(colors.gray.200)_0)] 
+                                    flex items-center justify-center mb-4">
+
+                            <div class="w-22 h-22 bg-white rounded-full flex items-center justify-center">
+                                <span class="text-3xl font-bold text-sky-400">
+                                    +55%
+                                </span>
+                            </div>
+                        </div>
                         <p class="text-gray-700 font-medium md:text-xl">
                             Clareza na priorização dos riscos
                         </p>
@@ -439,12 +398,12 @@
                 Gestão de equipe
             </h3>
 
-            <p class="text-gray-600 mb-7 font-medium md:text-xl">
+            <p class="text-gray-600 mb-11 font-medium md:text-xl">
                 Defina responsáveis e acompanhe atividades com clareza operacional.
             </p>
 
             <div class="space-y-4 text-sm">
-                <div class="flex items-center justify-between gap-3 p-3 bg-white rounded-lg">
+                <div class="flex items-center justify-between gap-3 p-3.5 bg-white rounded-lg">
                     <div class="flex">
                         <div class="bg-sky-400 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">AN</div>
                         <div class="ml-2">
@@ -464,7 +423,7 @@
                         </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-3 p-3 bg-white rounded-lg">
+                <div class="flex items-center justify-between gap-3 p-3.5 bg-white rounded-lg">
                     <div class="flex">
                         <div class="bg-sky-400 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">CM</div>
                         <div class="ml-2">
@@ -484,7 +443,7 @@
                         </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-3 p-3 bg-white rounded-lg">
+                <div class="flex items-center justify-between gap-3 p-3.5 bg-white rounded-lg">
                     <div class="flex">
                         <div class="bg-sky-400 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">MF</div>
                         <div class="ml-2">
@@ -571,7 +530,7 @@
                 <p class="text-gray-600 mb-4 font-medium md:text-xl">
                 Defina funções e organize o acesso de cada colaborador aos projetos.
                 </p>
-                <div class="border border-gray-200 bg-white rounded-lg px-5 py-7 mt-5">
+                <div class="border border-gray-200 bg-white rounded-lg px-5 py-7  mt-11">
                     <h1 class="text-xl font-semibold mb-5"> Usuários e Permissões</h1>
                     <div class="flex items-center gap-3 mb-3">
                         <div class="bg-sky-400 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold">MA</div>
@@ -593,7 +552,7 @@
 </section>
 
 <!-- PRINCÍPIOS -->
-<section id="institucional" class="w-full bg-gray-200 py-20">
+<section id="institucional" class="w-full bg-white py-20">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
             <h2 class="text-5xl font-bold text-gray-900 mb-6">
@@ -695,75 +654,6 @@
     </div>
     <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400"></div>    
 </section>
-
-<!-- FOOTER -->
-<footer id="contato" class="w-full bg-slate-900 text-white py-10">
-    <div class=" w-full px-12">
-        <!-- Grid Principal -->
-        <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mb-5">
-            
-            <!-- Coluna 1 - Logo e Descrição -->
-            <div class="md:col-span-2 pt-1">
-                <img 
-                    src="/imagesHomePage/PNG/Landing/SecureScopeLogoBranca.png"
-                    alt="Secure Scope"
-                    class="h-10 w-auto mb-4"
-                >
-                <p class="text-white text-xl">
-                    Plataforma desenvolvida para apoiar decisões técnicas com 
-                    método, rastreabilidade e consistência analítica.
-                </p>
-                
-                <!-- Linha abaixo da descrição -->
-                <div class="border-t border-white mt-4"></div>
-            </div>
-
-            <!-- Coluna 2 - Fale Conosco -->
-            <div class="pt-6">
-                <h4 class="text-2xl font-bold mb-3 text-white">Fale conosco</h4>
-                <p class="text-white">contato@securescope.com.br</p>
-            </div>
-
-            <!-- Coluna 3 - Segmentos -->
-            <div class="pt-6">
-                <h4 class="text-2xl font-bold mb-3 text-white">Segmentos</h4>
-                <ul class="space-y-2">
-                    <li><p class="text-white">Consultorias de Segurança</p></li>
-                    <li><p class="text-white">Indústrias e Infraestrutura</p></li>
-                    <li><p class="text-white">Portos, Logística</p></li>
-                </ul>
-            </div>
-
-            <!-- Coluna 4 - Plataforma -->
-            <div class="pt-6">
-                <h4 class="text-2xl font-bold mb-3 text-white">Plataforma</h4>
-                <ul class="space-y-2">
-                    <li><p class="text-white">Como Funciona</p></li>
-                    <li><p class="text-white">Metodologia de Análise</p></li>
-                    <li><p class="text-white">Recursos da Plataforma</p></li>
-                </ul>
-            </div>
-
-            <!-- Coluna 5 - Institucional -->
-            <div class="pt-6">
-                <h4 class="text-2xl font-bold mb-3 text-white">Institucional</h4>
-                <ul class="space-y-2">
-                    <li><p class="text-white">Sobre a Plataforma</p></li>
-                    <li><p class="text-white">Diferenciais e Princípios</p></li>
-                    <li><p class="text-white">Segurança da informação</p></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class=" text-left">
-            <p class="text-gray-300 ">
-                © 2026 Secure Scope. Todos os direitos reservados.
-            </p>
-        </div>
-    </div>
-</footer>
-
 @vite('resources/js/landing/landing.js')
 
 @endsection
