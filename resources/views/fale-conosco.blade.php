@@ -52,7 +52,17 @@
 
                     <form id="form-contato" novalidate class="space-y-4">
                         @csrf
-                        
+
+                          <!--  HONEYPOT evitar bots de sobrecarregarem o site -->
+                            <input 
+                                type="text" 
+                                name="website" 
+                                id="website"
+                                style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                                tabindex="-1"
+                                autocomplete="off"
+                            >
+                                                
                         <!-- NOME -->
                         <div>
                             <label for="nome" class="block   mb-2">Nome</label>

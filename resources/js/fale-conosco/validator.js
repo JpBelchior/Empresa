@@ -91,10 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
 
-    form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     let valid = true;
-
     const campos = [nome, empresa, email, telefone];
 
     campos.forEach(clearError);
@@ -119,12 +119,54 @@ document.addEventListener("DOMContentLoaded", () => {
         valid = false;
     }
 
-    if (!valid) {
-        e.preventDefault();
-        return;
+    if (!valid) return;
+
+    // ENVIAR VIA AJAX
+    const btnSubmit = form.querySelector('button[type="submit"]');
+
+    try {
+        // Desabilita botão
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = 'Enviando...';
+
+        const response = await axios.post('/fale-conosco/enviar', {
+            nome:     nome.value.trim(),
+            empresa:  empresa.value.trim(),
+            email:    email.value.trim(),
+            telefone: telefone.value.trim()
+        });
+
+        if (response.data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Solicitação Enviada!',
+                text: response.data.message,
+                confirmButtonColor: '#0ea5e9'
+            });
+            form.reset();
+        }
+
+    } catch (error) {
+        let errorMessage = 'Erro ao enviar solicitação. Tente novamente.';
+
+        // Rate limit atingido
+        if (error.response?.status === 429) {
+            errorMessage = 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
+        }
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Ops!',
+            text: errorMessage,
+            confirmButtonColor: '#ef4444'
+        });
+
+    } finally {
+        // Cooldown 3 segundos
+        setTimeout(() => {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = 'Solicitar acesso';
+        }, 3000);
     }
-
-    console.log("ta ok")
 });
-
 });
