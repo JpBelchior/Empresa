@@ -70,6 +70,8 @@ document.querySelectorAll('section').forEach((section, index) => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(20px)';
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        section.style.position = 'relative';  
+        section.style.zIndex = '0';           
         observer.observe(section);
     }
 });
@@ -78,13 +80,12 @@ document.querySelectorAll('section').forEach((section, index) => {
 // 4. NAVBAR STICKY AO SCROLLAR (OPCIONAL)
 // ==========================================
 window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    if (nav) {
-        if (window.scrollY > 100) {
-            nav.classList.add('sticky', 'top-0', 'z-50', 'bg-white/95', 'backdrop-blur-sm', 'shadow-md');
-        } else {
-            nav.classList.remove('sticky', 'top-0', 'z-50', 'bg-white/95', 'backdrop-blur-sm', 'shadow-md');
-        }
+    const nav = document.getElementById('navbar');
+    if (!nav) return;
+
+    if (window.scrollY > 10) {
+        nav.classList.add('shadow-md', 'bg-white/95', 'backdrop-blur-sm');
+    } else {
+        nav.classList.remove('shadow-md', 'bg-white/95', 'backdrop-blur-sm');
     }
 });
-
