@@ -62,6 +62,9 @@ class FormularioController extends Controller
         if(!$formulario){
             abort('404');
         }
+            if($formulario->empresa_id != session('empresa_id')){
+            abort(403);
+            }
         $tipos_empreendimento_projeto = Models\ProjetoTipoEmpreendimento::where('projeto_id', $formulario->projeto_id)->pluck('tipo_empreendimento_id')->toArray();
         $perguntas_ids = Models\PerguntaTipoEmpreendimento::whereIn('tipo_empreendimento_id', $tipos_empreendimento_projeto)->select('pergunta_id')->groupBy('pergunta_id')->pluck('pergunta_id')->toArray();
         $perguntas = Models\Pergunta::whereIn('id', $perguntas_ids)->orderBy('data_cadastro', 'desc')->get();
@@ -223,6 +226,10 @@ class FormularioController extends Controller
     }
 
     public function listar_respostas($formulario_id){
+         $formulario = Models\Formulario::find($formulario_id);
+        if(!$formulario || $formulario->empresa_id != session('empresa_id')){
+            abort(403);
+        }
         $respostas = Models\Resposta::with([
             'usuario',
             'pergunta'
